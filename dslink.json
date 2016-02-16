@@ -1,0 +1,46 @@
+{
+	"name":"dslink-scala-ignition",
+	"version":"0.1.0-SNAPSHOT",
+	"description":"Spark Ignition DSLink",
+	"license":"Apache",
+	"author":{
+		"name":"Vlad Orzhekhovskiy",
+		"email":"vlad@uralian.com"
+	},
+	"main":"bin/dslink-scala-ignition",
+	"repository":{
+		"type":"git",
+		"url":"https://github.com/IOT-DSA/dslink-scala-ignition"
+	},
+	"bugs":{
+		"url":"https://github.com/IOT-DSA/dslink-scala-ignition/issues"
+	},
+	"configs":{
+		"name":{
+			"type":"string",
+			"default":"ignition"
+		},
+		"broker":{
+			"type":"url"
+		},
+		"token":{
+			"type":"string"
+		},
+		"nodes":{
+			"type":"path",
+			"default":"nodes.json"
+		},
+		"key":{
+			"type":"path",
+			"default":".key"
+		},
+		"log":{
+			"type":"enum",
+			"default":"info"
+		},
+		"handler_class":{
+			"type":"string",
+			"default":"org.dsa.iot.ignition.DummyDSLinkHandler"
+		}		
+	}
+}
