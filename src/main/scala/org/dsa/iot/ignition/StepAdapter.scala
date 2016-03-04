@@ -17,6 +17,11 @@ trait StepAdapter[S <: Step[T, R], T, R <: FlowRuntime] {
   def typeName: String
 
   /**
+   * Block category.
+   */
+  def category: String
+
+  /**
    * Input suffixes.
    */
   def inputSuffixes: Iterable[String]
@@ -42,18 +47,22 @@ trait StepAdapter[S <: Step[T, R], T, R <: FlowRuntime] {
  */
 abstract class AbstractStepAdapter[S <: Step[T, R], T, R <: FlowRuntime](
     val typeName: String,
+    val category: String,
     val inputSuffixes: Iterable[String],
     val outputSuffixes: Iterable[String],
     parameters: (String, String)*) extends StepAdapter[S, T, R] {
+
+  def this(typeName: String, category: String, inputSuffixes: Iterable[String], outputSuffixes: Iterable[String],
+           parameters: List[(String, String)]) = this(typeName, category, inputSuffixes, outputSuffixes, parameters: _*)
 
   private val jsonParams = {
     def param(pName: String, pType: String) = new JsonObject(s"""{"name" : "$pName", "type" : "$pType"}""")
     val arr = new JsonArray
     parameters foreach { case (pName, pType) => arr.add(param(pName, pType)) }
-    inputSuffixes foreach { suffix => arr.add(param(s"input$suffix", "dynamic")) }
-    outputSuffixes foreach { suffix => arr.add(param(s"output$suffix", "dynamic")) }
+    inputSuffixes foreach { suffix => arr.add(param(s"input$suffix", "tabledata")) }
+    outputSuffixes foreach { suffix => arr.add(param(s"output$suffix", "tabledata")) }
     arr
   }
 
-  val makeRow = Row.make(new Value(typeName), new Value(jsonParams))
+  val makeRow = Row.make(new Value(typeName), new Value(jsonParams), new Value(category))
 }

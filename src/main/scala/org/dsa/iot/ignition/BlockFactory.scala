@@ -1,10 +1,16 @@
 package org.dsa.iot.ignition
 
 import scala.collection.JavaConverters.mapAsScalaMapConverter
-import org.dsa.iot.dslink.node._
+import scala.reflect.runtime.universe
+
 import org.dsa.iot.dslink.util.json.{ JsonArray, JsonObject }
 
-import com.ignition._
+import com.ignition.{ FlowRuntime, Step, SubFlowFactory, ins, outs }
+
+/**
+ * Flow block information, which includes the ignition step, step adapter and the source json.
+ */
+case class FlowBlock[S <: Step[T, R], T, R <: FlowRuntime](step: S, adapter: StepAdapter[S, T, R], json: JsonObject)
 
 /**
  * Class responsible for providing step adapters and building workflows from designer output.
@@ -12,6 +18,15 @@ import com.ignition._
 abstract class BlockFactory[S <: Step[T, R], T, R <: FlowRuntime] {
 
   def adapters: Iterable[StepAdapter[S, T, R]]
+
+  protected def buildAdapterList[TT: universe.TypeTag] = {
+    val m = universe.runtimeMirror(getClass.getClassLoader)
+    universe.typeOf[TT].declarations filter (_.isModule) map { obj =>
+      m.reflectModule(obj.asModule).instance
+    } collect {
+      case m: StepAdapter[_, _, _] => m.asInstanceOf[StepAdapter[S, T, R]]
+    }
+  }
 
   protected lazy val adapterMap = adapters map (a => (a.typeName, a)) toMap
 
@@ -23,7 +38,7 @@ abstract class BlockFactory[S <: Step[T, R], T, R <: FlowRuntime] {
   /**
    * Creates a flow from the json exported from the designer.
    */
-  def fromDesigner(json: JsonObject): (/*SubFlow[T, R]*/Iterable[ConnectionSource[T, R]], Map[String, S]) = {
+  def fromDesigner(json: JsonObject): Map[String, FlowBlock[S, T, R]] = {
     // collect blocks
     val blocks = json.getMap.asScala.toMap collect {
       case (name, obj: JsonObject) => name -> obj
@@ -35,7 +50,7 @@ abstract class BlockFactory[S <: Step[T, R], T, R <: FlowRuntime] {
         val typeName = obj.get[String]("customType")
         val adapter = adapterMap(typeName)
         val step = adapter.makeStep(obj)
-        name -> step
+        name -> FlowBlock(step, adapter, obj)
     }
 
     // connect steps
@@ -43,7 +58,7 @@ abstract class BlockFactory[S <: Step[T, R], T, R <: FlowRuntime] {
       case (name, obj) =>
         val typeName = obj.get[String]("customType")
         val tgtAdapter = adapterMap(typeName)
-        val tgtStep = steps(name)
+        val tgtStep = steps(name).step
 
         val connectedInputs = tgtAdapter.inputSuffixes.map { suffix =>
           Option(obj.get[JsonArray](s"input$suffix")) map (_.get[String](0))
@@ -54,7 +69,7 @@ abstract class BlockFactory[S <: Step[T, R], T, R <: FlowRuntime] {
         connectedInputs foreach {
           case (outStr, tgtIndex) =>
             val Array(_, srcName, srcOutput) = outStr.split('.')
-            val srcStep = steps(srcName)
+            val srcStep = steps(srcName).step
             val srcAdapter = adapterMap(blocks(srcName).get[String]("customType"))
             val srcOutSuffix = srcOutput.drop("output".length)
             val srcIndex = srcAdapter.outputSuffixes.zipWithIndex.find(t => t._1 == srcOutSuffix).get._2
@@ -62,37 +77,6 @@ abstract class BlockFactory[S <: Step[T, R], T, R <: FlowRuntime] {
         }
     }
 
-    // find target points
-//    val sourceSteps = steps.values.flatMap { step =>
-//      for {
-//        inbound <- ins(step).map(p => p.inbound) if inbound != null
-//        srcStep = inbound.step if step != null
-//      } yield srcStep
-//    }.toSet
-//
-//    val outSteps = steps.values filterNot sourceSteps
-//    val outPoints = outSteps flatMap outs
-    val outPoints = steps.values flatMap outs
-
-//    (flowFactory.instantiate(Nil, outPoints.toSeq), steps)
-    (outPoints, steps)
-  }
-
-  /**
-   * Returns a list of input ports for the step.
-   */
-  private def ins(step: Step[T, R]): Seq[ConnectionTarget[T, R]] = step match {
-    case x if x.isInstanceOf[SingleInputStep[T, R]] => List(x.asInstanceOf[SingleInputStep[T, R]])
-    case x if x.isInstanceOf[MultiInputStep[T, R]] => x.asInstanceOf[MultiInputStep[T, R]].in
-    case _ => Nil
-  }
-
-  /**
-   * Returns a list of output ports for the step.
-   */
-  private def outs(step: Step[T, R]): Seq[ConnectionSource[T, R]] = step match {
-    case x if x.isInstanceOf[SingleOutputStep[T, R]] => List(x.asInstanceOf[SingleOutputStep[T, R]])
-    case x if x.isInstanceOf[MultiOutputStep[T, R]] => x.asInstanceOf[MultiOutputStep[T, R]].out
-    case _ => Nil
+    steps
   }
 }

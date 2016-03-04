@@ -22,7 +22,7 @@ case class DSAStreamOutput(fields: Iterable[(String, String)]) extends StreamTra
   def add(tuple: (String, String)) = copy(fields = this.fields.toSeq :+ tuple)
   def %(tuple: (String, String)) = add(tuple)
 
-  protected def compute(arg: DataStream, preview: Boolean)(implicit runtime: SparkStreamingRuntime): DataStream = {
+  protected def compute(arg: DataStream)(implicit runtime: SparkStreamingRuntime): DataStream = {
     arg foreachRDD (_.collect foreach { row =>
       fields foreach {
         case (name, path) => DSAHelper updateNode path -> row.getAs[Any](name)

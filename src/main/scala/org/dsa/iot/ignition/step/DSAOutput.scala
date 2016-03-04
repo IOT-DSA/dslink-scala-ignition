@@ -23,8 +23,8 @@ case class DSAOutput(fields: Iterable[(String, String)]) extends FrameTransforme
   def add(tuple: (String, String)) = copy(fields = this.fields.toSeq :+ tuple)
   def %(tuple: (String, String)) = add(tuple)
 
-  protected def compute(arg: DataFrame, preview: Boolean)(implicit runtime: SparkRuntime): DataFrame = {
-    val df = if (preview) arg.limit(FrameStep.previewSize) else arg
+  protected def compute(arg: DataFrame)(implicit runtime: SparkRuntime): DataFrame = {
+    val df = if (runtime.previewMode) arg.limit(FrameStep.previewSize) else arg
     df.collect foreach { row =>
       fields foreach {
         case (name, path) => DSAHelper updateNode path -> row.getAs[Any](name)

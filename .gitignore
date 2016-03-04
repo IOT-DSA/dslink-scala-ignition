@@ -1,6 +1,8 @@
 *.class
 *.log
 .key
+nodes.json
+nodes.json.bak
 
 # sbt specific
 .cache

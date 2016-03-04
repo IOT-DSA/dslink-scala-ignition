@@ -1,24 +1,11 @@
 package org.dsa.iot.ignition
 
-import scala.collection.JavaConverters.mapAsScalaMapConverter
-import org.apache.spark.sql.DataFrame
 import org.apache.spark.streaming.Milliseconds
-import org.dsa.iot.dslink.node.actions.table.Row
-import org.dsa.iot.dslink.node.value.Value
-import org.dsa.iot.dslink.util.json.{ JsonArray, JsonObject }
-import org.json4s.{ jvalue2monadic, string2JsonInput }
-import org.json4s.jackson.JsonMethods.parse
-import com.ignition.{ ConnectionSource, ConnectionTarget, FlowRuntime, MultiInputStep, MultiOutputStep, SingleInputStep, SingleOutputStep, Step, SubFlow, SubFlowFactory, frame }
-import com.ignition.frame.{ DataGrid, FrameSubFlow, SparkRuntime }
-import com.ignition.stream
-import com.ignition.stream.{ DataStream, SparkStreamingRuntime, StreamSubFlow, StreamStep }
+import org.dsa.iot.dslink.util.json.JsonObject
+
+import com.ignition.{ frame, stream }
+import com.ignition.stream.{ DataStream, SparkStreamingRuntime, StreamStep, StreamSubFlow }
 import com.ignition.types.TypeUtils
-import com.ignition.util.JsonUtils.RichJValue
-import org.dsa.iot.ignition.step._
-import org.json4s.{ jvalue2monadic, string2JsonInput }
-import org.json4s.JObject
-import org.json4s.jackson.JsonMethods.parse
-import com.ignition.frame.BasicAggregator.BasicAggregator
 
 /**
  * Block factory for Stream flows.
@@ -28,78 +15,194 @@ object StreamBlockFactory extends BlockFactory[StreamStep, DataStream, SparkStre
 
   val flowFactory = StreamSubFlow
 
+  object Categories {
+    val STATS = "Statistics"
+    val INPUT = "Input"
+    val OUTPUT = "Output"
+    val TRANSFORM = "Transform"
+    val FLOW = "Flow"
+    val UTIL = "Utility"
+    val SCRIPT = "Scripting"
+    val DSA = "DSA"
+  }
+  import Categories._
+
   /* native steps */
 
-  object FilterAdapter extends StreamStepAdapter("Filter", One, List("True", "False"), "condition" -> "string") {
-    def makeStep(json: JsonObject) = stream.Filter(json.get[String]("condition"))
+  /**
+   * Filter.
+   */
+  object FilterAdapter extends StreamStepAdapter("Filter", FLOW, One, List("True", "False"), "condition" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.Filter(json asString "condition")
   }
 
-  object WindowAdapter extends StreamStepAdapter("Window", One, One, "windowSize" -> "number", "slideSize" -> "number") {
+  /**
+   * Join.
+   */
+  object JoinAdapter extends StreamStepAdapter("Join", FLOW, Two, One,
+    "condition" -> TEXT, "joinType" -> enum(frame.JoinType)) {
+    def makeStep(json: JsonObject) = stream.Join(
+      json asString "condition",
+      json.asEnum[frame.JoinType.JoinType](frame.JoinType)("joinType"))
+  }
+
+  /**
+   * Set Variables.
+   */
+  object SetVariablesAdapter extends StreamStepAdapter("SetVariables", UTIL, One, One,
+    "name 0" -> TEXT, "type 0" -> DATA_TYPE, "value 0" -> TEXT) {
     def makeStep(json: JsonObject) = {
-      val wSize = Milliseconds(json.get[Int]("windowSize"))
-      val sSize = Milliseconds(json.get[Int]("slideSize"))
+      val fields = json.asTupledList3[String, String, String]("@array") map {
+        case (name, typeName, strValue) => name -> parseValue(strValue, noneIfEmpty(typeName))
+      }
+      stream.SetVariables(fields.toMap)
+    }
+  }
+
+  /**
+   * Window.
+   */
+  object WindowAdapter extends StreamStepAdapter("Window", FLOW, One, One, "windowSize" -> "number", "slideSize" -> "number") {
+    def makeStep(json: JsonObject) = {
+      val wSize = Milliseconds(json asInt "windowSize")
+      val sSize = Milliseconds(json asInt "slideSize")
       stream.Window(wSize, sSize)
     }
   }
 
-  object DSAInputAdapter extends StreamStepAdapter("DSAInput", Nil, One, "paths" -> "textarea") {
+  /**
+   * Kafka Input.
+   */
+  object KafkaInputAdapter extends StreamStepAdapter("KafkaInput", INPUT, Nil, One,
+    "brokers" -> TEXT, "topics" -> TEXT,
+    "propName 0" -> TEXT, "propValue 0" -> TEXT, "fieldName" -> TEXT) {
     def makeStep(json: JsonObject) = {
-      val paths = (parse(json.get[String]("paths")) asArray) map { node =>
-        val path = node \ "path" asString
-        val dataType = TypeUtils.typeForName(node \ "type" asString)
-        path -> dataType
+      val brokers = splitAndTrim(",")(json asString "brokers")
+      val topics = splitAndTrim(",")(json asString "topics")
+      val props = json.asTupledList2[String, String]("@array") map {
+        case (name, value) => name -> value
       }
-      DSAStreamInput(paths)
+      val fieldName = json asString "fieldName"
+      stream.KafkaInput(brokers, topics, props.toMap, fieldName)
     }
   }
 
-  object DSAOutputAdapter extends StreamStepAdapter("DSAOutput", One, Nil, "fields" -> "textarea") {
+  /**
+   * DSA Input.
+   */
+  object DSAInputAdapter extends StreamStepAdapter("DSAInput", DSA, Nil, One, "path 0" -> TEXT, "type 0" -> DATA_TYPE) {
     def makeStep(json: JsonObject) = {
-      val fields = (parse(json.get[String]("fields")) asArray) map { node =>
-        val name = node \ "name" asString
-        val path = node \ "path" asString
-
-        name -> path
+      val paths = json.asTupledList2[String, String]("@array") map {
+        case (path, typeName) => path -> TypeUtils.typeForName(typeName)
       }
-      DSAStreamOutput(fields)
+      step.DSAStreamInput(paths)
+    }
+  }
+
+  /**
+   * DSA Output.
+   */
+  object DSAOutputAdapter extends StreamStepAdapter("DSAOutput", DSA, One, Nil, "field 0" -> TEXT, "path 0" -> TEXT) {
+    def makeStep(json: JsonObject) = {
+      val fields = json.asTupledList2[String, String]("@array") map {
+        case (name, path) => name -> path
+      }
+      step.DSAStreamOutput(fields)
     }
   }
 
   /* foreach wrappers */
 
-  object BasicStatsAdapter extends StreamStepAdapter("BasicStats", One, One, "fields" -> "textarea", "groupBy" -> "string") {
-    def makeStep(json: JsonObject) = {
-      val dataFields = (parse(json.get[String]("fields")) asArray) map {
-        case JObject(field :: Nil) =>
-          val name = field._1
-          val func = field._2 asString
-
-          name -> (frame.BasicAggregator.withName(func): BasicAggregator)
-        case _ => throw new IllegalArgumentException("Invalid format: " + json)
-      }
-      val groupFields = (parse(json.get[String]("groupBy")) asArray) map (_ asString)
-      stream.foreach(frame.BasicStats(dataFields, groupFields))
-    }
+  /**
+   * Add Fields.
+   */
+  object AddFieldsAdapter extends StreamStepAdapter("AddFields", TRANSFORM, One, One,
+    "name 0" -> TEXT, "type 0" -> DATA_TYPE, "value 0" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.AddFieldsAdapter.makeStep(json))
   }
 
-  object ColumnStatsAdapter extends StreamStepAdapter("ColumnStats", One, One, "fields" -> "string", "groupBy" -> "string") {
-    def makeStep(json: JsonObject) = {
-      val dataFields = (parse(json.get[String]("fields")) asArray) map (_ asString)
-      val groupFields = (parse(json.get[String]("groupBy")) asArray) map (_ asString)
-      stream.foreach(frame.mllib.ColumnStats(dataFields, groupFields))
-    }
+  /**
+   * Basic Stats.
+   */
+  object BasicStatsAdapter extends StreamStepAdapter("BasicStats", STATS, One, One,
+    "field 0" -> TEXT, "func 0" -> enum(frame.BasicAggregator), "groupBy" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.BasicStatsAdapter.makeStep(json))
   }
 
-  object DebugAdapter extends StreamStepAdapter("Debug", One, One) {
-    def makeStep(json: JsonObject) = stream.foreach(frame.DebugOutput())
+  /**
+   * Debug.
+   */
+  object DebugAdapter extends StreamStepAdapter("Debug", UTIL, One, One) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.DebugAdapter.makeStep(json))
   }
 
-  val adapters = List(
-    BasicStatsAdapter,
-    ColumnStatsAdapter,
-    FilterAdapter,
-    WindowAdapter,
-    DSAInputAdapter,
-    DSAOutputAdapter,
-    DebugAdapter)
+  /**
+   * Kafka Output.
+   */
+  object KafkaOutputAdapter extends StreamStepAdapter("KafkaOutput", OUTPUT, One, One, "field" -> TEXT,
+    "topic" -> TEXT, "brokers" -> TEXT, "propName 0" -> TEXT, "propValue 0" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.KafkaOutputAdapter.makeStep(json))
+  }
+
+  /**
+   * Formula.
+   */
+  object FormulaAdapter extends StreamStepAdapter("Formula", SCRIPT, One, One,
+    "name 0" -> TEXT, "dialect 0" -> enum("mvel", "xml", "json"), "expression 0" -> TEXT, "source 0" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.FormulaAdapter.makeStep(json))
+  }
+
+  /**
+   * Reduce.
+   */
+  object ReduceAdapter extends StreamStepAdapter("Reduce", TRANSFORM, One, One,
+    "name 0" -> TEXT, "operation 0" -> TEXT, "groupBy" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.ReduceAdapter.makeStep(json))
+  }
+
+  /**
+   * Select Values.
+   */
+  object SelectValuesAdapter extends StreamStepAdapter("SelectValues", TRANSFORM, One, One,
+    "action 0" -> enum("retain", "rename", "remove", "retype"), "data 0" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.SelectValuesAdapter.makeStep(json))
+  }
+
+  /**
+   * SQL Query.
+   */
+  object SQLQueryAdapter extends StreamStepAdapter("SQLQuery", SCRIPT, Two, One, "query" -> TEXTAREA) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.SQLQueryAdapter.makeStep(json))
+  }
+
+  /**
+   * Column Stats.
+   */
+  object ColumnStatsAdapter extends StreamStepAdapter("ColumnStats", STATS, One, One,
+    "field 0" -> TEXT, "groupBy" -> TEXT) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.ColumnStatsAdapter.makeStep(json))
+  }
+
+  /**
+   * Correlation.
+   */
+  object CorrelationAdapter extends StreamStepAdapter("Correlation", STATS, One, One,
+    "field 0" -> TEXT, "groupBy" -> TEXT, "method" -> enum(frame.mllib.CorrelationMethod)) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.CorrelationAdapter.makeStep(json))
+  }
+
+  /**
+   * Regression.
+   */
+  object RegressionAdapter extends StreamStepAdapter("Regression", STATS, One, One,
+    "labelField" -> TEXT, "field 0" -> TEXT, "groupBy" -> TEXT,
+    "method" -> enum(frame.mllib.RegressionMethod),
+    "iterations" -> NUMBER, "step" -> NUMBER, "intercept" -> BOOLEAN) {
+    def makeStep(json: JsonObject) = stream.foreach(FrameBlockFactory.RegressionAdapter.makeStep(json))
+  }
+
+  /**
+   * List of available adapters retrieved through reflection.
+   */
+  val adapters = buildAdapterList[StreamBlockFactory.type]
 }

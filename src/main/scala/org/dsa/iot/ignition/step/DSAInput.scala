@@ -46,7 +46,7 @@ case class DSAInput(paths: Iterable[(String, DataType)]) extends FrameProducer {
     if (index < 0) path else path.substring(index + 1)
   }
 
-  protected def compute(preview: Boolean)(implicit runtime: SparkRuntime): DataFrame = {
+  protected def compute(implicit runtime: SparkRuntime): DataFrame = {
     val futures = paths.map(_._1).toSet map DSAHelper.getNodeValue
     val valueMap = Await.result(Future.sequence(futures), DSAInput.maxTimeout) map { v =>
       pathToFieldName(v._1) -> v._3

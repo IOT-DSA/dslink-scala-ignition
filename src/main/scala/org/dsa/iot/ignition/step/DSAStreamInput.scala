@@ -38,7 +38,7 @@ case class DSAStreamInput(paths: Iterable[(String, DataType)]) extends StreamPro
   }
   val schema = StructType(fields.toSeq)
 
-  protected def compute(preview: Boolean)(implicit runtime: SparkStreamingRuntime): DataStream = {
+  protected def compute(implicit runtime: SparkStreamingRuntime): DataStream = {
     val stream = ssc.receiverStream(new DSAReceiver(paths.map(_._1).toSeq: _*))
     stream map {
       case (path, time, value) =>
