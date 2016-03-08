@@ -74,6 +74,7 @@ package object ignition {
   val TEXTAREA = "textarea"
   val NUMBER = "number"
   val BOOLEAN = "boolean"
+  val TABLE = "tabledata"
   def enum(values: String*): String = values.mkString("enum[", ",", "]")
   def enum(e: Enumeration): String = enum(e.values.map(_.toString).toSeq: _*)
 
@@ -101,28 +102,9 @@ package object ignition {
   def splitAndTrim(delim: String = ",")(str: String) = str.split(delim).map(_.trim).filterNot(_.isEmpty).toList
 
   /**
-   * Converts a Spark Row into a JsonObject
-   */
-  def rowToJsonObject(row: Row) = mapToJsonObject(
-    row.schema zip row.toSeq map {
-      case (field, value: Binary)         => field.name -> value.mkString("[", ",", "]")
-      case (field, value: java.util.Date) => field.name -> value.toString
-      case (field, value)                 => field.name -> value
-    } toMap)
-
-  /**
-   * Converts a Spark DataFrame into a JsonArray.
-   */
-  def dataFrameToJsonArray(df: DataFrame) = listToJsonArray(df.collect.map(rowToJsonObject).toList)
-
-  /**
    * Converts a Spark DataFrame into a tabledata Map.
    */
-  def dataFrameToTableData(df: DataFrame): Map[String, Any] = {
-    val columns = df.schema.map(f => Map("name" -> f.name)).toList
-    val rows = df.collect.map(_.toSeq.toList).toList
-    Map("@id" -> Random.nextInt, "cols" -> columns, "rows" -> rows)
-  }
+  def dataFrameToTableData(df: DataFrame): Map[String, Any] = rddToTableData(df.rdd, Some(df.schema))
 
   /**
    * Converts an RDD[Row] into a tabledata Map.
@@ -132,10 +114,19 @@ package object ignition {
       Map("@id" -> Random.nextInt(1000), "cols" -> Nil, "rows" -> Nil)
     else {
       val columns = schema.getOrElse(rdd.first.schema).map(f => Map("name" -> f.name)).toList
-      val rows = rdd.collect.map(_.toSeq.toList).toList
-      Map("@id" -> Random.nextInt(1000), "cols" -> columns, "rows" -> rows)
+      val rows = rdd.collect.map(_.toSeq.toList map toSafeDSAValue).toList
+      Map("@id" -> Random.nextInt(1000), "@type" -> "tabledata", "cols" -> columns, "rows" -> rows)
     }
-
+  
+  /**
+   * Converts a value to a DSA-safe value.
+   */
+  private def toSafeDSAValue(value: Any) = value match {
+    case x: Binary => x.mkString("[", ",", "]")
+    case x : java.util.Date => x.toString
+    case x @ _ => x
+  }
+  
   /**
    * A shorter notation for asInstanceOf method.
    */

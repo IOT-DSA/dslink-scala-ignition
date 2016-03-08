@@ -59,8 +59,8 @@ abstract class AbstractStepAdapter[S <: Step[T, R], T, R <: FlowRuntime](
     def param(pName: String, pType: String) = new JsonObject(s"""{"name" : "$pName", "type" : "$pType"}""")
     val arr = new JsonArray
     parameters foreach { case (pName, pType) => arr.add(param(pName, pType)) }
-    inputSuffixes foreach { suffix => arr.add(param(s"input$suffix", "tabledata")) }
-    outputSuffixes foreach { suffix => arr.add(param(s"output$suffix", "tabledata")) }
+    inputSuffixes foreach { suffix => arr.add(param(s"input$suffix", TABLE)) }
+    outputSuffixes foreach { suffix => arr.add(param(s"output$suffix", TABLE)) }
     arr
   }
 
