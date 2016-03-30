@@ -189,20 +189,22 @@ object Main extends App {
 
     rt.unregisterAll
 
-    def evaluateModel(steps: StreamFlowModel) = steps foreach {
-      case (name, FlowBlock(step, adapter, _)) => try {
-        step.register
-        step.addStreamDataListener(new stream.StreamStepDataListener {
-          override def onBatchProcessed(event: stream.StreamStepBatchProcessed) = {
-            val suffix = adapter.outputSuffixes.toList(event.index)
-            val path = s"$dfPath/${node.getName}/$name/output${suffix}"
-            DSAHelper.set(path, rddToTableData(event.rows))
-          }
-        })
-        rt.start
-      } catch {
-        case NonFatal(e) => log.error(s"Error evaluating step $name in stream flow [${node.getName}]: " + e.getMessage)
+    def evaluateModel(steps: StreamFlowModel) = {
+      steps foreach {
+        case (name, FlowBlock(step, adapter, _)) => try {
+          step.register
+          step.addStreamDataListener(new stream.StreamStepDataListener {
+            override def onBatchProcessed(event: stream.StreamStepBatchProcessed) = {
+              val suffix = adapter.outputSuffixes.toList(event.index)
+              val path = s"$dfPath/${node.getName}/$name/output${suffix}"
+              DSAHelper.set(path, rddToTableData(event.rows))
+            }
+          })
+        } catch {
+          case NonFatal(e) => log.error(s"Error evaluating step $name in stream flow [${node.getName}]: " + e.getMessage)
+        }
       }
+      rt.start
     }
 
     val model = node.getMetaData[StreamFlowModel]

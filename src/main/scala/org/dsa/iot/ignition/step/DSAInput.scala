@@ -1,25 +1,22 @@
 package org.dsa.iot.ignition.step
 
-import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import scala.concurrent.duration.{ Duration, MILLISECONDS }
+import scala.concurrent.{ Await, Future }
 import scala.xml.{ Elem, Node }
+
 import org.apache.spark.sql.{ DataFrame, Row }
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.{ DataType, MetadataBuilder, StructField, StructType }
+import org.dsa.iot.DSAHelper
+import org.dsa.iot.ignition.Main.{ ec, requester }
+import org.dsa.iot.ignition.Settings
 import org.json4s.JValue
 import org.json4s.JsonDSL.{ pair2Assoc, seq2jvalue, string2jvalue }
 import org.json4s.jvalue2monadic
+
+import com.ignition.frame.{ FrameProducer, SparkRuntime }
 import com.ignition.types.TypeUtils.{ nameForType, typeForName }
-import com.ignition.util.ConfigUtils.{ RichConfig, getConfig }
 import com.ignition.util.JsonUtils.RichJValue
 import com.ignition.util.XmlUtils.RichNodeSeq
-import com.typesafe.config.ConfigException
-import com.ignition.frame.FrameProducer
-import com.ignition.frame.SparkRuntime
-import org.dsa.iot.DSAHelper
-import org.dsa.iot.ignition.Main._
 
 /**
  * Reads values from DSA nodes.
@@ -48,7 +45,7 @@ case class DSAInput(paths: Iterable[(String, DataType)]) extends FrameProducer {
 
   protected def compute(implicit runtime: SparkRuntime): DataFrame = {
     val futures = paths.map(_._1).toSet map DSAHelper.getNodeValue
-    val valueMap = Await.result(Future.sequence(futures), DSAInput.maxTimeout) map { v =>
+    val valueMap = Await.result(Future.sequence(futures), Settings.maxTimeout) map { v =>
       pathToFieldName(v._1) -> v._3
     } toMap
 
@@ -77,11 +74,6 @@ case class DSAInput(paths: Iterable[(String, DataType)]) extends FrameProducer {
  */
 object DSAInput {
   val tag = "dsa-input"
-
-  val maxTimeout = {
-    val millis = getConfig("dsa").getTimeInterval("max-timeout").getMillis
-    Duration.apply(millis, MILLISECONDS)
-  }
 
   def apply(paths: (String, String)*): DSAInput = new DSAInput(paths map { p =>
     p._1 -> typeForName(p._2)

@@ -20,11 +20,11 @@ enablePlugins(JavaAppPackaging)
 
 // dependencies
 val sparkLibs = Seq(
-  "org.apache.spark"         %% "spark-core"                 % SPARK_VERSION    % "provided",
-  "org.apache.spark"         %% "spark-streaming"            % SPARK_VERSION    % "provided",
-  "org.apache.spark"         %% "spark-streaming-kafka"      % SPARK_VERSION    % "provided",
-  "org.apache.spark"         %% "spark-sql"                  % SPARK_VERSION    % "provided",
-  "org.apache.spark"         %% "spark-mllib"                % SPARK_VERSION    % "provided"
+  "org.apache.spark"         %% "spark-core"                 % SPARK_VERSION,
+  "org.apache.spark"         %% "spark-streaming"            % SPARK_VERSION,
+  "org.apache.spark"         %% "spark-streaming-kafka"      % SPARK_VERSION,
+  "org.apache.spark"         %% "spark-sql"                  % SPARK_VERSION,
+  "org.apache.spark"         %% "spark-mllib"                % SPARK_VERSION
 )
 
 libraryDependencies ++= Seq(

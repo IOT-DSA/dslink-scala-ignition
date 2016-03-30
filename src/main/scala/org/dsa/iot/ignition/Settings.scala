@@ -1,6 +1,8 @@
 package org.dsa.iot.ignition
 
 import com.typesafe.config.ConfigFactory
+import com.ignition.util.ConfigUtils.RichConfig
+import scala.concurrent.duration.{ Duration, MILLISECONDS }
 
 object Settings {
   private val rootConfig = ConfigFactory.load.getConfig("dslink-ignition")
@@ -15,4 +17,9 @@ object Settings {
   val dfCreatePath = dfPath + "/" + dfCreateCmd
 
   val dfDesignerKey = df.getString("designer-key")
+  
+  val maxTimeout = {
+    val millis = rootConfig.getTimeInterval("max-timeout").getMillis
+    Duration.apply(millis, MILLISECONDS)
+  }
 }
