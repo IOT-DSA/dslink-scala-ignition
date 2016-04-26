@@ -3,6 +3,7 @@ val APP_VERSION = "0.1.0-SNAPSHOT"
 val SCALA_VERSION = "2.10.5"
 val SPARK_VERSION = "1.5.1"
 val DSA_SPARK_VERSION = "0.3.0"
+val IGNITION_VERSION = "0.4.0-SNAPSHOT"
 
 // settings
 name := "dslink-scala-ignition"
@@ -24,12 +25,13 @@ val sparkLibs = Seq(
   "org.apache.spark"         %% "spark-streaming"            % SPARK_VERSION,
   "org.apache.spark"         %% "spark-streaming-kafka"      % SPARK_VERSION,
   "org.apache.spark"         %% "spark-sql"                  % SPARK_VERSION,
-  "org.apache.spark"         %% "spark-mllib"                % SPARK_VERSION
+  "org.apache.spark"         %% "spark-mllib"                % SPARK_VERSION,
+  "org.apache.spark"         %% "spark-hive"                 % SPARK_VERSION
 )
 
 libraryDependencies ++= Seq(
   "io.netty"            % "netty-all"               % "4.0.33.Final",
-  "com.uralian"        %% "ignition"                % "0.3.0"
+  "com.uralian"        %% "ignition"                % IGNITION_VERSION
   		exclude("io.netty", "*"),
   "org.iot-dsa"        %% "sdk-dslink-scala-spark"  % DSA_SPARK_VERSION
   		exclude("com.fasterxml.jackson.core", "*"),   		
