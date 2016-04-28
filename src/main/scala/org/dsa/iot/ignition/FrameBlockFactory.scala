@@ -64,6 +64,13 @@ object FrameBlockFactory extends BlockFactory[FrameStep, DataFrame, SparkRuntime
       frame.BasicStats(dataFields.toList, groupFields)
     }
   }
+  
+  /**
+   * Cache.
+   */
+  object Cache extends FrameStepAdapter("Cache", UTIL, One, One) {
+    def makeStep(json: JsonObject) = frame.Cache()
+  }
 
   /**
    * Cassandra Input.
@@ -323,6 +330,18 @@ object FrameBlockFactory extends BlockFactory[FrameStep, DataFrame, SparkRuntime
       }
       val groupFields = json getAsString "groupBy" map splitAndTrim(",") getOrElse Nil
       frame.Reduce(reducers, groupFields)
+    }
+  }
+  
+  /**
+   * Repartition.
+   */
+  object Repartition extends FrameStepAdapter("Repartition", UTIL, One, One,
+      "size" -> NUMBER, "shuffle" -> BOOLEAN) {
+    def makeStep(json: JsonObject) = {
+      val size = json asInt "size"
+      val shuffle = json getAsBoolean "shuffle" getOrElse false
+      frame.Repartition(size, shuffle)
     }
   }
 
