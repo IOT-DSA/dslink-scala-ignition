@@ -8,7 +8,7 @@ import org.dsa.iot.dslink.node.actions.table.Row
 import org.dsa.iot.dslink.node.value.Value
 import org.dsa.iot.dslink.util.json.{ JsonArray, JsonObject }
 import org.dsa.iot.jsonArrayToList
-import org.dsa.iot.rx.{ Logging, NUMBER, RichJsonObject, TABLE, TEXT, aio }
+import org.dsa.iot.rx.{ Logging, NUMBER, RichJsonObject, TABLE, TEXT, TEXTAREA, aio }
 
 trait BlockAdapter[S <: DSARxBlock] extends Logging {
 
@@ -74,8 +74,11 @@ object BlockFactory {
     DSAInputAdapter,
     IntervalAdapter,
     TimerAdapter,
+    ScriptAdapter,
+    FilterAdapter,
     SelectFirstAdapter,
     CombineLatestAdapter,
+    ZipAdapter,
     WindowBySizeAdapter,
     WindowByTimeAdapter)
 
@@ -126,6 +129,26 @@ object BlockFactory {
     }
   }
 
+  object ScriptAdapter extends AbstractBlockAdapter[Script]("Script", TRANSFORM, "code" -> TEXTAREA,
+    "input" -> TABLE, "output" -> TABLE) {
+    def createBlock(json: JsonObject) = Script()
+    def setupBlock(block: Script, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      init(block.code, json, "code", blocks)
+      init(block.input, json, "input", blocks)
+    }
+  }
+  
+  /* filter */
+
+  object FilterAdapter extends AbstractBlockAdapter[Filter]("Filter", FILTER, "predicate" -> TEXTAREA,
+    "input" -> TABLE, "output" -> TABLE) {
+    def createBlock(json: JsonObject) = Filter()
+    def setupBlock(block: Filter, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      init(block.predicate, json, "predicate", blocks)
+      init(block.input, json, "input", blocks)
+    }
+  }
+
   /* combine */
 
   object SelectFirstAdapter extends AbstractBlockAdapter[AMB]("SelectFirst", COMBINE, "input 0" -> TABLE, "output" -> TABLE) {
@@ -138,6 +161,13 @@ object BlockFactory {
   object CombineLatestAdapter extends AbstractBlockAdapter[CombineLatest]("CombineLatest", COMBINE, "input 0" -> TABLE, "output" -> TABLE) {
     def createBlock(json: JsonObject) = CombineLatest()
     def setupBlock(block: CombineLatest, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      connect(block.inputs, json, "@array", blocks)
+    }
+  }
+
+  object ZipAdapter extends AbstractBlockAdapter[Zip]("Zip", COMBINE, "input 0" -> TABLE, "output" -> TABLE) {
+    def createBlock(json: JsonObject) = Zip()
+    def setupBlock(block: Zip, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
       connect(block.inputs, json, "@array", blocks)
     }
   }

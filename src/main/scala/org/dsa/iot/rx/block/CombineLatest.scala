@@ -12,7 +12,5 @@ case class CombineLatest() extends DSARxBlock {
 
   protected def combineInputs = inputs.ports map (_.in)
 
-  protected def evaluator(attrs: Seq[Value]) = (inputs: Seq[ValueStream]) => Observable.combineLatest(inputs) {
-    _.map(valueToAny).toList
-  }
+  protected def evaluator(attrs: Seq[Value]) = Observable.combineLatest(_)(_.map(valueToAny).toList)
 }
