@@ -55,6 +55,9 @@ abstract class AbstractBlockAdapter[S <: DSARxBlock](
     } recover {
       case NonFatal(e) => warn(s"Error initializing port list $portList", e)
     }
+    
+  def set(portList: S#PortList[Value], json: JsonObject, name: String) = 
+    Try(json asList name) map (_ map (anyToValue)) map portList.set
 
   private def getBlockName(path: String) = path.drop("@parent.".length).dropRight(".output".length)
 }
@@ -74,6 +77,7 @@ object BlockFactory {
     DSAInputAdapter,
     IntervalAdapter,
     TimerAdapter,
+    CsvFileInputAdapter,
     ScriptAdapter,
     FilterAdapter,
     SelectFirstAdapter,
@@ -97,6 +101,16 @@ object BlockFactory {
     def setupBlock(block: Interval, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
       init(block.initial, json, "initial", blocks)
       init(block.period, json, "period", blocks)
+    }
+  }
+  
+  object CsvFileInputAdapter extends AbstractBlockAdapter[CsvFileInput]("CsvFileInput", INPUT,
+      "path" -> TEXT, "separator" -> TEXT, "output" -> TABLE) {
+    def createBlock(json: JsonObject) = CsvFileInput()
+    def setupBlock(block: CsvFileInput, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      init(block.path, json, "path", blocks)
+      init(block.separator, json, "separator", blocks)
+      set(block.columns, json, "@array")
     }
   }
 

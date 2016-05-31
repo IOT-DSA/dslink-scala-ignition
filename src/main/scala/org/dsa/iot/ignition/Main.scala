@@ -150,7 +150,9 @@ object Main extends App {
             DSAHelper.set(path, dataFrameToTableData(data))
         }
       } catch {
-        case NonFatal(e) => log.error(s"Error evaluating step $name in frame flow [${node.getName}]: " + e.getMessage)
+        case NonFatal(e) => 
+          log.error(s"Error evaluating step $name in frame flow [${node.getName}]: " + e.getMessage)
+          e.printStackTrace
       }
     }
 

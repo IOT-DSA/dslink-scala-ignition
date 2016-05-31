@@ -12,12 +12,14 @@ version := APP_VERSION
 scalaVersion := SCALA_VERSION
 
 // building
+resolvers += "sparkts.repo" at "https://repository.cloudera.com/artifactory/libs-release-local/"
 scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation", "-Xlint", 
 	"-Ywarn-dead-code", "-language:_", "-target:jvm-1.7", "-encoding", "UTF-8")
 run in Compile <<= Defaults.runTask(fullClasspath in Compile, mainClass in (Compile, run), runner in (Compile, run))
 
 // packaging
 enablePlugins(JavaAppPackaging)
+mappings in Universal += file("dslink.json") -> "dslink.json"
 
 // dependencies
 val sparkLibs = Seq(
@@ -34,7 +36,8 @@ libraryDependencies ++= Seq(
   "com.uralian"        %% "ignition"                % IGNITION_VERSION
   		exclude("io.netty", "*"),
   "org.iot-dsa"        %% "sdk-dslink-scala-spark"  % DSA_SPARK_VERSION
-  		exclude("com.fasterxml.jackson.core", "*"),   		
+  		exclude("com.fasterxml.jackson.core", "*"),
+  "com.cloudera.sparkts" % "sparkts" % "0.3.0",
   "org.scalatest"      %% "scalatest"               % "2.2.1"         % "test",
   "org.scalacheck"     %% "scalacheck"              % "1.12.1"        % "test",
   "org.mockito"         % "mockito-core"            % "1.10.19"       % "test"

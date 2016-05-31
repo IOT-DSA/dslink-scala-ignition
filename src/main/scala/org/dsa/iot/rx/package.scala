@@ -2,11 +2,17 @@ package org.dsa.iot
 
 import org.dsa.iot.dslink.util.json.{ JsonArray, JsonObject }
 import org.dsa.iot.dslink.node.value._
-
 import scala.collection.JavaConverters._
+import org.apache.spark.sql.DataFrame
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.Row
+import scala.util.Random
 
 package object rx {
-  
+
+  type Binary = Array[Byte]
+
   /**
    * An extension to JsonObject providing usefuls Scala features.
    */
@@ -60,9 +66,9 @@ package object rx {
       case List(e1, e2, e3, e4) => (aio[T1](e1), aio[T2](e2), aio[T3](e3), aio[T4](e4))
     }
   }
-  
+
   /* editor types */
-  
+
   val TEXT = "string"
   val TEXTAREA = "textarea"
   val NUMBER = "number"
@@ -71,15 +77,41 @@ package object rx {
   val LIST = "list"
   def enum(values: String*): String = values.mkString("enum[", ",", "]")
   def enum(e: Enumeration): String = enum(e.values.map(_.toString).toSeq: _*)
- 
+
   /* misc */
 
   /**
    * Returns Some(str) if the argument is a non-empty string, None otherwise.
    */
-  def noneIfEmpty(str: String) = Option(str) filter (!_.trim.isEmpty)  
+  def noneIfEmpty(str: String) = Option(str) filter (!_.trim.isEmpty)
   /**
    * A shorter notation for asInstanceOf method.
    */
   private[rx] def aio[T](obj: Any) = obj.asInstanceOf[T]
+
+  /**
+   * Converts a Spark DataFrame into a tabledata Map.
+   */
+  def dataFrameToTableData(df: DataFrame): Map[String, Any] = rddToTableData(df.rdd, Some(df.schema))
+
+  /**
+   * Converts an RDD[Row] into a tabledata Map.
+   */
+  def rddToTableData(rdd: RDD[Row], schema: Option[StructType] = None): Map[String, Any] =
+    if (rdd.isEmpty && schema.isEmpty)
+      Map("@id" -> Random.nextInt(1000), "cols" -> Nil, "rows" -> Nil)
+    else {
+      val columns = schema.getOrElse(rdd.first.schema).map(f => Map("name" -> f.name)).toList
+      val rows = rdd.collect.map(_.toSeq.toList map toSafeDSAValue).toList
+      Map("@id" -> Random.nextInt(1000), "@type" -> "tabledata", "cols" -> columns, "rows" -> rows)
+    }
+
+  /**
+   * Converts a value to a DSA-safe value.
+   */
+  private def toSafeDSAValue(value: Any) = value match {
+    case x: Binary         => x.mkString("[", ",", "]")
+    case x: java.util.Date => x.toString
+    case x @ _             => x
+  }
 }

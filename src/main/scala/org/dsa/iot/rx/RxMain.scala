@@ -9,6 +9,8 @@ import org.dsa.iot.dslink.node.value.ValueType.STRING
 import org.dsa.iot.ignition.Settings
 import org.slf4j.LoggerFactory
 
+import com.ignition._
+
 object NodeTypes {
   val NODE_TYPE = "nodeType"
 
@@ -28,6 +30,8 @@ object RxMain extends App {
 
   implicit def requester = connection.requester
   implicit def responder = connection.responder
+  
+  implicit lazy val sparkRuntime = new frame.DefaultSparkRuntime(SparkHelper.sqlContext, true)
 
   val root = connection.responderLink.getNodeManager.getSuperRoot
   initRoot(root)

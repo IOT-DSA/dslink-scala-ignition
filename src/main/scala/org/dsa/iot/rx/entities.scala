@@ -144,19 +144,29 @@ abstract class AbstractRxBlock[A, T, R] extends RxBlock[R] with Logging {
    */
   case class PortList[X](name: String) extends Logging {
     var ports: List[Port[X]] = Nil
+    
+    def set(values: Iterable[X]) = synchronized {
+      ports = List.fill(values.size)(Port[X])
+      ports zip values foreach {
+        case (port, value) => port.set(value)
+      }
+      info(s"$name set to $values")
+      reset
+    }
 
     def bind(blocks: Iterable[RxBlock[X]]) = synchronized {
-      unbind
       ports = List.fill(blocks.size)(Port[X])
       ports zip blocks foreach {
         case (port, src) => port.bind(src)
       }
       info(s"$name bound to $blocks")
+      reset
     }
 
     def unbind() = synchronized {
       ports foreach (_.unbind)
       info(s"$name unbound")
+      reset
     }
   }
   
