@@ -24,3 +24,6 @@ project/plugins/project/
 .project
 .settings/
 /bin/
+
+# 3rd parties
+metastore_db/

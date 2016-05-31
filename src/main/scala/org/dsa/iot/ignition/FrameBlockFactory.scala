@@ -4,7 +4,6 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types.{ StructField, StructType }
 import org.apache.spark.mllib.regression.GeneralizedLinearModel
 import org.dsa.iot.dslink.util.json.JsonObject
-
 import com.ignition.frame
 import com.ignition.frame.{ FrameStep, FrameSubFlow }
 import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
@@ -16,6 +15,7 @@ import com.ignition.frame.mllib.CorrelationMethod.CorrelationMethod
 import com.ignition.frame.mllib.RegressionMethod.RegressionMethod
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
+import org.apache.spark.sql.SaveMode
 
 /**
  * Block factory for Frame flows.
@@ -63,6 +63,13 @@ object FrameBlockFactory extends BlockFactory[FrameStep, DataFrame, SparkRuntime
       val groupFields = json getAsString "groupBy" map splitAndTrim(",") getOrElse Nil
       frame.BasicStats(dataFields.toList, groupFields)
     }
+  }
+  
+  /**
+   * Cache.
+   */
+  object Cache extends FrameStepAdapter("Cache", UTIL, One, One) {
+    def makeStep(json: JsonObject) = frame.Cache()
   }
 
   /**
@@ -166,6 +173,44 @@ object FrameBlockFactory extends BlockFactory[FrameStep, DataFrame, SparkRuntime
   }
 
   /**
+   * JDBC Input.
+   */
+  object JdbcInputAdapter extends FrameStepAdapter("JdbcInput", INPUT, Nil, One,
+    "url" -> TEXT, "username" -> TEXT, "password" -> TEXT, "sql" -> TEXTAREA,
+    "propName 0" -> TEXT, "propValue 0" -> TEXT) {
+    def makeStep(json: JsonObject) = {
+      val url = json asString "url"
+      val username = json getAsString "username"
+      val password = json getAsString "password"
+      val sql = json asString "sql"
+      val props = json.asTupledList2[String, String]("@array") map {
+        case (name, value) => name -> value
+      }
+      frame.JdbcInput(url, sql, username, password, props.toMap)
+    }
+  }
+
+  /**
+   * JDBC Output.
+   */
+  object JdbcOutputAdapter extends FrameStepAdapter("JdbcOutput", OUTPUT, One, One,
+    "url" -> TEXT, "username" -> TEXT, "password" -> TEXT, "table" -> TEXT,
+    "mode" -> enum(SaveMode.values.map(_.name): _*),
+    "propName 0" -> TEXT, "propValue 0" -> TEXT) {
+    def makeStep(json: JsonObject) = {
+      val url = json asString "url"
+      val username = json getAsString "username"
+      val password = json getAsString "password"
+      val table = json asString "table"
+      val mode = SaveMode.valueOf(json asString "mode")
+      val props = json.asTupledList2[String, String]("@array") map {
+        case (name, value) => name -> value
+      }
+      frame.JdbcOutput(url, table, mode, username, password, props.toMap)
+    }
+  }
+
+  /**
    * Join.
    */
   object JoinAdapter extends FrameStepAdapter("Join", FLOW, Two, One,
@@ -262,6 +307,19 @@ object FrameBlockFactory extends BlockFactory[FrameStep, DataFrame, SparkRuntime
   }
 
   /**
+   * Range Input.
+   */
+  object RangeInputAdapter extends FrameStepAdapter("RangeInput", INPUT, One, One,
+    "start" -> NUMBER, "end" -> NUMBER, "step" -> NUMBER) {
+    def makeStep(json: JsonObject) = {
+      val start = json asLong "start"
+      val end = json asLong "end"
+      val inc = json asLong "step"
+      frame.RangeInput(start, end, inc)
+    }
+  }
+
+  /**
    * Reduce.
    */
   object ReduceAdapter extends FrameStepAdapter("Reduce", TRANSFORM, One, One,
@@ -272,6 +330,18 @@ object FrameBlockFactory extends BlockFactory[FrameStep, DataFrame, SparkRuntime
       }
       val groupFields = json getAsString "groupBy" map splitAndTrim(",") getOrElse Nil
       frame.Reduce(reducers, groupFields)
+    }
+  }
+  
+  /**
+   * Repartition.
+   */
+  object Repartition extends FrameStepAdapter("Repartition", UTIL, One, One,
+      "size" -> NUMBER, "shuffle" -> BOOLEAN) {
+    def makeStep(json: JsonObject) = {
+      val size = json asInt "size"
+      val shuffle = json getAsBoolean "shuffle" getOrElse false
+      frame.Repartition(size, shuffle)
     }
   }
 
