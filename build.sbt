@@ -13,6 +13,7 @@ scalaVersion := SCALA_VERSION
 
 // building
 resolvers += "sparkts.repo" at "https://repository.cloudera.com/artifactory/libs-release-local/"
+resolvers += Resolver.sonatypeRepo("snapshots")
 scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation", "-Xlint", 
 	"-Ywarn-dead-code", "-language:_", "-target:jvm-1.7", "-encoding", "UTF-8")
 run in Compile <<= Defaults.runTask(fullClasspath in Compile, mainClass in (Compile, run), runner in (Compile, run))
