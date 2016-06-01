@@ -17,6 +17,7 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation", "-Xlint", 
 	"-Ywarn-dead-code", "-language:_", "-target:jvm-1.7", "-encoding", "UTF-8")
 run in Compile <<= Defaults.runTask(fullClasspath in Compile, mainClass in (Compile, run), runner in (Compile, run))
+mainClass in Compile := Some("org.dsa.iot.ignition.Main")
 
 // packaging
 enablePlugins(JavaAppPackaging)
