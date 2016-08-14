@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition.step
+package org.dsa.iot.spark.step
 
 import scala.xml.{ Elem, Node }
 import org.apache.spark.sql.DataFrame
@@ -7,7 +7,7 @@ import org.json4s.JsonDSL.{ pair2Assoc, seq2jvalue, string2jvalue }
 import org.json4s.jvalue2monadic
 import com.ignition.util.JsonUtils.RichJValue
 import com.ignition.util.XmlUtils.RichNodeSeq
-import org.dsa.iot.ignition.Main._
+import org.dsa.iot.spark.Main._
 import com.ignition.frame._
 import org.dsa.iot.DSAHelper
 

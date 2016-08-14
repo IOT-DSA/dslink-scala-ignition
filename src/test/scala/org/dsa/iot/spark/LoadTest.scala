@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition
+package org.dsa.iot.spark
 
 import scala.util.control.NonFatal
 import org.apache.spark._

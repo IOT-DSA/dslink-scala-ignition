@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition
+package org.dsa.iot.spark
 
 import scala.collection.JavaConverters.mapAsScalaMapConverter
 import scala.reflect.runtime.universe

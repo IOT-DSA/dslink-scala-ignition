@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition
+package org.dsa.iot.spark
 
 import org.dsa.iot.dslink.node.actions.table.Row
 import org.dsa.iot.dslink.node.value.Value

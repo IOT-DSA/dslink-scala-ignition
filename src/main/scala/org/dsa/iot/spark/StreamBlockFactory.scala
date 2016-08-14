@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition
+package org.dsa.iot.spark
 
 import org.apache.spark.streaming.Milliseconds
 import org.dsa.iot.dslink.util.json.JsonObject

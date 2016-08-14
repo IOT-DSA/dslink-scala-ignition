@@ -6,7 +6,7 @@ import org.dsa.iot.{ ActionHandler, DSAConnector, DSAHelper, RichActionResult, R
 import org.dsa.iot.{ toList, valueToString }
 import org.dsa.iot.dslink.node.Node
 import org.dsa.iot.dslink.node.value.ValueType.STRING
-import org.dsa.iot.ignition.Settings
+import org.dsa.iot.spark.Settings
 import org.slf4j.LoggerFactory
 
 import com.ignition._
@@ -18,7 +18,7 @@ object NodeTypes {
 }
 
 object RxMain extends App {
-  import org.dsa.iot.ignition.Settings._
+  import org.dsa.iot.spark.Settings._
   import NodeTypes._
 
   private val log = LoggerFactory.getLogger(getClass)

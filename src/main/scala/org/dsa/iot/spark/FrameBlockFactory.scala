@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition
+package org.dsa.iot.spark
 
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types.{ StructField, StructType }

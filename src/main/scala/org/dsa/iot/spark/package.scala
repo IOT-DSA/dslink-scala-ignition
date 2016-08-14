@@ -1,24 +1,16 @@
 package org.dsa.iot
 
 import scala.collection.JavaConverters.iterableAsScalaIterableConverter
-import scala.concurrent.duration.DurationLong
-import scala.reflect.runtime.universe
-import scala.util.Try
+import scala.util.{ Random, Try }
 
-import org.dsa.iot.dslink.node.Node
-import org.dsa.iot.dslink.node.value.{ Value, ValueType }
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{ DataFrame, Row }
+import org.apache.spark.sql.types.{ BooleanType, DoubleType, IntegerType, StringType, StructType }
 import org.dsa.iot.dslink.util.json.{ JsonArray, JsonObject }
-import org.dsa.iot.ignition.Settings
 
-import com.ignition.rx.AbstractRxBlock
+import com.ignition.types.{ Binary, TypeUtils }
 
-/**
- * Common types and helper functions.
- */
-package object ignition {
-  import Settings._
-
-  type DSARxBlock = AbstractRxBlock[_]
+package object spark {
 
   /**
    * An extension to JsonObject providing usefuls Scala features.
@@ -30,8 +22,8 @@ package object ignition {
     def asInt = asNumber _ andThen (_.intValue)
     def asLong = asNumber _ andThen (_.longValue)
     def asDouble = asNumber _ andThen (_.doubleValue)
-    def asBoolean = asString _ andThen (_.toBoolean)
-    def asDuration = asLong andThen (_ milliseconds)
+    def asBoolean(key: String) = asString(key).toBoolean
+
     def asEnum[V <: Enumeration#Value](e: Enumeration)(key: String) = aio[V](e.withName(asString(key)))
 
     def getAs[T](key: String) = Option(self.get[T](key))
@@ -42,7 +34,6 @@ package object ignition {
     def getAsLong = getAs[Long] _
     def getAsDouble = getAs[Double] _
     def getAsBoolean = getAsString andThen (_ map (_.toBoolean))
-    def getAsDuration = getAsLong andThen (_ map (_ milliseconds))
 
     def asList(key: String) = getAs[JsonArray](key) map (_.asScala.map(x => x: Any).toList) getOrElse Nil
 
@@ -75,38 +66,6 @@ package object ignition {
     }
   }
 
-  /**
-   * An extension to Value providing some handy accessors.
-   */
-  implicit class RichValue(val self: Value) extends AnyVal {
-    def getNumber = self.getType match {
-      case ValueType.NUMBER => self.getNumber
-      case ValueType.BOOL   => if (self.getBool) Int.box(1) else Int.box(0)
-      case ValueType.STRING => Try(Int.box(self.getString.toInt)) getOrElse (Double.box(self.getString.toDouble))
-    }
-    def getInt = getNumber.intValue
-    def getLong = getNumber.longValue
-    def getDouble = getNumber.doubleValue
-    def getBoolean = self.getType match {
-      case ValueType.BOOL   => self.getBool: Boolean
-      case ValueType.NUMBER => self.getNumber.intValue != 0
-      case ValueType.STRING => self.getString.toBoolean
-    }
-    def getString = self.getType match {
-      case ValueType.STRING => self.getString
-      case ValueType.NUMBER => self.getNumber.toString
-      case ValueType.BOOL   => self.getBool.toString
-    }
-
-    def get(index: Int) = self.getArray.get[Any](index)
-    def apply(index: Int) = get(index)
-
-    def get(key: String) = self.getMap.get[Any](key)
-    def apply(key: String) = get(key)
-
-    override def toString = self.toString
-  }
-
   /* editor types */
 
   val TEXT = "string"
@@ -114,54 +73,60 @@ package object ignition {
   val NUMBER = "number"
   val BOOLEAN = "boolean"
   val TABLE = "tabledata"
-  val LIST = "list"
   def enum(values: String*): String = values.mkString("enum[", ",", "]")
   def enum(e: Enumeration): String = enum(e.values.map(_.toString).toSeq: _*)
 
-  /* type helpers */
-
-  implicit def tuple2Param(pair: (String, String)) = ParamInfo(pair._1, pair._2, None)
-
-  /* node helpers */
-
-  private val NODE_TYPE = "nodeType"
-  private val FLOW = "flow"
-
-  /**
-   * Creates a new flow node.
-   */
-  def createFlowNode(parent: Node, name: String) =
-    parent createChild name config (NODE_TYPE -> FLOW, dfDesignerKey -> s"$dfPath/$name") build ()
-
-  /**
-   * Returns the type of the node.
-   */
-  def getNodeType(node: Node) = node.configurations.get(NODE_TYPE) map (_.asInstanceOf[String])
-
-  /**
-   * Checks if the node type is flow.
-   */
-  def isFlowNode(node: Node) = getNodeType(node) == Some(FLOW)
+  val dataTypes = List(BooleanType, StringType, IntegerType, DoubleType)
+  val DATA_TYPE = enum(dataTypes map TypeUtils.nameForType: _*)
 
   /* misc */
 
   /**
-   * Lists objects defined in the scope of the specified type.
+   * Parses the string value trying to apply the type name if supplied. If the type name is missing,
+   * it tries to determine the type based on the value.
    */
-  def listMemberModules[TT: universe.TypeTag] = {
-    val m = universe.runtimeMirror(getClass.getClassLoader)
-    universe.typeOf[TT].decls filter (_.isModule) map { obj =>
-      m.reflectModule(obj.asModule).instance
-    }
-  }
-
-  /**
-   * A shorter notation for asInstanceOf method.
-   */
-  def aio[T](obj: Any) = obj.asInstanceOf[T]
+  def parseValue(str: String, typeName: Option[String]) = typeName map { t =>
+    TypeUtils.valueOf(str, TypeUtils.typeForName(t))
+  } getOrElse (Try(str.toBoolean) orElse Try(str.toInt) orElse Try(str.toDouble) getOrElse str)
 
   /**
    * Returns Some(str) if the argument is a non-empty string, None otherwise.
    */
   def noneIfEmpty(str: String) = Option(str) filter (!_.trim.isEmpty)
+
+  /**
+   * Splits the argument into chunks with the specified delimiter, trims each part and returns only non-empty parts.
+   */
+  def splitAndTrim(delim: String = ",")(str: String) = str.split(delim).map(_.trim).filterNot(_.isEmpty).toList
+
+  /**
+   * Converts a Spark DataFrame into a tabledata Map.
+   */
+  def dataFrameToTableData(df: DataFrame): Map[String, Any] = rddToTableData(df.rdd, Some(df.schema))
+
+  /**
+   * Converts an RDD[Row] into a tabledata Map.
+   */
+  def rddToTableData(rdd: RDD[Row], schema: Option[StructType] = None): Map[String, Any] =
+    if (rdd.isEmpty && schema.isEmpty)
+      Map("@id" -> Random.nextInt(1000), "cols" -> Nil, "rows" -> Nil)
+    else {
+      val columns = schema.getOrElse(rdd.first.schema).map(f => Map("name" -> f.name)).toList
+      val rows = rdd.collect.map(_.toSeq.toList map sparkToSafeDSA).toList
+      Map("@id" -> Random.nextInt(1000), "@type" -> "tabledata", "cols" -> columns, "rows" -> rows)
+    }
+
+  /**
+   * Converts a value to a DSA-safe value.
+   */
+  private def sparkToSafeDSA(value: Any) = value match {
+    case x: Binary         => x.mkString("[", ",", "]")
+    case x: java.util.Date => x.toString
+    case x @ _             => x
+  }
+
+  /**
+   * A shorter notation for asInstanceOf method.
+   */
+  private[spark] def aio[T](obj: Any) = obj.asInstanceOf[T]
 }

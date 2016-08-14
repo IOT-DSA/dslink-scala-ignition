@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition
+package org.dsa.iot.spark
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.dsa.iot.{ ActionHandler, DSAHelper, RichActionResult, RichNodeBuilder, RichValueType, createAction }

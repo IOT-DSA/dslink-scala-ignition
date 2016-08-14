@@ -1,4 +1,4 @@
-package org.dsa.iot.ignition.step
+package org.dsa.iot.spark.step
 
 import scala.xml.{ Elem, Node }
 import com.ignition.stream._
@@ -8,7 +8,7 @@ import org.json4s.jvalue2monadic
 import com.ignition.util.JsonUtils.RichJValue
 import com.ignition.util.XmlUtils.RichNodeSeq
 import org.dsa.iot.DSAHelper
-import org.dsa.iot.ignition.Main._
+import org.dsa.iot.spark.Main._
 
 /**
  * Posts updates to DSA node tree.
