@@ -1,7 +1,7 @@
 package org.dsa.iot.ignition.spark
 
 import org.dsa.iot.dslink.util.json.JsonObject
-import org.dsa.iot.ignition.{ AbstractRxBlockAdapter, DSARxBlock, TEXT, TypeConverters, tuple2Param }
+import org.dsa.iot.ignition.{ AbstractRxBlockAdapter, DSABlockMap, TEXT, TypeConverters, tuple2Param }
 
 import com.ignition.SparkHelper
 import com.ignition.frame.DefaultSparkRuntime
@@ -29,7 +29,7 @@ object SparkBlockFactory extends TypeConverters {
   object CsvFileInput extends AbstractRxBlockAdapter[CsvFileInput]("CsvInput", INPUT,
     "path" -> TEXT, "separator" -> TEXT default ",", "name 0" -> TEXT, "type 0" -> DATA_TYPE) {
     def createBlock(json: JsonObject) = new CsvFileInput
-    def setupBlock(block: CsvFileInput, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+    def setupBlock(block: CsvFileInput, json: JsonObject, blocks: DSABlockMap) = {
       init(block.path, json, "path", blocks)
       set(block.separator, json, "separator")
       set(block.columns, json, "@array")(extStructFields(false))

@@ -49,7 +49,7 @@ trait RxBlockAdapter[S <: DSARxBlock] extends Logging {
 
   def makeRow: Row
   def createBlock(json: JsonObject): S
-  def setupBlock(block: S, json: JsonObject, blocks: Map[String, DSARxBlock]): Unit
+  def setupBlock(block: S, json: JsonObject, blocks: DSABlockMap): Unit
 }
 
 /**
@@ -73,13 +73,13 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
   }
 
   def init[X](port: AbstractRxBlock[_]#Port[X], json: JsonObject, name: String,
-              blocks: Map[String, DSARxBlock])(implicit extractor: (JsonObject, String) => X, converter: Any => X) =
+              blocks: DSABlockMap)(implicit extractor: (JsonObject, String) => X, converter: Any => X) =
     connect(port, json, name, blocks) orElse set(port, json, name) recover {
       case NonFatal(e) => warn(s"Error initializing port $port", e)
     }
 
   def connect[X](port: AbstractRxBlock[_]#Port[X], json: JsonObject, name: String,
-                 blocks: Map[String, DSARxBlock])(implicit cnv: Any => X) =
+                 blocks: DSABlockMap)(implicit cnv: Any => X) =
     Try(json asList name) filter (!_.isEmpty) map { list =>
       val name = getBlockName(list(0).toString)
       val source = blocks(name)
@@ -92,7 +92,7 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
     Try(extractor(json, name)) map port.set
 
   def connect[X](portList: AbstractRxBlock[_]#PortList[X], json: JsonObject, name: String,
-                 blocks: Map[String, DSARxBlock])(implicit cnv: Any => X) =
+                 blocks: DSABlockMap)(implicit cnv: Any => X) =
     Try(json asList name) map { list =>
       val inbounds = list map (i => org.dsa.iot.jsonArrayToList(aio[JsonArray](i)).head.toString)
       val sources = inbounds map (getBlockName(_)) map (blocks(_))

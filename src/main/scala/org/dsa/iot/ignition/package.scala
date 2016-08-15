@@ -19,6 +19,7 @@ package object ignition {
   import Settings._
 
   type DSARxBlock = AbstractRxBlock[_]
+  type DSABlockMap = Map[String, DSARxBlock]
 
   /**
    * An extension to JsonObject providing usefuls Scala features.
@@ -96,13 +97,12 @@ package object ignition {
       case ValueType.STRING => self.getString
       case ValueType.NUMBER => self.getNumber.toString
       case ValueType.BOOL   => self.getBool.toString
+      case _                => self.toString
     }
 
-    def get(index: Int) = self.getArray.get[Any](index)
-    def apply(index: Int) = get(index)
+    def getList = self.getArray.getList
 
-    def get(key: String) = self.getMap.get[Any](key)
-    def apply(key: String) = get(key)
+    def getMap = self.getMap.getMap
 
     override def toString = self.toString
   }
