@@ -5,8 +5,8 @@ import org.dsa.iot.ignition._
 import org.dsa.iot.ignition.Main.requester
 import org.dsa.iot.ignition.NUMBER
 import org.dsa.iot.ignition.ParamInfo.input
-
-import com.ignition.rx.core.{ CombineLatest, Interval, TakeByCount }
+import com.ignition.rx.core._
+import com.ignition.rx.numeric._
 
 /**
  * Core RX blocks.
@@ -40,6 +40,16 @@ object CoreBlockFactory extends TypeConverters {
     }
   }
 
+  object NumericRangeAdapter extends AbstractRxBlockAdapter[NumericRange]("NumericRange", INPUT,
+    "start" -> NUMBER default 0, "end" -> NUMBER default 10, "step" -> NUMBER default 1) {
+    def createBlock(json: JsonObject) = new NumericRange
+    def setupBlock(block: NumericRange, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      init(block.start, json, "start", blocks)
+      init(block.end, json, "end", blocks)
+      init(block.step, json, "step", blocks)
+    }
+  }
+
   /* transform */
 
   object TakeByCountAdapter extends AbstractRxBlockAdapter[TakeByCount[Any]]("TakeN", TRANSFORM,
@@ -63,6 +73,28 @@ object CoreBlockFactory extends TypeConverters {
     }
   }
 
+  object DebounceAdapter extends AbstractRxBlockAdapter[Debounce[Any]](
+    "Debounce", FILTER, "timeout" -> NUMBER default 500, input) {
+    def createBlock(json: JsonObject) = new Debounce[Any]
+    def setupBlock(block: Debounce[Any], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      init(block.timeout, json, "timeout", blocks)
+      connect(block.source, json, "input", blocks)
+    }
+  }
+
+  object DistinctAdapter extends AbstractRxBlockAdapter[Distinct[Any]](
+    "Distinct", FILTER, "global" -> BOOLEAN default true, input) {
+    def createBlock(json: JsonObject) = {
+      val block = new Distinct[Any]
+      block.selector <~ (identity[Any] _)
+      block
+    }
+    def setupBlock(block: Distinct[Any], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      init(block.global, json, "global", blocks)
+      connect(block.source, json, "input", blocks)
+    }
+  }
+
   /* combine */
 
   object CombineLatestAdapter extends AbstractRxBlockAdapter[CombineLatest[Any]](
@@ -73,5 +105,55 @@ object CoreBlockFactory extends TypeConverters {
     }
   }
 
+  object ConcatAdapter extends AbstractRxBlockAdapter[Concat[Any]](
+    "Concat", COMBINE, input(1), input(2)) {
+    def createBlock(json: JsonObject) = new Concat[Any]
+    def setupBlock(block: Concat[Any], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      connect(block.source1, json, "input1", blocks)
+      connect(block.source2, json, "input2", blocks)
+    }
+  }
+
+  object MergeAdapter extends AbstractRxBlockAdapter[Merge[Any]](
+    "Merge", COMBINE, input(1), input(2)) {
+    def createBlock(json: JsonObject) = new Merge[Any]
+    def setupBlock(block: Merge[Any], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      connect(block.source1, json, "input1", blocks)
+      connect(block.source2, json, "input2", blocks)
+    }
+  }
+
   /* aggregate */
+
+  object SumAdapter extends AbstractRxBlockAdapter[Sum[RichValue]](
+    "Sum", AGGREGATE, input) {
+    def createBlock(json: JsonObject) = new Sum[RichValue]
+    def setupBlock(block: Sum[RichValue], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      connect(block.source, json, "input", blocks)
+    }
+  }
+
+  object ProductAdapter extends AbstractRxBlockAdapter[Mul[RichValue]](
+    "Product", AGGREGATE, input) {
+    def createBlock(json: JsonObject) = new Mul[RichValue]
+    def setupBlock(block: Mul[RichValue], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      connect(block.source, json, "input", blocks)
+    }
+  }
+
+  object MinAdapter extends AbstractRxBlockAdapter[Min[RichValue]](
+    "Min", AGGREGATE, input) {
+    def createBlock(json: JsonObject) = new Min[RichValue]
+    def setupBlock(block: Min[RichValue], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      connect(block.source, json, "input", blocks)
+    }
+  }
+
+  object MaxAdapter extends AbstractRxBlockAdapter[Max[RichValue]](
+    "Max", AGGREGATE, input) {
+    def createBlock(json: JsonObject) = new Max[RichValue]
+    def setupBlock(block: Max[RichValue], json: JsonObject, blocks: Map[String, DSARxBlock]) = {
+      connect(block.source, json, "input", blocks)
+    }
+  }
 }

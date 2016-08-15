@@ -14,15 +14,16 @@ import com.ignition.rx.AbstractRxBlock
 /**
  * Provides information for a block's parameter.
  */
-case class ParamInfo(name: String, dataType: String, defValue: Option[String] = None) {
-  def default(value: String) = copy(name, dataType, Some(value))
-  def default(value: Number) = copy(name, dataType, Some(value.toString))
-  def default(value: Boolean) = copy(name, dataType, Some(value.toString))
-  def default(value: Enumeration#Value) = copy(name, dataType, Some(value.toString))
+case class ParamInfo(name: String, dataType: String, defValue: Option[Any] = None) {
+  def default(value: Any) = copy(name, dataType, Some(value))
 
   def toJson = {
     def inQuotes(s: String) = "\"" + s + "\""
-    def field(key: String, value: String) = inQuotes(key) + " : " + inQuotes(value)
+    def field(key: String, value: Any) = inQuotes(key) + " : " + (value match {
+      case x: Number  => x.toString
+      case x: Boolean => x.toString
+      case x @ _      => inQuotes(x.toString)
+    })
     val list = field("name", name) :: field("type", dataType) :: defValue.map(field("default", _)).toList
     new JsonObject(list.mkString("{", ", ", "}"))
   }
@@ -105,8 +106,7 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
     }
 
   def set[T, X](portList: AbstractRxBlock[T]#PortList[X], json: JsonObject, name: String)(implicit extractor: (JsonObject, String) => Seq[X]) = {
-    // portList.clear and portList.set should be doing that, will be fixed in the next version
-    portList.foreach((x: AbstractRxBlock[T]#Port[X]) => x.unset)
+    portList.clear
     Try(extractor(json, name)) map (x => portList.set(x: _*))
   }
 

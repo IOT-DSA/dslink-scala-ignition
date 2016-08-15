@@ -74,14 +74,8 @@ object BlockFactory {
   import Categories._
 
   val adapters: Seq[BlockAdapter[_ <: DSARxBlock]] = Seq(
-    DSAInputAdapter,
-    IntervalAdapter,
     TimerAdapter,
-    CsvFileInputAdapter,
-    ScriptAdapter,
-    FilterAdapter,
     SelectFirstAdapter,
-    CombineLatestAdapter,
     ZipAdapter,
     WindowBySizeAdapter,
     WindowByTimeAdapter)
@@ -89,30 +83,6 @@ object BlockFactory {
   val adapterMap: Map[String, BlockAdapter[_ <: DSARxBlock]] = adapters.map(a => a.typeName -> a).toMap
 
   /* inputs */
-
-  object DSAInputAdapter extends AbstractBlockAdapter[DSAInput]("DSAInput", INPUT, "path" -> TEXT, "output" -> TABLE) {
-    def createBlock(json: JsonObject) = DSAInput()
-    def setupBlock(block: DSAInput, json: JsonObject, blocks: Map[String, DSARxBlock]) = init(block.path, json, "path", blocks)
-  }
-
-  object IntervalAdapter extends AbstractBlockAdapter[Interval]("Interval", INPUT, "initial" -> NUMBER,
-    "period" -> NUMBER, "output" -> TABLE) {
-    def createBlock(json: JsonObject) = Interval()
-    def setupBlock(block: Interval, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
-      init(block.initial, json, "initial", blocks)
-      init(block.period, json, "period", blocks)
-    }
-  }
-  
-  object CsvFileInputAdapter extends AbstractBlockAdapter[CsvFileInput]("CsvFileInput", INPUT,
-      "path" -> TEXT, "separator" -> TEXT, "output" -> TABLE) {
-    def createBlock(json: JsonObject) = CsvFileInput()
-    def setupBlock(block: CsvFileInput, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
-      init(block.path, json, "path", blocks)
-      init(block.separator, json, "separator", blocks)
-      set(block.columns, json, "@array")
-    }
-  }
 
   object TimerAdapter extends AbstractBlockAdapter[Timer]("Timer", INPUT, "delay" -> NUMBER, "output" -> TABLE) {
     def createBlock(json: JsonObject) = Timer()
@@ -142,39 +112,14 @@ object BlockFactory {
       init(block.input, json, "input", blocks)
     }
   }
-
-  object ScriptAdapter extends AbstractBlockAdapter[Script]("Script", TRANSFORM, "code" -> TEXTAREA,
-    "input" -> TABLE, "output" -> TABLE) {
-    def createBlock(json: JsonObject) = Script()
-    def setupBlock(block: Script, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
-      init(block.code, json, "code", blocks)
-      init(block.input, json, "input", blocks)
-    }
-  }
   
   /* filter */
-
-  object FilterAdapter extends AbstractBlockAdapter[Filter]("Filter", FILTER, "predicate" -> TEXTAREA,
-    "input" -> TABLE, "output" -> TABLE) {
-    def createBlock(json: JsonObject) = Filter()
-    def setupBlock(block: Filter, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
-      init(block.predicate, json, "predicate", blocks)
-      init(block.input, json, "input", blocks)
-    }
-  }
 
   /* combine */
 
   object SelectFirstAdapter extends AbstractBlockAdapter[AMB]("SelectFirst", COMBINE, "input 0" -> TABLE, "output" -> TABLE) {
     def createBlock(json: JsonObject) = AMB()
     def setupBlock(block: AMB, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
-      connect(block.inputs, json, "@array", blocks)
-    }
-  }
-
-  object CombineLatestAdapter extends AbstractBlockAdapter[CombineLatest]("CombineLatest", COMBINE, "input 0" -> TABLE, "output" -> TABLE) {
-    def createBlock(json: JsonObject) = CombineLatest()
-    def setupBlock(block: CombineLatest, json: JsonObject, blocks: Map[String, DSARxBlock]) = {
       connect(block.inputs, json, "@array", blocks)
     }
   }
