@@ -1,5 +1,7 @@
 package org.dsa.iot.rx.examples
 
+import scala.concurrent.duration._
+
 import org.dsa.iot.rx.RichValue
 import org.dsa.iot.rx.core._
 
@@ -12,8 +14,13 @@ object ProducersTest extends TestHarness {
 
   testZero
   testValueHolder
-  
-  def testZero() = run("Zero"){
+
+  testInterval
+  testFromList
+  testSequence
+  testTimer
+
+  def testZero() = run("Zero") {
     val zero1 = Zero[Int]
     zero1.output subscribe testSub("ZERO-INT")
     zero1.reset
@@ -34,9 +41,9 @@ object ProducersTest extends TestHarness {
     zero3.reset
   }
 
-  def testValueHolder() = run("ValueHolder"){
+  def testValueHolder() = run("ValueHolder") {
     val vh = ValueHolder[Int]
-    vh.output subscribe testSub("VALUE_HOLDER")
+    vh.output subscribe testSub("VALUE-HOLDER")
     vh.value <~ 100
     200 ~> vh.value
     vh.reset
@@ -53,5 +60,64 @@ object ProducersTest extends TestHarness {
     val vh3 = ValueHolder(Observable.from(List(1, 2, 3)))
     vh.value <~ vh3
     vh3.reset
+  }
+
+  def testInterval() = run("Interval") {
+    val interval = Interval(100 milliseconds, 50 milliseconds)
+    interval.output subscribe testSub("INTERVAL")
+
+    interval.reset
+    delay(500)
+
+    interval.period.set(200 milliseconds)
+    interval.reset
+    delay(400)
+
+    val vh = ValueHolder(150 milliseconds)
+    vh ~> interval.period
+    vh.reset
+    delay(400)
+
+    interval.shutdown
+  }
+
+  def testFromList() = run("FromList") {
+    val seq = FromList[String]("abc", "xyz")
+    seq.output subscribe testSub("FROM-LIST")
+
+    seq.reset
+    delay(50)
+    seq.items.add <~ "zzz"
+    seq.items(1) <~ "123"
+    seq.reset
+    delay(50)
+    seq.items.removeLast
+    seq.reset
+    delay(50)
+  }
+
+  def testSequence() = run("Sequence") {
+    val seq = Sequence[Int]
+    seq.output subscribe testSub("SEQUENCE-INT")
+
+    seq.items <~ (5 to 20 by 4)
+    seq.reset
+    
+    val seq2 = Sequence("a", "b", "c")
+    seq2.output subscribe testSub("SEQUENCE-STRING")
+    seq2.reset
+  }
+
+  def testTimer() = run("Timer") {
+    val timer = Timer(100 milliseconds)
+    timer.output subscribe testSub("TIMER")
+
+    timer.reset
+    delay(200)
+
+    val vh = ValueHolder(200 milliseconds)
+    vh ~> timer.delay
+    vh.reset
+    delay(300)
   }
 }
