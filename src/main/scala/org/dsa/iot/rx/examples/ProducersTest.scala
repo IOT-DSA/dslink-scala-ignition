@@ -15,9 +15,10 @@ object ProducersTest extends TestHarness {
   testZero
   testValueHolder
 
-  testInterval
   testFromList
   testSequence
+  
+  testInterval
   testTimer
 
   def testZero() = run("Zero") {
