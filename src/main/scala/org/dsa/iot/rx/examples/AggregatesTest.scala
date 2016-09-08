@@ -11,10 +11,14 @@ import rx.lang.scala.Observable
  * Tests aggregator blocks.
  */
 object AggregatesTest extends TestHarness {
-  
+
   testFirst
   testLast
-  
+
+  testScan
+  testFold
+  testReduce
+
   def testFirst() = run("First") {
     val rng = Sequence.from(1 to 10)
 
@@ -23,11 +27,11 @@ object AggregatesTest extends TestHarness {
     rng ~> first
 
     rng.reset
-    
+
     val emp = Empty()
     first.default <~ Some(99)
     emp ~> first
-    
+
     emp.reset
   }
 
@@ -39,11 +43,44 @@ object AggregatesTest extends TestHarness {
     rng ~> last
 
     rng.reset
-    
+
     val emp = Empty()
     last.default <~ Some(99)
     emp ~> last
-    
+
     emp.reset
-  }  
+  }
+
+  def testScan() = run("Scan") {
+    val rng = Sequence.from(1 to 5)
+
+    val scan = Scan(0, (a: Int, b: Int) => a + b)
+    scan.output subscribe testSub("SCAN")
+
+    rng ~> scan
+    rng.reset
+  }
+
+  def testFold() = run("Fold") {
+    val rng = Sequence.from(1 to 5)
+
+    val fold = Fold("data", (s: String, n: Int) => s ++ ":" + n.toString)
+    fold.output subscribe testSub("FOLD")
+    rng ~> fold
+
+    rng.reset
+
+    rng.items <~ Seq(1, 2, 4, 8)
+    rng.reset
+  }
+
+  def testReduce() = run("Reduce") {
+    val rng = Sequence.from(1 to 5)
+
+    val red = Reduce((a: Int, b: Int) => a * b)
+    red.output subscribe testSub("REDUCE")
+    rng ~> red
+
+    rng.reset
+  }
 }
