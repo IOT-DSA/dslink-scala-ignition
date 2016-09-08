@@ -20,6 +20,7 @@ object ProducersTest extends TestHarness {
   
   testInterval
   testTimer
+  testRandomInterval
 
   def testZero() = run("Zero") {
     val zero1 = Zero[Int]
@@ -120,5 +121,21 @@ object ProducersTest extends TestHarness {
     vh ~> timer.delay
     vh.reset
     delay(300)
+  }
+  
+  def testRandomInterval() = run("RandomInterval") {
+    val i1 = RandomInterval(50 milliseconds, 200 milliseconds, false)
+    i1.output subscribe testSub("RANDOM-INTERVAL1")
+    
+    i1.reset
+    delay(600)
+    i1.shutdown
+    
+    val i2 = RandomInterval(50 milliseconds, 200 milliseconds, true)
+    i2.output subscribe testSub("RANDOM-INTERVAL2")
+    
+    i2.reset
+    delay(600)
+    i2.shutdown
   }
 }
