@@ -26,12 +26,12 @@ object Sequence {
   /**
    * Creates a new Sequence instance from the supplied values.
    */
-  def apply[A](values: A*): Sequence[A] = apply(values)
-
+  def apply[A](values: A*): Sequence[A] = from(values)
+  
   /**
    * Creates a new Sequence instance from the supplied collection.
    */
-  def apply[A](values: Iterable[A]): Sequence[A] = {
+  def from[A](values: Iterable[A]): Sequence[A] = {
     val block = new Sequence[A]
     block.items <~ values
     block
