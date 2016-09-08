@@ -4,6 +4,7 @@ import scala.concurrent.duration._
 
 import org.dsa.iot.rx._
 import org.dsa.iot.rx.core._
+import org.dsa.iot.rx.numeric._
 
 import rx.lang.scala.Observable
 
@@ -18,6 +19,8 @@ object AggregatesTest extends TestHarness {
   testScan
   testFold
   testReduce
+  
+  testMath
 
   def testFirst() = run("First") {
     val rng = Sequence.from(1 to 10)
@@ -81,6 +84,60 @@ object AggregatesTest extends TestHarness {
     red.output subscribe testSub("REDUCE")
     rng ~> red
 
+    rng.reset
+  }
+  
+  def testMath() = run("Math") {
+    val rng = Sequence.from(1 to 5)
+    
+    val sum1 = Sum[Int](true)
+    sum1.output subscribe testSub("SUM1")
+    rng ~> sum1
+    
+    val sum2 = Sum[Int](false)
+    sum2.output subscribe testSub("SUM2")
+    rng ~> sum2
+
+    val mul1 = Mul[Int](true)
+    mul1.output subscribe testSub("MUL1")
+    rng ~> mul1
+
+    val mul2 = Mul[Int](false)
+    mul2.output subscribe testSub("MUL2")
+    rng ~> mul2
+    
+    val min1 = Min[Int](true)
+    min1.output subscribe testSub("MIN1")
+    rng ~> min1
+
+    val min2 = Min[Int](false)
+    min2.output subscribe testSub("MIN2")
+    rng ~> min2
+
+    val max1 = Max[Int](true)
+    max1.output subscribe testSub("MAX1")
+    rng ~> max1
+
+    val max2 = Max[Int](false)
+    max2.output subscribe testSub("MAX2")
+    rng ~> max2
+    
+    val avg1 = Avg[Int](true)
+    avg1.output subscribe testSub("AVG1")
+    rng ~> avg1
+
+    val avg2 = Avg[Int](false)
+    avg2.output subscribe testSub("AVG2")
+    rng ~> avg2
+    
+    val sts1 = BasicStats[Int](true)
+    sts1.output subscribe testSub("STS1")
+    rng ~> sts1
+
+    val sts2 = BasicStats[Int](false)
+    sts2.output subscribe testSub("STS2")
+    rng ~> sts2
+    
     rng.reset
   }
 }
