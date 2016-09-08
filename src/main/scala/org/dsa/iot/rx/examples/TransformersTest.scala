@@ -25,6 +25,11 @@ object TransformersTest extends TestHarness {
   testDropByTime
   testDropByCount
   testDropWhile
+  
+  testDebounce
+  testDelay
+  testDistinct
+  testSample
 
   def testZipWithIndex() = run("ZipWithIndex") {
     val zi = ZipWithIndex[String]
@@ -129,9 +134,10 @@ object TransformersTest extends TestHarness {
     i1.period <~ (50 milliseconds)
     i1.reset
     delay(400)
+    i1.shutdown
   }
 
-  def testDropByCount() = {
+  def testDropByCount() = run("DropByCount") {
     val rng = Sequence.from(1 to 10)
 
     val drop = DropByCount[Int](4, false)
@@ -141,7 +147,7 @@ object TransformersTest extends TestHarness {
     rng.reset
   }
 
-  def testDropWhile() = {
+  def testDropWhile() = run("DropWhile") {
     val rng = Sequence.from(1 to 10)
 
     val drop = DropWhile[Int]
@@ -152,4 +158,58 @@ object TransformersTest extends TestHarness {
 
     rng.reset
   }
+  
+  def testDebounce() = run("Debounce") {
+    val i = RandomInterval(50 milliseconds, 100 milliseconds)
+    
+    val deb = Debounce[Long](75 milliseconds)
+    deb.output subscribe testSub("DEBOUNCE")
+    i ~> deb
+    
+    i.reset
+    delay(800)
+    i.shutdown
+  }
+  
+  def testDelay() = run("Delay") {
+    val rng = Sequence.from(1 to 15)
+
+    val del = Delay[Int](500 milliseconds)
+    del.output subscribe testSub("DELAY")
+    del.source <~ rng
+
+    rng.reset
+    delay(600)
+  }
+ 
+  def testDistinct() = run("Distinct") {
+    val rng = Sequence.from(1 to 20)
+
+    val dis = Distinct[Int](true, (n: Int) => n / 2)
+    dis.output subscribe testSub("DISTINCT")
+
+    dis.source <~ rng
+
+    rng.reset
+
+    dis.selector <~ ((n: Int) => n % 3)
+    rng.reset
+
+    dis.global <~ false
+    dis.selector <~ ((n: Int) => n)
+    rng.items <~ Seq(1, 1, 1, 2, 3, 4, 4)
+    rng.reset
+  }
+  
+  def testSample() = run("Sample") {
+    val i = Interval(30 milliseconds)
+
+    val smp = Sample[Long](100 milliseconds)
+    smp.output subscribe testSub("SAMPLE")
+    i ~> smp
+
+    i.reset
+    delay(350)
+  }
+  
 }
