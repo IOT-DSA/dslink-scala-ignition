@@ -22,6 +22,10 @@ object TransformersTest extends TestHarness {
   testTakeRight
   testTakeWhile
 
+  testDropByTime
+  testDropByCount
+  testDropWhile
+
   def testZipWithIndex() = run("ZipWithIndex") {
     val zi = ZipWithIndex[String]
     zi.output subscribe testSub("ZIP-INDEX")
@@ -108,6 +112,43 @@ object TransformersTest extends TestHarness {
     take.output subscribe testSub("TAKE-WHILE")
     take.predicate <~ ((n: Int) => n < 5)
     take.source <~ rng
+
+    rng.reset
+  }
+
+  def testDropByTime() = run("DropByTime") {
+    val i1 = Interval(100 milliseconds)
+
+    val drop = DropByTime[Long](200 milliseconds, false)
+    drop.output subscribe testSub("DROP-TIME")
+    drop.source <~ i1
+
+    i1.reset
+    delay(500)
+
+    i1.period <~ (50 milliseconds)
+    i1.reset
+    delay(400)
+  }
+
+  def testDropByCount() = {
+    val rng = Sequence.from(1 to 10)
+
+    val drop = DropByCount[Int](4, false)
+    drop.output subscribe testSub("DROP-COUNT")
+    drop.source <~ rng
+
+    rng.reset
+  }
+
+  def testDropWhile() = {
+    val rng = Sequence.from(1 to 10)
+
+    val drop = DropWhile[Int]
+    drop.output subscribe testSub("DROP-WHILE")
+
+    drop.predicate <~ ((n: Int) => n < 5)
+    drop.source <~ rng
 
     rng.reset
   }
