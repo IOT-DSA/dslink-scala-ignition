@@ -22,6 +22,11 @@ object AggregatesTest extends TestHarness {
   
   testMath
 
+  testCount
+  testLength
+  testExists
+  testIsEmpty
+  
   def testFirst() = run("First") {
     val rng = Sequence.from(1 to 10)
 
@@ -138,6 +143,61 @@ object AggregatesTest extends TestHarness {
     sts2.output subscribe testSub("STS2")
     rng ~> sts2
     
+    rng.reset
+  }
+  
+  def testCount() = run("Count") {
+    val rng = Sequence.from(1 to 10)
+
+    val cAll = Count[Int](false)
+    cAll.output subscribe testSub("COUNT-ALL")
+    rng ~> cAll
+    
+    val cEven = Count((n: Int) => n % 2 == 0, true)
+    cEven.output subscribe testSub("COUNT-EVEN")
+    rng ~> cEven
+    
+    rng.reset
+  }
+  
+  def testLength() = run("Length") {
+    val rng = Sequence.from(1 to 5)
+
+    val len1 = Length(false)
+    len1.output subscribe testSub("LENGTH1")
+    rng ~> len1
+    
+    val len2 = Length(true)
+    len2.output subscribe testSub("LENGTH2")
+    rng ~> len2
+    
+    rng.reset
+  }
+  
+  def testExists() = run("Exists") {
+    val rng = Sequence.from(1 to 10)
+
+    val ex = Exists[Int]
+    ex.output subscribe testSub("EXISTS")
+    rng ~> ex
+
+    ex.predicate <~ ((n: Int) => n % 2 == 0)
+    rng.reset
+
+    rng.items <~ (1 to 10 by 2)
+    rng.reset
+  }
+  
+  def testIsEmpty() = run("IsEmpty") {
+    val rng = Sequence.from(1 to 5)
+    
+    val emp = IsEmpty()
+    emp.output subscribe testSub("EMPTY")
+    rng ~> emp
+
+    rng.reset
+    
+    rng.items <~ Nil
     rng.reset
   }
 }

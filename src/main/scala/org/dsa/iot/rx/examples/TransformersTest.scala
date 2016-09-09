@@ -1,11 +1,10 @@
 package org.dsa.iot.rx.examples
 
 import scala.concurrent.duration._
-
 import org.dsa.iot.rx._
 import org.dsa.iot.rx.core._
-
 import rx.lang.scala.Observable
+import scala.util.control.NonFatal
 
 /**
  * Tests transformer blocks.
@@ -36,8 +35,9 @@ object TransformersTest extends TestHarness {
   testCollect
 
   testCache
-  
+
   testContains
+  testElementAt
 
   def testZipWithIndex() = run("ZipWithIndex") {
     val zi = ZipWithIndex[String]
@@ -283,42 +283,61 @@ object TransformersTest extends TestHarness {
     val i = Interval(50 milliseconds)
     val cache = Cache[Long]
     i ~> cache
-    
+
     val tx1 = Transform((n: Long) => ">" + n.toString)
     tx1.output subscribe testSub("CACHE1")
     cache ~> tx1
-    
+
     i.reset
     delay(200)
-    
+
     val tx2 = Transform((n: Long) => "<" + n.toString)
     tx2.output subscribe testSub("CACHE2")
     cache ~> tx2
     tx2.reset
 
     delay(200)
-    
+
     i.shutdown
   }
-  
+
   def testContains() = run("Contains") {
     val i = Interval(50 milliseconds)
     val take = TakeByCount[Long](5)
     take.output subscribe testSub("TAKE1-5")
     i ~> take
-    
+
     val c3 = Contains[Long](3)
     c3.output subscribe testSub("CONTAINS-3")
     take ~> c3
-    
+
     val c7 = Contains[Long](7)
     c7.output subscribe testSub("CONTAINS-7")
     take ~> c7
-    
+
     i.reset
     delay(300)
-    
+
     i.shutdown
   }
-  
+
+  def testElementAt() = run("ElementAt") {
+    val rng = Sequence.from(0 to 5)
+
+    val ea = ElementAt(4, 99)
+    ea.output subscribe testSub("ELEMENT")
+    rng ~> ea
+
+    rng.reset
+
+    ea.index <~ 10
+    rng.reset
+
+    try {
+      ea.default <~ None
+      rng.reset
+    } catch {
+      case NonFatal(e) => error("Index out of bounds")
+    }
+  }
 }
