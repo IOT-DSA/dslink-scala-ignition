@@ -30,6 +30,10 @@ object TransformersTest extends TestHarness {
   testDelay
   testDistinct
   testSample
+  testRepeat
+  
+  testTransform
+  testCollect
 
   def testZipWithIndex() = run("ZipWithIndex") {
     val zi = ZipWithIndex[String]
@@ -210,6 +214,64 @@ object TransformersTest extends TestHarness {
 
     i.reset
     delay(350)
+    
+    i.shutdown
   }
   
+  def testRepeat() = run("Repeat") {
+    val rng = Sequence.from(1 to 4)
+
+    val rep = Repeat[Int](3)
+    rep.output subscribe testSub("REPEAT")
+    rng ~> rep
+
+    rng.reset
+  }
+  
+  def testTransform() = run("Transform") {
+    val rng = Sequence.from(1 to 3)
+    
+    val tx = Transform[Int]
+    tx.output subscribe testSub("TRANSFORM")
+    rng ~> tx
+    
+    rng.reset
+    
+    tx.operator <~ ((n: Int) => n * 2)
+    rng.reset
+  }
+  
+  def testCollect() = run("Collect") {
+    val i1 = Interval(100 milliseconds)
+    i1.reset
+    delay(300)
+
+    val collect = Collect[Long, String]
+    collect.output subscribe testSub("COLLECT")
+
+    i1 ~> collect.source
+
+    val even: PartialFunction[Long, String] = {
+      case x if x % 2 == 0 => s"$x: even"
+    }
+
+    val mul: PartialFunction[Long, String] = {
+      case x if x % 3 == 0 => s"$x: *3"
+      case x if x % 4 == 0 => s"$x: *4"
+      case x if x % 5 == 0 => s"$x: *5"
+    }
+
+    collect.selector <~ even
+    collect.reset
+    delay(500)
+
+    collect.selector <~ mul
+    collect.reset
+    delay(800)
+
+    i1.reset
+    delay(500)
+    
+    i1.shutdown
+  }  
 }
