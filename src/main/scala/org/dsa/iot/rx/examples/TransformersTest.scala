@@ -25,15 +25,19 @@ object TransformersTest extends TestHarness {
   testDropByTime
   testDropByCount
   testDropWhile
-  
+
   testDebounce
   testDelay
   testDistinct
   testSample
   testRepeat
-  
+
   testTransform
   testCollect
+
+  testCache
+  
+  testContains
 
   def testZipWithIndex() = run("ZipWithIndex") {
     val zi = ZipWithIndex[String]
@@ -162,19 +166,19 @@ object TransformersTest extends TestHarness {
 
     rng.reset
   }
-  
+
   def testDebounce() = run("Debounce") {
     val i = RandomInterval(50 milliseconds, 100 milliseconds)
-    
+
     val deb = Debounce[Long](75 milliseconds)
     deb.output subscribe testSub("DEBOUNCE")
     i ~> deb
-    
+
     i.reset
     delay(800)
     i.shutdown
   }
-  
+
   def testDelay() = run("Delay") {
     val rng = Sequence.from(1 to 15)
 
@@ -185,7 +189,7 @@ object TransformersTest extends TestHarness {
     rng.reset
     delay(600)
   }
- 
+
   def testDistinct() = run("Distinct") {
     val rng = Sequence.from(1 to 20)
 
@@ -204,7 +208,7 @@ object TransformersTest extends TestHarness {
     rng.items <~ Seq(1, 1, 1, 2, 3, 4, 4)
     rng.reset
   }
-  
+
   def testSample() = run("Sample") {
     val i = Interval(30 milliseconds)
 
@@ -214,10 +218,10 @@ object TransformersTest extends TestHarness {
 
     i.reset
     delay(350)
-    
+
     i.shutdown
   }
-  
+
   def testRepeat() = run("Repeat") {
     val rng = Sequence.from(1 to 4)
 
@@ -227,20 +231,20 @@ object TransformersTest extends TestHarness {
 
     rng.reset
   }
-  
+
   def testTransform() = run("Transform") {
     val rng = Sequence.from(1 to 3)
-    
+
     val tx = Transform[Int]
     tx.output subscribe testSub("TRANSFORM")
     rng ~> tx
-    
+
     rng.reset
-    
+
     tx.operator <~ ((n: Int) => n * 2)
     rng.reset
   }
-  
+
   def testCollect() = run("Collect") {
     val i1 = Interval(100 milliseconds)
     i1.reset
@@ -271,7 +275,50 @@ object TransformersTest extends TestHarness {
 
     i1.reset
     delay(500)
-    
+
     i1.shutdown
-  }  
+  }
+
+  def testCache() = run("Cache") {
+    val i = Interval(50 milliseconds)
+    val cache = Cache[Long]
+    i ~> cache
+    
+    val tx1 = Transform((n: Long) => ">" + n.toString)
+    tx1.output subscribe testSub("CACHE1")
+    cache ~> tx1
+    
+    i.reset
+    delay(200)
+    
+    val tx2 = Transform((n: Long) => "<" + n.toString)
+    tx2.output subscribe testSub("CACHE2")
+    cache ~> tx2
+    tx2.reset
+
+    delay(200)
+    
+    i.shutdown
+  }
+  
+  def testContains() = run("Contains") {
+    val i = Interval(50 milliseconds)
+    val take = TakeByCount[Long](5)
+    take.output subscribe testSub("TAKE1-5")
+    i ~> take
+    
+    val c3 = Contains[Long](3)
+    c3.output subscribe testSub("CONTAINS-3")
+    take ~> c3
+    
+    val c7 = Contains[Long](7)
+    c7.output subscribe testSub("CONTAINS-7")
+    take ~> c7
+    
+    i.reset
+    delay(300)
+    
+    i.shutdown
+  }
+  
 }

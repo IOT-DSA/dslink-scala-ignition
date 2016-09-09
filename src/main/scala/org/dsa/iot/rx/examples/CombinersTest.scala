@@ -19,6 +19,8 @@ object CombinersTest extends TestHarness {
   testCombineLatest3
 
   testMerge
+  testConcat
+  testInsert
 
   testZip
   testZip2
@@ -135,6 +137,33 @@ object CombinersTest extends TestHarness {
     i1.shutdown
     i2.shutdown
   }
+  
+  def testConcat() = run("Concat") {
+    val rng1 = Sequence.from(1 to 5)
+    val rng2 = Sequence.from(20 to 22)
+
+    val conc = Concat[Int]
+    conc.output subscribe testSub("CONCAT")
+
+    conc.source1 <~ rng1
+    conc.source2 <~ rng2
+    rng2.reset
+    rng1.reset
+  }
+  
+  def testInsert() = run("Insert") {
+    val rng = Sequence.from(1 to 5)
+
+    val prep = Insert[Int](0, true)
+    prep.output subscribe testSub("PREPEND")
+    prep.source <~ rng
+
+    val app = Insert[Int](9, false)
+    app.output subscribe testSub("APPEND")
+    app.source <~ rng
+    
+    rng.reset
+  }  
 
   def testZip() = run("Zip") {
     val zip = Zip[Long]
