@@ -4,6 +4,7 @@ import scala.concurrent.duration._
 
 import org.dsa.iot.rx.RichValue
 import org.dsa.iot.rx.core._
+import org.dsa.iot.rx.numeric._
 
 import rx.lang.scala.Observable
 
@@ -21,6 +22,8 @@ object ProducersTest extends TestHarness {
   testInterval
   testTimer
   testRandomInterval
+  
+  testRange
 
   def testZero() = run("Zero") {
     val zero1 = Zero[Int]
@@ -137,5 +140,19 @@ object ProducersTest extends TestHarness {
     i2.reset
     delay(600)
     i2.shutdown
+  }
+  
+  def testRange() = run("Range") {
+    val r1 = Range(1, 5)
+    r1.output subscribe testSub("RANGE1")
+    r1.reset
+    
+    val r2 = Range(0.5, 1, 0.1)
+    r2.output subscribe testSub("RANGE2")
+    r2.reset
+    
+    val r3 = Range(Point(0, 0), Point(4, 2), Point(2, 1))
+    r3.output subscribe testSub("RANGE3")
+    r3.reset
   }
 }
