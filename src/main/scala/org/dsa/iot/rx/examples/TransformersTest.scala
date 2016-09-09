@@ -38,6 +38,7 @@ object TransformersTest extends TestHarness {
 
   testContains
   testElementAt
+  testFilter
 
   def testZipWithIndex() = run("ZipWithIndex") {
     val zi = ZipWithIndex[String]
@@ -339,5 +340,15 @@ object TransformersTest extends TestHarness {
     } catch {
       case NonFatal(e) => error("Index out of bounds")
     }
+  }
+  
+  def testFilter() = run("Filter") {
+    val rng = Sequence.from(1 to 10)
+
+    val filter = Filter((n: Int) => n > 3 && n < 7)
+    filter.output subscribe testSub("FILTER")
+    rng ~> filter
+
+    rng.reset
   }
 }
