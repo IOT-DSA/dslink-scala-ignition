@@ -1,13 +1,15 @@
-package org.dsa.iot.ignition
+package org.dsa.iot.rx.script
 
 import org.mvel2.ParserContext
 import com.ignition.script.ScriptFunctions
 import org.mvel2.integration.impl.MapVariableResolverFactory
 import collection.JavaConverters._
 import scala.reflect.runtime.universe._
+import java.io.File
+import scala.tools.nsc.interpreter.IMain
 
 /**
- * Available Script dialects.
+ * Available scripting dialects.
  */
 object ScriptDialect extends Enumeration {
 
@@ -21,9 +23,12 @@ object ScriptDialect extends Enumeration {
    */
   val MVEL = new ScriptDialect("MVEL") {
     def execute[T: TypeTag](code: String, context: Map[String, Any]): T = {
-      val factory = new MapVariableResolverFactory(context.asJava)
+      val varMap = new java.util.HashMap[String, Any]
+      varMap.putAll(context.asJava)
+      val factory = new MapVariableResolverFactory(varMap)
       val tag = implicitly[TypeTag[T]]
-      org.mvel2.MVEL.eval(code, ScriptFunctions, factory, tag.mirror.runtimeClass(tag.tpe).asInstanceOf[Class[T]])
+      val targetType = tag.mirror.runtimeClass(tag.tpe).asInstanceOf[Class[T]]
+      org.mvel2.MVEL.eval(code, ScriptFunctions, factory, targetType)
     }
   }
 
@@ -35,10 +40,28 @@ object ScriptDialect extends Enumeration {
   }
 
   /**
+   * Groovy.
+   */
+  val GROOVY = new ScriptDialect("Groovy") {
+    def execute[T: TypeTag](code: String, context: Map[String, Any]): T = ???
+  }
+
+  /**
    * Scala.
    */
   val SCALA = new ScriptDialect("Scala") {
-    def execute[T: TypeTag](code: String, context: Map[String, Any]): T = ???
+    val main = new IMain(ScalaDialect.settings)
+
+    def execute[T: TypeTag](code: String, context: Map[String, Any]): T = {
+      main.beSilentDuring {
+        context foreach {
+          case (name, value) => main.bind(name, value)
+        }
+        val lines = code.split("\\r?\\n")
+        lines foreach main.interpret
+      }
+      main.valueOfTerm(main.mostRecentVar).get.asInstanceOf[T]
+    }
   }
 
   /**
@@ -63,5 +86,15 @@ object MvelDialect {
       pctx.addImport(method.getName, method)
     }
     pctx
+  }
+}
+
+object ScalaDialect {
+  lazy val settings = {
+    val s = new scala.tools.nsc.Settings
+    s.usejavacp.value = false
+    s.deprecation.value = true
+    s.classpath.value += File.pathSeparator + System.getProperty("java.class.path")
+    s
   }
 }
