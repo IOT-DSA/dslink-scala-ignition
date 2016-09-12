@@ -1,7 +1,6 @@
 package org.dsa.iot.ignition
 
 import scala.concurrent.ExecutionContext.Implicits.global
-
 import org.apache.spark.sql.DataFrame
 import org.dsa.iot.{ ActionHandler, DSAConnector, DSAHelper, RichActionResult, RichNode, RichNodeBuilder, RichValueType, createAction }
 import org.dsa.iot.{ toList, valueToString }
@@ -9,6 +8,8 @@ import org.dsa.iot.dslink.node.Node
 import org.dsa.iot.dslink.node.value.Value
 import org.dsa.iot.dslink.node.value.ValueType.STRING
 import org.slf4j.LoggerFactory
+import org.dsa.iot.dslink.node.actions.table.Table
+import scala.util.control.NonFatal
 
 object Main extends App {
   import Settings._
@@ -28,8 +29,13 @@ object Main extends App {
 
   log.info("Application controller started")
 
+  /* temporary commented out for testing 
   println("Press Ctrl+C to shut down")
   sys.addShutdownHook(shutdown)
+  */
+  println("\nPress ENTER to continue")
+  Console.in.readLine
+  shutdown
 
   private def shutdown() = {
     connector.stop
@@ -64,20 +70,26 @@ object Main extends App {
       val json = rsp.getTable.getRows.get(0).getValues.get(0).getMap
       val flow = node.getMetaData[RxFlow]
       val wasRunning = flow.isRunning
-      flow.update(json)
-      flow.allBlocks foreach {
-        case (name, block) =>
-          val path = s"$dfPath/${node.getName}/$name/output"
-          val stream = block.output map {
-            case x: RichValue => x.self
-            case x: Value     => x
-            case x: DataFrame => org.dsa.iot.mapToValue(spark.dataFrameToTableData(x))
-            case x            => org.dsa.iot.anyToValue(x)
-          }
-          stream subscribe (DSAHelper.set(path, _))
+      try {
+        flow.update(json)
+        flow.allBlocks foreach {
+          case (name, block) =>
+            val path = s"$dfPath/${node.getName}/$name/output"
+            val stream = block.output map {
+              case x: RichValue => x.self
+              case x: Value     => x
+              case x: DataFrame => org.dsa.iot.mapToValue(spark.dataFrameToTableData(x))
+              case x: Table     => org.dsa.iot.mapToValue(tableToMap(x))
+              case x            => org.dsa.iot.anyToValue(x)
+            }
+            stream subscribe (DSAHelper.set(path, _))
+        }
+      } catch {
+        case NonFatal(e) => log.error(s"Error updating flow [${flow.name}]...", e)
+      } finally {
+        if (wasRunning)
+          flow.restart
       }
-      if (wasRunning)
-        flow.restart
     }
   }
 

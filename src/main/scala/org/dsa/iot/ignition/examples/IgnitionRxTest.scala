@@ -1,16 +1,18 @@
 package org.dsa.iot.ignition.examples
 
+import collection.JavaConverters._
 import scala.concurrent.duration.DurationInt
-
 import org.dsa.iot.LinkMode
 import org.dsa.iot.dslink.link.Requester
 import org.dsa.iot.dslink.node.value.Value
 import org.dsa.iot.ignition.core.DSAInput
 import org.dsa.iot.stringToValue
-
-import com.ignition.rx.RichTuple2
-import com.ignition.rx.core.{ CombineLatest2, Debounce, Interval, Range, Scan, TakeByCount }
-import com.ignition.rx.numeric.Mul
+import org.dsa.iot.rx.core._
+import org.dsa.iot.rx.numeric._
+import org.dsa.iot.ignition.core.DQLInput
+import org.dsa.iot._
+import org.dsa.iot.ignition.core.DSAInvoke
+import org.dsa.iot.rx.RxTransformer
 
 object IgnitionRxTest extends App {
 
@@ -22,17 +24,17 @@ object IgnitionRxTest extends App {
   sys.exit
 
   def factorial() = {
-    val prod = new Mul[Int]
+    val prod = Mul[Int](true)
     prod.output subscribe testSub("FACTORIAL")
 
-    val rng = new Range[Int]
+    val rng = Sequence[Int]
 
     rng ~> prod
 
-    rng.range <~ (1 to 6)
+    rng.items <~ (1 to 6)
     rng.reset
 
-    rng.range <~ (1 to 3)
+    rng.items <~ (1 to 3)
     rng.reset
   }
 
@@ -65,16 +67,17 @@ object IgnitionRxTest extends App {
       val connection = connector start LinkMode.REQUESTER
       val requester = connection.requester
 
-      cpuAndMemory(requester)
+      //      cpuAndMemory(requester)
+      dql(requester)
     } finally {
       connector.stop
     }
   }
-  
+
   def cpuAndMemory(implicit requester: Requester) = {
     val cpu = new DSAInput
     cpu.path <~ "/downstream/System/CPU_Usage"
-    
+
     val mem = new DSAInput
     mem.path <~ "/downstream/System/Memory_Usage"
 
@@ -93,8 +96,48 @@ object IgnitionRxTest extends App {
     cpu.reset
     mem.reset
     delay(3000)
-    
+
     cpu.shutdown
     mem.shutdown
+  }
+
+  def dql(implicit requester: Requester) = {
+    type AnyList = List[Any]
+    type AnyMap = Map[String, Any]
+
+    val dql = new DQLInput
+
+    val queries = List(
+      """list /downstream/digi/iesA/* | filter $type="dynamic" | subscribe :name value""",
+      """list /downstream/System/* | filter $type="number" | subscribe :name value""",
+      """list /downstream/System/* | filter :name contains "Memory" | subscribe :name value""",
+      """list /downstream/irom/atlanta/* | filter deviceType="PCT" | subscribe data/mode""")
+    dql.query <~ queries(3)
+
+    val distinct = new Distinct[AnyList]
+    distinct.global <~ false
+    distinct.selector <~ ((row: AnyList) => (row(0), row(1)))
+
+    val filter = new Filter[AnyList]
+    filter.predicate <~ (row => Set[Any]("heating", "cooling") contains row(2))
+
+    val control = new RxTransformer[AnyList, (String, AnyMap)] {
+      protected def compute = source.in map {
+        case List(path: String, _, "cooling") => (path + "/setTemperature", Map("temperature" -> 20))
+        case List(path: String, _, "heating") => (path + "/setTemperature", Map("temperature" -> 20))
+      }
+    }
+    control.output subscribe testSub("control")
+
+    control.output subscribe { tuple =>
+      DSAHelper.invoke(tuple._1, tuple._2)
+    }
+
+    dql ~> distinct ~> filter ~> control
+
+    dql.reset
+    delay(5000)
+
+    dql.shutdown
   }
 }

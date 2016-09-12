@@ -1,16 +1,17 @@
 package org.dsa.iot
 
-import scala.collection.JavaConverters.iterableAsScalaIterableConverter
+import scala.collection.JavaConverters._
 import scala.concurrent.duration.DurationLong
+import scala.math.Numeric.{ DoubleIsFractional, IntIsIntegral }
 import scala.reflect.runtime.universe
-import scala.util.Try
+import scala.util.{ Random, Try }
 
 import org.dsa.iot.dslink.node.Node
+import org.dsa.iot.dslink.node.actions.table.Table
 import org.dsa.iot.dslink.node.value.{ Value, ValueType }
 import org.dsa.iot.dslink.util.json.{ JsonArray, JsonObject }
 import org.dsa.iot.ignition.Settings
-
-import com.ignition.rx.AbstractRxBlock
+import org.dsa.iot.rx.AbstractRxBlock
 
 /**
  * Common types and helper functions.
@@ -31,21 +32,22 @@ package object ignition {
     def asInt = asNumber _ andThen (_.intValue)
     def asLong = asNumber _ andThen (_.longValue)
     def asDouble = asNumber _ andThen (_.doubleValue)
-    def asBoolean = asString _ andThen (_.toBoolean)
+    def asBoolean(key: String) = self.get[Boolean](key)
     def asDuration = asLong andThen (_ milliseconds)
     def asEnum[V <: Enumeration#Value](e: Enumeration)(key: String) = aio[V](e.withName(asString(key)))
 
-    def getAs[T](key: String) = Option(self.get[T](key))
+    def getAs[T](key: String) = Option(self.get[T](key)) filter (_ != "")
 
     def getAsString = getAs[String] _ andThen (_ flatMap noneIfEmpty)
     def getAsNumber = getAs[java.lang.Number] _
-    def getAsInt = getAs[Int] _
-    def getAsLong = getAs[Long] _
-    def getAsDouble = getAs[Double] _
-    def getAsBoolean = getAsString andThen (_ map (_.toBoolean))
+    def getAsInt = getAsNumber andThen (_ map (_.intValue))
+    def getAsLong = getAsNumber andThen (_ map (_.longValue))
+    def getAsDouble = getAsNumber andThen (_ map (_.doubleValue))
+    def getAsBoolean = getAs[Boolean] _
     def getAsDuration = getAsLong andThen (_ map (_ milliseconds))
 
-    def asList(key: String) = getAs[JsonArray](key) map (_.asScala.map(x => x: Any).toList) getOrElse Nil
+    def asMap(key: String) = getAs[JsonObject](key) map jsonObjectToMap getOrElse Map.empty
+    def asList(key: String) = getAs[JsonArray](key) map jsonArrayToList getOrElse Nil
 
     def asStringList = asList _ andThen (_ map (_.toString))
     def asNumberList = asList _ andThen (_ map (_.asInstanceOf[java.lang.Number]))
@@ -80,6 +82,9 @@ package object ignition {
    * An extension to Value providing some handy accessors.
    */
   implicit class RichValue(val self: Value) extends AnyVal {
+
+    def getType = self.getType
+
     def getNumber = self.getType match {
       case ValueType.NUMBER => self.getNumber
       case ValueType.BOOL   => if (self.getBool) Int.box(1) else Int.box(0)
@@ -100,11 +105,61 @@ package object ignition {
       case _                => self.toString
     }
 
-    def getList = self.getArray.getList
+    def getList = jsonArrayToList(self.getArray)
 
-    def getMap = self.getMap.getMap
+    def getJavaList = scalaListToJava(getList)
+
+    def getMap = jsonObjectToMap(self.getMap)
+
+    def getJavaMap = scalaMapToJava(getMap)
+
+    private def scalaListToJava(xx: Seq[_]): java.util.List[_] = xx map {
+      case x: Seq[_]    => scalaListToJava(x)
+      case x: Map[_, _] => scalaMapToJava(x)
+      case x            => x
+    } asJava
+
+    private def scalaMapToJava(xx: Map[_, _]): java.util.Map[_, _] = xx mapValues {
+      case x: Seq[_]    => scalaListToJava(x)
+      case x: Map[_, _] => scalaMapToJava(x)
+      case x            => x
+    } asJava
 
     override def toString = self.toString
+  }
+
+  /**
+   * Implicit Numeric marker, which allows to use Value in arithmetic expressions.
+   */
+  implicit object ValueNumeric extends Numeric[Value] {
+    def plus(x: Value, y: Value): Value =
+      handle(x.getNumber, y.getNumber, DoubleIsFractional.plus, IntIsIntegral.plus)
+    def minus(x: Value, y: Value): Value =
+      handle(x.getNumber, y.getNumber, DoubleIsFractional.minus, IntIsIntegral.minus)
+    def times(x: Value, y: Value): Value =
+      handle(x.getNumber, y.getNumber, DoubleIsFractional.times, IntIsIntegral.times)
+    def negate(x: Value): Value = handle(x.getNumber, DoubleIsFractional.negate, IntIsIntegral.negate)
+    def fromInt(x: Int): Value = x
+    def toInt(x: Value): Int = x.getInt
+    def toLong(x: Value): Long = x.getLong
+    def toFloat(x: Value): Float = x.getNumber.floatValue
+    def toDouble(x: Value): Double = x.getDouble
+    def compare(x: Value, y: Value): Int = x.getDouble.compare(y.getDouble)
+
+    private def handle(a: Number, dblOp: Double => Double, intOp: Int => Int) = {
+      if (a.isInstanceOf[Double] || a.isInstanceOf[Float])
+        dblOp(a.doubleValue)
+      else
+        intOp(a.intValue)
+    }
+
+    private def handle(a: Number, b: Number, dblOp: (Double, Double) => Double,
+                       intOp: (Int, Int) => Int) = {
+      if (a.isInstanceOf[Double] || b.isInstanceOf[Double] || a.isInstanceOf[Float] || b.isInstanceOf[Float])
+        dblOp(a.doubleValue, b.doubleValue)
+      else
+        intOp(a.intValue, b.intValue)
+    }
   }
 
   /* editor types */
@@ -121,6 +176,16 @@ package object ignition {
   /* type helpers */
 
   implicit def tuple2Param(pair: (String, String)) = ParamInfo(pair._1, pair._2, None)
+
+  /**
+   * Converts a table into Map.
+   */
+  def tableToMap(table: Table): Map[String, Any] = {
+    val cols = Option(table.getColumns) map (_.asScala) getOrElse Nil map (p => Map("name" -> p.getName)) toList
+    val rows = Option(table.getRows) map (_.asScala) getOrElse Nil map (_.getValues.asScala.toList) toList
+
+    Map("@id" -> Random.nextInt(1000), "@type" -> "tabledata", "cols" -> cols, "rows" -> rows)
+  }
 
   /* node helpers */
 
@@ -164,4 +229,9 @@ package object ignition {
    * Returns Some(str) if the argument is a non-empty string, None otherwise.
    */
   def noneIfEmpty(str: String) = Option(str) filter (!_.trim.isEmpty)
+
+  /**
+   * Splits the argument into chunks with the specified delimiter, trims each part and returns only non-empty parts.
+   */
+  def splitAndTrim(delim: String = ",")(str: String) = str.split(delim).map(_.trim).filterNot(_.isEmpty).toList
 }

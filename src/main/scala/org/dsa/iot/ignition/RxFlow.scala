@@ -6,12 +6,12 @@ import org.dsa.iot.dslink.util.json.JsonObject
 
 import com.ignition.util.Logging
 
-import rx.lang.scala.Subscriber
+import _root_.rx.lang.scala.Subscriber
 
 /**
  * A set of interconnected RX blocks forming a dataflow.
  */
-class RxFlow(name: String) extends Logging {
+class RxFlow(val name: String) extends Logging {
 
   private var running = false
   private var blocks = Map.empty[String, DSARxBlock]
@@ -48,7 +48,7 @@ class RxFlow(name: String) extends Logging {
       case (name, obj: JsonObject) => name -> obj
     }
 
-    blocks = jsonBlocks map {
+    val newBlocks: Map[String, DSARxBlock] = jsonBlocks map {
       case (name, json) =>
         val typeName = json.get[String]("customType")
         val adapter = RxBlockFactory.adapterMap(typeName)
@@ -60,13 +60,15 @@ class RxFlow(name: String) extends Logging {
       case (name, json) =>
         val typeName = json.get[String]("customType")
         val adapter = RxBlockFactory.adapterMap(typeName).asInstanceOf[RxBlockAdapter[DSARxBlock]]
-        val block = blocks(name)
-        adapter.setupBlock(block, json, blocks)
+        val block = newBlocks(name)
+        adapter.setupBlock(block, json, newBlocks)
     }
 
-    blocks foreach {
+    newBlocks foreach {
       case (name, block) => block.output subscribe logSub(name)
     }
+    
+    this.blocks = newBlocks
 
     info(s"Flow [$name] update complete")
   }
