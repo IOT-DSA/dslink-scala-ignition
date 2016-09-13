@@ -2,8 +2,10 @@ package org.dsa.iot.ignition.spark
 
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types.{ StructField, StructType }
+import org.dsa.iot.rx.AbstractRxBlock
+
 import com.ignition.frame.SparkRuntime
-import com.ignition.rx.AbstractRxBlock
+
 import rx.lang.scala.Observable
 
 /**
@@ -23,4 +25,15 @@ class CsvFileInput(implicit rt: SparkRuntime) extends AbstractRxBlock[DataFrame]
         Observable.just(cfi.output)
     }
   }
+}
+
+/**
+ * Factory for [[CsvFileInput]] instances.
+ */
+object CsvFileInput {
+
+  /**
+   * Creates a new CsvFileInput instance.
+   */
+  def apply()(implicit rt: SparkRuntime): CsvFileInput = new CsvFileInput
 }

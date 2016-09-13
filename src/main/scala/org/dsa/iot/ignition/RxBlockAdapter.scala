@@ -113,10 +113,10 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
               blocks: DSABlockMap)(implicit extractor: (JsonObject, String) => X, converter: Any => X) = {
     if (json contains name) {
       tryConnecting(port, json, name, blocks) orElse trySetting(port, json, name) recover {
-        case NonFatal(e) => warn(s"Error initializing port $port", e)
+        case NonFatal(e) => warn(s"Error initializing $port", e)
       } get
     } else
-      debug(s"No connection or value specified for port $port under $name")
+      debug(s"No connection or value specified for $port under [$name]")
   }
 
   /**
@@ -126,9 +126,9 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
   def connect[X](port: S#Port[X], json: JsonObject, name: String,
                  blocks: DSABlockMap)(implicit cnv: Any => X) = {
     if (json contains name)
-      tryConnecting(port, json, name, blocks) getOrElse error(s"Error connecting port $port under $name")
+      tryConnecting(port, json, name, blocks) getOrElse error(s"Error connecting $port under [$name]")
     else
-      debug(s"No connection specified for port $port under $name")
+      debug(s"No connection specified for $port under [$name]")
   }
 
   /**
@@ -142,7 +142,7 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
       val ta = new TypeAdapter[X]
       source ~> ta
       port <~ ta
-      info(s"Port $port connected to $name.output")
+      info(s"$port connected to $name.output")
     }
 
   /**
@@ -151,9 +151,9 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
   def set[X](port: S#Port[X], json: JsonObject,
              name: String)(implicit extractor: (JsonObject, String) => X) = {
     if (json contains name)
-      trySetting(port, json, name) getOrElse error(s"Error setting port $port under $name")
+      trySetting(port, json, name) getOrElse error(s"Error setting $port under [$name]")
     else
-      debug(s"No value specified for port $port under $name")
+      debug(s"No value specified for $port under [$name]")
   }
 
   /**
@@ -163,7 +163,7 @@ abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val cat
                             name: String)(implicit extractor: (JsonObject, String) => X) =
     Try(extractor(json, name)) map { value =>
       port <~ value
-      info(s"Port $port set to $value")
+      info(s"$port set to $value")
     }
 
   /**

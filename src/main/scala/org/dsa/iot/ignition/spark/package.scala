@@ -1,23 +1,48 @@
 package org.dsa.iot.ignition
 
 import scala.util.Random
+
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{ DataFrame, Row }
-import org.apache.spark.sql.types.{ BooleanType, DoubleType, IntegerType, StringType, StructType }
-import com.ignition.types.{ Binary, TypeUtils }
+import org.apache.spark.sql.types._
 import org.dsa.iot.dslink.util.json.JsonObject
-import org.apache.spark.sql.types.StructField
+
+import com.ignition.frame.{ FrameProducer, SparkRuntime }
+import com.ignition.types.{ Binary, TypeUtils }
 
 package object spark {
 
   val dataTypes = List(BooleanType, StringType, IntegerType, DoubleType)
   val DATA_TYPE = enum(dataTypes map TypeUtils.nameForType: _*)
 
-  def extStructFields(withNullable: Boolean)(json: JsonObject, key: String) =
-    if (withNullable) json.asTupledList3[String, String, String]("@array") map {
+  /**
+   * Creates a producer, wrapper for the data frame.
+   */
+  def producer(df: DataFrame) = new FrameProducer { self =>
+    protected def compute(implicit runtime: SparkRuntime) = optLimit(df, runtime.previewMode)
+    def toXml: scala.xml.Elem = ???
+    def toJson: org.json4s.JValue = ???
+  }
+
+  /**
+   * Extracts a string from JSON and splits into a list of strings using the separator.
+   */
+  val extractSeparatedStrings: (JsonObject, String) => List[String] = extractSeparatedStrings("\\s*,\\s*")
+
+  /**
+   * Extracts a string from JSON and splits into a list of strings using the separator.
+   */
+  def extractSeparatedStrings(separator: String)(json: JsonObject, key: String): List[String] =
+    json getAsString key map splitAndTrim(separator) getOrElse Nil
+
+  /**
+   * Extracts a list of `StructFields` elements from JSON.
+   */
+  def extractStructFields(withNullable: Boolean)(json: JsonObject, key: String) =
+    if (withNullable) json.asTupledList3[String, String, String](key) map {
       case (name, typeName, nullable) => new StructField(name, TypeUtils.typeForName(typeName), nullable.toBoolean)
     }
-    else json.asTupledList2[String, String]("@array") map {
+    else json.asTupledList2[String, String](key) map {
       case (name, typeName) => new StructField(name, TypeUtils.typeForName(typeName), true)
     }
 

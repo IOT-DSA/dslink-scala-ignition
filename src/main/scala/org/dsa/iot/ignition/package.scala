@@ -167,7 +167,7 @@ package object ignition {
   val TEXT = "string"
   val TEXTAREA = "textarea"
   val NUMBER = "number"
-  val BOOLEAN = "boolean"
+  val BOOLEAN = "bool"
   val TABLE = "tabledata"
   val LIST = "list"
   def enum(values: String*): String = values.mkString("enum[", ",", "]")
