@@ -8,6 +8,8 @@ import rx.lang.scala.Observable
 
 /**
  * Emits values 0, 1, 2 and so on at equal time intervals.
+ * 
+ * <img width="640" height="200" src="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/timer.p.png" alt="" />
  */
 class Interval extends AbstractRxBlock[Long] {
   val initial = Port[Duration]("initial")

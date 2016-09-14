@@ -6,6 +6,8 @@ import rx.lang.scala.Observable
 
 /**
  * Combines items passed into its ports into a single Observable.
+ * 
+ * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
  */
 class FromList[A] extends AbstractRxBlock[A] {
   val items = PortList[A]("items")

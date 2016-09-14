@@ -5,6 +5,8 @@ import org.dsa.iot.rx.RxTransformer
 /**
  * Repeatedly applies a function, where the first argument is the result obtained in the previous
  * application and the second argument is each element of the source sequence.
+ * 
+ * <img width="640" height="320" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/reduce.png" alt="" />
  */
 class Reduce[T] extends RxTransformer[T, T] {
   val accumulator = Port[(T, T) => T]("accumulator")

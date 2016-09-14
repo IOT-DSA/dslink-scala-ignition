@@ -5,6 +5,8 @@ import org.dsa.iot.rx.RxTransformer
 /**
  * Caches the items emitted by the source, so that future subscriptions can "replay" them from the
  * beginning.
+ * 
+ * <img width="640" height="410" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/cache.png" alt="" />
  */
 class Cache[T] extends RxTransformer[T, T] {
   val capacity = Port[Option[Int]]("capacity")

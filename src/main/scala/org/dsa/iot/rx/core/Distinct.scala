@@ -6,6 +6,9 @@ import org.dsa.iot.rx.RxTransformer
  * Applies the selector function to the source sequence and then drops the repeated items.
  * If `global` parameter is ''false'' it deletes sequential repeated elements; if it is ''true'',
  * then it deletes '''all''' repeated elements.
+ * 
+ * <img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/distinct.key.png" alt="" />
+ * <img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/distinctUntilChanged.key.png" alt="" />
  */
 class Distinct[T] extends RxTransformer[T, T] {
   val selector = Port[T => _]("selector")

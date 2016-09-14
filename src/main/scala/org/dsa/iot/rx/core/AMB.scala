@@ -6,6 +6,8 @@ import rx.lang.scala.Observable
 
 /**
  * Mirrors the one Observable in an Iterable of several Observables that first emits an item.
+ * 
+ * <img width="640" height="385" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/amb.png" alt="" />
  */
 class AMB[T] extends RxMergerN[T, T] {
   protected def compute = Observable.amb(sources.ins: _*)

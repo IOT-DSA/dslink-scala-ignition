@@ -6,6 +6,8 @@ import org.dsa.iot.rx.RxTransformer
  * Repeatedly applies a function, where the first argument is the result obtained in the previous
  * application (first time - the `initial` value), and the second argument is each element of the
  * source sequence. Unlike `scan` it only emits the final result when the source sequence is complete.
+ * 
+ * <img width="640" height="325" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/reduceSeed.png" alt="" />
  */
 class Fold[T, R] extends RxTransformer[T, R] {
   val initial = Port[R]("initial")

@@ -4,6 +4,8 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  * Emits the very last item emitted by the source, or a default if the source is empty.
+ * 
+ * <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/lastOrDefault.png" alt="" />
  */
 class Last[T] extends RxTransformer[T, T] {
   val default = Port[Option[T]]("default")

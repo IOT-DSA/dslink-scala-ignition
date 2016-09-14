@@ -4,6 +4,8 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  * Emits only first `count` items emitted by the source.
+ * 
+ * <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/take.png" alt="" />
  */
 class TakeByCount[T] extends RxTransformer[T, T] {
   val count = Port[Int]("count")

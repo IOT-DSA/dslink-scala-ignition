@@ -4,6 +4,8 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  * Transforms each item of the source sequence into a new one, using the functional operator.
+ * 
+ * <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/map.png" alt="" />
  */
 class Transform[T, R] extends RxTransformer[T, R] {
   val operator = Port[T => R]("operator")

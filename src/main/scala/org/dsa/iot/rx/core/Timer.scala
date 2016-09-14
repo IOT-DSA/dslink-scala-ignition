@@ -8,6 +8,8 @@ import rx.lang.scala.Observable
 
 /**
  * Emits 0L after the specified delay and completes.
+ * 
+ * <img width="640" height="200" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/timer.png" alt="" />
  */
 class Timer extends AbstractRxBlock[Long] {
   val delay = Port[Duration]("delay")

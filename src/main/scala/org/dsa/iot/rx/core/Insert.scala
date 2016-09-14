@@ -4,6 +4,8 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  * Emits a specified item either before or after it emits items from the source.
+ * 
+ * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/startWith.png" alt="" />
  */
 class Insert[T](prepend: Boolean) extends RxTransformer[T, T] {
   val item = Port[T]("item")

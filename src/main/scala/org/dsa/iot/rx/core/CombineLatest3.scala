@@ -5,6 +5,8 @@ import org.dsa.iot.rx.RxMerger3
 /**
  * Combines three Observables into a single Observable of Tuple3, emitting a new tuple each time any
  * of the sources emits a new item.
+ * 
+ * @see <a href="http://reactivex.io/documentation/operators/combinelatest.html">ReactiveX operators documentation: CombineLatest</a>
  */
 class CombineLatest3[T1, T2, T3] extends RxMerger3[T1, T2, T3, (T1, T2, T3)] {
   protected def compute = source1.in combineLatest source2.in combineLatest source3.in map {

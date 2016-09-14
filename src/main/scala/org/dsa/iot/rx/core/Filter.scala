@@ -4,6 +4,8 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  * Only emits those items from the source sequence for which a given predicate holds.
+ * 
+ * <img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/filter.png" alt="" />
  */
 class Filter[T] extends RxTransformer[T, T] {
   val predicate = Port[T => Boolean]("predicate")

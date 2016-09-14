@@ -7,6 +7,8 @@ import org.dsa.iot.rx.RxTransformer
 /**
  * Emits items from the source that were emitted in a specified window of time before the source
  * completed, or the last `count` items of the source.
+ * 
+ * <img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/takeLast.tn.png" alt="" />
  */
 class TakeRight[T] extends RxTransformer[T, T] {
   val period = Port[Option[Duration]]("period")

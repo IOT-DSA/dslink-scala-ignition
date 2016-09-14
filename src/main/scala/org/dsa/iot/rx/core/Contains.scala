@@ -4,6 +4,8 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  * Emits a Boolean that indicates whether the source emitted a specified item.
+ * 
+ * <img width="640" height="320" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/contains.png" alt="" />
  */
 class Contains[T] extends RxTransformer[T, Boolean] {
   val item = Port[T]("item")

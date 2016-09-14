@@ -6,6 +6,8 @@ import rx.lang.scala.Observable
 
 /**
  * Emits no data and completes immediately.
+ * 
+ * <img width="640" height="190" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/empty.s.png" alt="" />
  */
 class Empty extends AbstractRxBlock[Nothing] {
   protected def compute = Observable.empty

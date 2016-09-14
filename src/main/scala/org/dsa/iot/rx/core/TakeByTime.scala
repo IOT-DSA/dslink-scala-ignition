@@ -6,6 +6,8 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  * Emits items from the source before a specified time runs out.
+ * 
+ * <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/take.t.png" alt="" />
  */
 class TakeByTime[T] extends RxTransformer[T, T] {
   val period = Port[Duration]("period")

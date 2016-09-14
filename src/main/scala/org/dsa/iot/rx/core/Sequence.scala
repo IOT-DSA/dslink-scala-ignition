@@ -6,6 +6,8 @@ import rx.lang.scala.Observable
 
 /**
  * Emits items from the supplied collection.
+ * 
+ * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
  */
 class Sequence[A] extends AbstractRxBlock[A] {
   val items = Port[Iterable[A]]("items")

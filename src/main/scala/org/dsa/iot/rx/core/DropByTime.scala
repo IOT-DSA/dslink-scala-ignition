@@ -7,6 +7,9 @@ import org.dsa.iot.rx.RxTransformer
 /**
  * Drops items from either a beginning or end of the source sequence, for the duration of the
  * specified time window.
+ * 
+ * <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skip.t.png" alt="" />
+ * <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skipLast.t.png" alt="" />
  */
 class DropByTime[T](right: Boolean) extends RxTransformer[T, T] {
   val period = Port[Duration]("period")

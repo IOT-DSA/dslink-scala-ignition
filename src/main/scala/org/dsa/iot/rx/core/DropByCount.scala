@@ -4,6 +4,9 @@ import org.dsa.iot.rx.RxTransformer
 
 /**
  *  Drops a specified number of items from the beginning or end of source sequence.
+ *  
+ *  <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skip.png" alt="" />
+ *  <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skipLast.png" alt="" />
  */
 class DropByCount[T](right: Boolean) extends RxTransformer[T, T] {
   val count = Port[Int]("count")

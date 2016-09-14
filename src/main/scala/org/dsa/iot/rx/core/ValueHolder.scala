@@ -6,6 +6,8 @@ import rx.lang.scala.Observable
 
 /**
  * Forwards the values passed into its `value` port.
+ * 
+ * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
  */
 class ValueHolder[A] extends AbstractRxBlock[A] {
   val value = Port[A]("value")

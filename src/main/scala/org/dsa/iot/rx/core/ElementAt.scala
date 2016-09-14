@@ -5,6 +5,8 @@ import org.dsa.iot.rx.RxTransformer
 /**
  * Emits the item found at a specified index in a sequence of emissions from a source,
  * or a default item if that index is out of range.
+ * 
+ * <img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/elementAtOrDefault.png" alt="" />
  */
 class ElementAt[T] extends RxTransformer[T, T] {
   val index = Port[Int]("index")
