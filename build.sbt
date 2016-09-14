@@ -2,9 +2,8 @@
 val APP_VERSION = "0.1.0-SNAPSHOT"
 val SCALA_VERSION = "2.11.8"
 val SPARK_VERSION = "1.6.1"
-val DSA_SPARK_VERSION = "0.3.0"
-val SCALA_DSA_VERSION = "0.4.0-SNAPSHOT"
-val IGNITION_VERSION = "0.4.0-SNAPSHOT"
+val SCALA_DSA_VERSION = "0.4.0"
+val IGNITION_VERSION = "0.4.0"
 
 // settings
 name := "dslink-scala-ignition"
@@ -16,8 +15,7 @@ crossScalaVersions := Seq("2.10.5", SCALA_VERSION)
 // building
 resolvers += "sparkts.repo" at "https://repository.cloudera.com/artifactory/libs-release-local/"
 resolvers += Resolver.sonatypeRepo("snapshots")
-scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation", "-Xlint", 
-	"-Ywarn-dead-code", "-language:_", "-target:jvm-1.7", "-encoding", "UTF-8")
+scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation", "-Xlint", "-language:_", "-target:jvm-1.7", "-encoding", "UTF-8")
 run in Compile <<= Defaults.runTask(fullClasspath in Compile, mainClass in (Compile, run), runner in (Compile, run))
 mainClass in Compile := Some("org.dsa.iot.ignition.Main")
 
@@ -41,8 +39,6 @@ libraryDependencies ++= Seq(
   		exclude("io.netty", "*"),
   "org.iot-dsa"              %% "sdk-dslink-scala"           % SCALA_DSA_VERSION
   		exclude("com.fasterxml.jackson.core", "*"),   		
-  "org.iot-dsa"              %% "sdk-dslink-scala-spark"     % DSA_SPARK_VERSION
-  		exclude("com.fasterxml.jackson.core", "*"),
   "org.scalatest"            %% "scalatest"                  % "2.2.1"                 % "test",
   "org.scalacheck"           %% "scalacheck"                 % "1.12.1"                % "test",
   "org.mockito"               % "mockito-core"               % "1.10.19"               % "test"

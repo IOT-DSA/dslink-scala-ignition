@@ -1,27 +1,21 @@
 package org.dsa.iot.ignition.examples
 
-import collection.JavaConverters._
 import scala.concurrent.duration.DurationInt
-import org.dsa.iot.LinkMode
+
 import org.dsa.iot.dslink.link.Requester
 import org.dsa.iot.dslink.node.value.Value
-import org.dsa.iot.ignition.core.DSAInput
-import org.dsa.iot.stringToValue
+import org.dsa.iot.ignition.core.{ DQLInput, DSAInput }
+import org.dsa.iot.rx.{ RichTuple2, RxTransformer }
 import org.dsa.iot.rx.core._
-import org.dsa.iot.rx.numeric._
-import org.dsa.iot.ignition.core.DQLInput
-import org.dsa.iot._
-import org.dsa.iot.ignition.core.DSAInvoke
-import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.rx.numeric.Mul
+import org.dsa.iot.scala.{ DSAHelper, LinkMode }
 
 object IgnitionRxTest extends App {
 
   factorial
   runningTotal
-
   dsa
-
-  sys.exit
+  sys.exit(0)
 
   def factorial() = {
     val prod = Mul[Int](true)
@@ -67,7 +61,7 @@ object IgnitionRxTest extends App {
       val connection = connector start LinkMode.REQUESTER
       val requester = connection.requester
 
-      //      cpuAndMemory(requester)
+      cpuAndMemory(requester)
       dql(requester)
     } finally {
       connector.stop

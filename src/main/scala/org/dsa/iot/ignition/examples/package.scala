@@ -1,9 +1,12 @@
 package org.dsa.iot.ignition
 
-import org.dsa.iot._
-import _root_.rx.lang.scala.Subscriber
+import scala.concurrent.duration.{ Duration, DurationLong }
+
+import org.dsa.iot.scala.{ DSAConnector, Having }
+
 import com.ignition.util.Logging
-import scala.concurrent.duration._
+
+import rx.lang.scala.Subscriber
 
 package object examples extends Logging {
 

@@ -1,7 +1,7 @@
 package org.dsa.iot
 
-import scala.collection.JavaConverters.iterableAsScalaIterableConverter
-import scala.util.{ Random, Try }
+import _root_.scala.collection.JavaConverters.iterableAsScalaIterableConverter
+import _root_.scala.util.{ Random, Try }
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{ DataFrame, Row }

@@ -1,16 +1,19 @@
 package org.dsa.iot.ignition
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import org.apache.spark.sql.DataFrame
-import org.dsa.iot.{ ActionHandler, DSAConnector, DSAHelper, RichActionResult, RichNode, RichNodeBuilder, RichValueType, createAction }
-import org.dsa.iot.{ toList, valueToString }
-import org.dsa.iot.dslink.node.Node
-import org.dsa.iot.dslink.node.value.Value
-import org.dsa.iot.dslink.node.value.ValueType.STRING
-import org.slf4j.LoggerFactory
-import org.dsa.iot.dslink.node.actions.table.Table
 import scala.util.control.NonFatal
 
+import org.apache.spark.sql.DataFrame
+import org.dsa.iot.dslink.node.Node
+import org.dsa.iot.dslink.node.actions.table.Table
+import org.dsa.iot.dslink.node.value.Value
+import org.dsa.iot.dslink.node.value.ValueType.STRING
+import org.dsa.iot.scala._
+import org.slf4j.LoggerFactory
+
+/**
+ * The Ignition RX app entry point.
+ */
 object Main extends App {
   import Settings._
 
@@ -29,15 +32,11 @@ object Main extends App {
 
   log.info("Application controller started")
 
-  /* temporary commented out for testing 
-  println("Press Ctrl+C to shut down")
-  sys.addShutdownHook(shutdown)
-  */
-  println("\nPress ENTER to continue")
-  Console.in.readLine
-  shutdown
+  waitForShutdown
 
-  private def shutdown() = {
+  private def waitForShutdown() = {
+    println("\nPress ENTER to exit")
+    Console.in.readLine
     connector.stop
     sys.exit(0)
   }
@@ -78,9 +77,9 @@ object Main extends App {
             val stream = block.output map {
               case x: RichValue => x.self
               case x: Value     => x
-              case x: DataFrame => org.dsa.iot.mapToValue(spark.dataFrameToTableData(x))
-              case x: Table     => org.dsa.iot.mapToValue(tableToMap(x))
-              case x            => org.dsa.iot.anyToValue(x)
+              case x: DataFrame => org.dsa.iot.scala.mapToValue(spark.dataFrameToTableData(x))
+              case x: Table     => org.dsa.iot.scala.mapToValue(tableToMap(x))
+              case x            => org.dsa.iot.scala.anyToValue(x)
             }
             stream subscribe (DSAHelper.set(path, _))
         }

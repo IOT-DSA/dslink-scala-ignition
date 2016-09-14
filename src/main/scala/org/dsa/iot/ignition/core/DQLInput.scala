@@ -2,11 +2,10 @@ package org.dsa.iot.ignition.core
 
 import scala.collection.JavaConverters.asScalaBufferConverter
 
-import org.dsa.iot.DSAHelper
 import org.dsa.iot.dslink.link.Requester
 import org.dsa.iot.dslink.node.actions.table.Row
 import org.dsa.iot.rx.AbstractRxBlock
-import org.dsa.iot.valueToAny
+import org.dsa.iot.scala.{ DSAHelper, valueToAny }
 
 import rx.lang.scala.Observable
 

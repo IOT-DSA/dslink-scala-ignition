@@ -1,10 +1,10 @@
 package org.dsa.iot
 
-import scala.collection.JavaConverters._
-import scala.concurrent.duration.DurationLong
-import scala.math.Numeric.{ DoubleIsFractional, IntIsIntegral }
-import scala.reflect.runtime.universe
-import scala.util.{ Random, Try }
+import _root_.scala.collection.JavaConverters._
+import _root_.scala.concurrent.duration.DurationLong
+import _root_.scala.math.Numeric.{ DoubleIsFractional, IntIsIntegral }
+import _root_.scala.reflect.runtime.universe
+import _root_.scala.util.{ Random, Try }
 
 import org.dsa.iot.dslink.node.Node
 import org.dsa.iot.dslink.node.actions.table.Table
@@ -12,6 +12,7 @@ import org.dsa.iot.dslink.node.value.{ Value, ValueType }
 import org.dsa.iot.dslink.util.json.{ JsonArray, JsonObject }
 import org.dsa.iot.ignition.Settings
 import org.dsa.iot.rx.AbstractRxBlock
+import org.dsa.iot.scala._
 
 /**
  * Common types and helper functions.

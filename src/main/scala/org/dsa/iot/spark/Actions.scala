@@ -1,8 +1,7 @@
 package org.dsa.iot.spark
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import org.dsa.iot.{ ActionHandler, DSAHelper, RichActionResult, RichNodeBuilder, RichValueType, createAction }
-import org.dsa.iot.{ toList, valueToString }
+import org.dsa.iot.scala._
 import org.dsa.iot.dslink.node.value.ValueType.STRING
 import org.slf4j.LoggerFactory
 import com.ignition.FlowRuntime

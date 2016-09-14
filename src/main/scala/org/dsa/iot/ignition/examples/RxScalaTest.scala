@@ -4,9 +4,8 @@ import scala.collection.JavaConverters.asScalaSetConverter
 import scala.concurrent.duration.DurationInt
 import scala.util.Random
 
-import org.dsa.iot.{ DSAHelper, LinkMode }
 import org.dsa.iot.dslink.link.Requester
-import org.dsa.iot.valueToDouble
+import org.dsa.iot.scala.{ DSAHelper, LinkMode, valueToDouble }
 
 import rx.lang.scala.Observable
 
@@ -19,7 +18,7 @@ object RxScalaTest extends App {
   dsa
 
   sys.exit
-  
+
   def factorial() = {
     val src = Observable.from(1 to 5)
     val tgt = src.product
@@ -44,7 +43,7 @@ object RxScalaTest extends App {
     delay(1000)
     sub.unsubscribe
   }
-  
+
   def dsa() = {
     val connector = createConnector(args)
 
@@ -57,7 +56,7 @@ object RxScalaTest extends App {
     } finally {
       connector.stop
     }
-  }  
+  }
 
   def cpuAndMemory(implicit requester: Requester) = {
     val cpu = DSAHelper watch "/downstream/System/CPU_Usage" map (_.getValue: Double)

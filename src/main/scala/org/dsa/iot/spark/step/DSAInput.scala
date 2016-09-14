@@ -6,7 +6,7 @@ import scala.xml.{ Elem, Node }
 import org.apache.spark.sql.{ DataFrame, Row }
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.{ DataType, MetadataBuilder, StructField, StructType }
-import org.dsa.iot.DSAHelper
+import org.dsa.iot.scala.DSAHelper
 import org.dsa.iot.spark.Main.{ ec, requester }
 import org.dsa.iot.spark.Settings
 import org.json4s.JValue

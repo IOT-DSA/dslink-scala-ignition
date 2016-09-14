@@ -7,7 +7,7 @@ import org.json4s.JsonDSL.{ pair2Assoc, seq2jvalue, string2jvalue }
 import org.json4s.jvalue2monadic
 import com.ignition.util.JsonUtils.RichJValue
 import com.ignition.util.XmlUtils.RichNodeSeq
-import org.dsa.iot.DSAHelper
+import org.dsa.iot.scala.DSAHelper
 import org.dsa.iot.spark.Main._
 
 /**

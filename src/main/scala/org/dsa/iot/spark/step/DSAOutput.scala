@@ -9,7 +9,7 @@ import com.ignition.util.JsonUtils.RichJValue
 import com.ignition.util.XmlUtils.RichNodeSeq
 import org.dsa.iot.spark.Main._
 import com.ignition.frame._
-import org.dsa.iot.DSAHelper
+import org.dsa.iot.scala.DSAHelper
 
 /**
  * Posts updates to DSA node tree.

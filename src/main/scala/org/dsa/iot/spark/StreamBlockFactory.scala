@@ -90,14 +90,14 @@ object StreamBlockFactory extends BlockFactory[StreamStep, DataStream, SparkStre
   /**
    * DSA Input.
    */
-  object DSAInputAdapter extends StreamStepAdapter("DSAInput", DSA, Nil, One, "path 0" -> TEXT, "type 0" -> DATA_TYPE) {
-    def makeStep(json: JsonObject) = {
-      val paths = json.asTupledList2[String, String]("@array") map {
-        case (path, typeName) => path -> TypeUtils.typeForName(typeName)
-      }
-      step.DSAStreamInput(paths)
-    }
-  }
+//  object DSAInputAdapter extends StreamStepAdapter("DSAInput", DSA, Nil, One, "path 0" -> TEXT, "type 0" -> DATA_TYPE) {
+//    def makeStep(json: JsonObject) = {
+//      val paths = json.asTupledList2[String, String]("@array") map {
+//        case (path, typeName) => path -> TypeUtils.typeForName(typeName)
+//      }
+//      step.DSAStreamInput(paths)
+//    }
+//  }
 
   /**
    * DSA Output.

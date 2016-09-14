@@ -1,10 +1,9 @@
 package org.dsa.iot.ignition.core
 
-import org.dsa.iot.DSAHelper
 import org.dsa.iot.dslink.link.Requester
 import org.dsa.iot.dslink.node.value.Value
-
 import org.dsa.iot.rx.AbstractRxBlock
+import org.dsa.iot.scala.DSAHelper
 
 /**
  * Reads values from a DSA node.

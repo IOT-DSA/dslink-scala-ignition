@@ -8,10 +8,10 @@ import scala.util.control.NonFatal
 
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.streaming.{ Duration, Milliseconds }
-import org.dsa.iot.{ DSAConnector, DSAHelper, RichNode, RichNodeBuilder }
+import org.dsa.iot.scala.{ DSAConnector, DSAHelper, RichNode, RichNodeBuilder }
 import org.dsa.iot.dslink.DSLinkHandler
 import org.dsa.iot.dslink.node.Node
-import org.dsa.iot.spark.DSAReceiver
+//import org.dsa.iot.spark.DSAReceiver
 import org.slf4j.LoggerFactory
 
 import com.ignition.{ SparkHelper, frame, stream }
@@ -47,7 +47,7 @@ object Main extends App {
   implicit def requester = connection.requester
   implicit def responder = connection.responder
 
-  DSAReceiver.setRequester(requester)
+//  DSAReceiver.setRequester(requester)
 
   // workaround for "spark.sql.execution.id is already set" problem
   lazy val executorService = Executors.newFixedThreadPool(4)
