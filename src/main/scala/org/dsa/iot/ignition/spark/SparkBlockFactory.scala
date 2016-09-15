@@ -1,20 +1,28 @@
 package org.dsa.iot.ignition.spark
 
+import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.types.StructField
 import org.dsa.iot.dslink.util.json.JsonObject
 import org.dsa.iot.ignition._
 import org.dsa.iot.ignition.ParamInfo.input
-import com.ignition.{ SparkHelper, frame }
-import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
-import org.apache.spark.sql.DataFrame
 import org.dsa.iot.rx.RxTransformer
-import com.ignition.frame.FrameTransformer
-import com.ignition.frame.SparkRuntime
-import org.apache.spark.sql.types.StructField
+import org.dsa.iot.rx.script.ScriptDialect
+
+import com.ignition.{ SparkHelper, frame }
+import com.ignition.frame.{ FrameSplitter, FrameTransformer, SparkRuntime }
+import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
+import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
 
 abstract class RxFrameTransformer extends RxTransformer[DataFrame, DataFrame] {
 
   protected def doTransform(tx: FrameTransformer)(implicit rt: SparkRuntime) = source.in map { df =>
+    val source = producer(df)
+    source --> tx
+    tx.output
+  }
+
+  protected def doTransform(tx: FrameSplitter)(implicit rt: SparkRuntime) = source.in map { df =>
     val source = producer(df)
     source --> tx
     tx.output
@@ -127,6 +135,29 @@ object SparkBlockFactory extends TypeConverters {
     def setupBlock(block: SQLQuery, json: JsonObject, blocks: DSABlockMap) = {
       init(block.query, json, "query", blocks)
       connect(block.sources, json, arrayField, blocks)
+    }
+  }
+
+  object FormulaAdapter extends TransformerAdapter[DataFrame, Formula]("Formula", TRANSFORM,
+    "name" -> listOf(TEXT), "dialect" -> listOf(enum(ScriptDialect) default ScriptDialect.MVEL),
+    "expression" -> listOf(TEXT), "source" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = Formula()
+    def setupAttributes(block: Formula, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.fields, json, arrayField)(extractFields)
+    }
+    private def extractFields(json: JsonObject, key: String) = json.asTupledList4[String, String, String, String](key) map {
+      case (name, ScriptDialect.MVEL.name, expression, src)  => name -> MvelExpression(expression)
+      case (name, ScriptDialect.XPATH.name, expression, src) => name -> XPathExpression(expression, src)
+      case (name, ScriptDialect.JPATH.name, expression, src) => name -> JsonPathExpression(expression, src)
+    }
+  }
+
+  /* filter */
+
+  object FilterAdapter extends TransformerAdapter[DataFrame, Filter]("Filter", FILTER, "condition" -> TEXTAREA) {
+    def createBlock(json: JsonObject) = Filter()
+    def setupAttributes(block: Filter, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.condition, json, "condition", blocks)
     }
   }
 
