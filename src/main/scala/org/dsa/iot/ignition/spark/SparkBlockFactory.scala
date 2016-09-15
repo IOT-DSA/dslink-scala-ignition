@@ -9,6 +9,8 @@ import org.apache.spark.sql.DataFrame
 import org.dsa.iot.rx.RxTransformer
 import com.ignition.frame.FrameTransformer
 import com.ignition.frame.SparkRuntime
+import org.apache.spark.sql.types.StructField
+import com.ignition.types.TypeUtils
 
 abstract class RxFrameTransformer extends RxTransformer[DataFrame, DataFrame] {
 
@@ -58,6 +60,26 @@ object SparkBlockFactory extends TypeConverters {
       init(block.table, json, "table", blocks)
       set(block.columns, json, "columns")(extractSeparatedStrings)
       init(block.where, json, "where", blocks)
+    }
+  }
+
+  object DataGridAdapter extends AbstractRxBlockAdapter[DataGrid]("DataGrid", INPUT,
+    "schema" -> TEXT, "row" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = DataGrid()
+    def setupBlock(block: DataGrid, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.columns, json, "schema")(extractSchemaFields)
+      set(block.rows, json, "row")(extractRowData(extractSchemaFields(json, "schema")))
+    }
+    private def extractSchemaFields(json: JsonObject, key: String) = splitAndTrim(",")(json asString key) map { s =>
+      val Array(name, typeName) = s.split(":")
+      new StructField(name, TypeUtils.typeForName(typeName), true)
+    }
+    private def extractRowData(fields: Seq[StructField])(json: JsonObject, key: String) = json asStringList key map { s =>
+      val parts = s.split(",").map(_.trim)
+      val items = fields zip parts map {
+        case (field, value) => TypeUtils.valueOf(value, field.dataType)
+      }
+      org.apache.spark.sql.Row.fromSeq(items)
     }
   }
 
@@ -113,5 +135,16 @@ object SparkBlockFactory extends TypeConverters {
   object CacheAdapter extends TransformerAdapter[DataFrame, Cache]("Cache", UTIL) {
     def createBlock(json: JsonObject) = Cache()
     def setupAttributes(block: Cache, json: JsonObject, blocks: DSABlockMap) = {}
+  }
+
+  object DebugOutputAdapter extends TransformerAdapter[DataFrame, DebugOutput]("Debug", UTIL,
+    "showNames" -> BOOLEAN, "showTypes" -> BOOLEAN, "title" -> TEXT, "maxWidth" -> NUMBER default 80) {
+    def createBlock(json: JsonObject) = DebugOutput()
+    def setupAttributes(block: DebugOutput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.showNames, json, "showNames", blocks)
+      init(block.showTypes, json, "showTypes", blocks)
+      init(block.title, json, "title", blocks)
+      init(block.maxWidth, json, "maxWidth", blocks)
+    }
   }
 }
