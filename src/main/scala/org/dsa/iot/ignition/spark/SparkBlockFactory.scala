@@ -7,12 +7,12 @@ import org.dsa.iot.ignition._
 import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect
-
 import com.ignition.{ SparkHelper, frame }
 import com.ignition.frame.{ FrameSplitter, FrameTransformer, SparkRuntime }
 import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
+import com.ignition.frame.JoinType
 
 abstract class RxFrameTransformer extends RxTransformer[DataFrame, DataFrame] {
 
@@ -129,17 +129,8 @@ object SparkBlockFactory extends TypeConverters {
     }
   }
 
-  object SQLQueryAdapter extends AbstractRxBlockAdapter[SQLQuery]("SQLQuery", TRANSFORM,
-    "query" -> TEXTAREA, "input" -> listOf(TABLE)) {
-    def createBlock(json: JsonObject) = SQLQuery()
-    def setupBlock(block: SQLQuery, json: JsonObject, blocks: DSABlockMap) = {
-      init(block.query, json, "query", blocks)
-      connect(block.sources, json, arrayField, blocks)
-    }
-  }
-
   object FormulaAdapter extends TransformerAdapter[DataFrame, Formula]("Formula", TRANSFORM,
-    "name" -> listOf(TEXT), "dialect" -> listOf(enum(ScriptDialect) default ScriptDialect.MVEL),
+    "name" -> listOf(TEXT), "dialect" -> listOf(enum(ScriptDialect)),
     "expression" -> listOf(TEXT), "source" -> listOf(TEXT)) {
     def createBlock(json: JsonObject) = Formula()
     def setupAttributes(block: Formula, json: JsonObject, blocks: DSABlockMap) = {
@@ -159,6 +150,45 @@ object SparkBlockFactory extends TypeConverters {
     def setupAttributes(block: Filter, json: JsonObject, blocks: DSABlockMap) = {
       init(block.condition, json, "condition", blocks)
     }
+  }
+
+  /* combine */
+
+  object SQLQueryAdapter extends AbstractRxBlockAdapter[SQLQuery]("SQLQuery", COMBINE,
+    "query" -> TEXTAREA, "input" -> listOf(TABLE)) {
+    def createBlock(json: JsonObject) = SQLQuery()
+    def setupBlock(block: SQLQuery, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.query, json, "query", blocks)
+      connect(block.sources, json, arrayField, blocks)
+    }
+  }
+
+  object IntersectionAdapter extends AbstractRxBlockAdapter[Intersection]("Intersection", COMBINE,
+    "input" -> listOf(TABLE)) {
+    def createBlock(json: JsonObject) = Intersection()
+    def setupBlock(block: Intersection, json: JsonObject, blocks: DSABlockMap) = {
+      connect(block.sources, json, arrayField, blocks)
+    }
+  }
+
+  object UnionAdapter extends AbstractRxBlockAdapter[Union]("Union", COMBINE,
+    "input" -> listOf(TABLE)) {
+    def createBlock(json: JsonObject) = Union()
+    def setupBlock(block: Union, json: JsonObject, blocks: DSABlockMap) = {
+      connect(block.sources, json, arrayField, blocks)
+    }
+  }
+
+  object JoinAdapter extends AbstractRxBlockAdapter[Join]("Join", COMBINE,
+    "condition" -> TEXTAREA, "joinType" -> enum(JoinType) default JoinType.INNER, input(1), input(2)) {
+    def createBlock(json: JsonObject) = Join()
+    def setupBlock(block: Join, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.condition, json, "condition", blocks)
+      set(block.joinType, json, "joinType")(extJoinType)
+      connect(block.source1, json, "input1", blocks)
+      connect(block.source2, json, "input2", blocks)
+    }
+    private def extJoinType(json: JsonObject, key: String) = json.asEnum[JoinType.JoinType](JoinType)(key)
   }
 
   /* utilities */
