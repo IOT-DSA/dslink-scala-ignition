@@ -14,6 +14,11 @@ package object spark {
 
   val dataTypes = List(BooleanType, StringType, IntegerType, DoubleType)
   val DATA_TYPE = enum(dataTypes map TypeUtils.nameForType: _*)
+  
+  /**
+   * Parses the string value using the supplied type name.
+   */
+  def parseValue(str: String, typeName: String) = TypeUtils.valueOf(str, TypeUtils.typeForName(typeName))
 
   /**
    * Creates a producer, wrapper for the data frame.

@@ -177,6 +177,10 @@ package object ignition {
   /* type helpers */
 
   implicit def tuple2Param(pair: (String, String)) = ParamInfo(pair._1, pair._2, None)
+  
+  implicit def tupleOption2Param(pair: (String, Option[String])) = ParamInfo(pair._1 + " 0", pair._2.get, None)
+  
+  def listOf(editorType: String) = Some(editorType)
 
   /**
    * Converts a table into Map.

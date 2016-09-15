@@ -172,15 +172,14 @@ object CoreBlockFactory extends TypeConverters {
   /* combine */
 
   object CombineLatestAdapter extends AbstractRxBlockAdapter[CombineLatest[Any]](
-    "CombineLatest", COMBINE, "input 0" -> TABLE) {
+    "CombineLatest", COMBINE, "input" -> listOf(TABLE)) {
     def createBlock(json: JsonObject) = CombineLatest[Any]
     def setupBlock(block: CombineLatest[Any], json: JsonObject, blocks: DSABlockMap) = {
-      connect(block.sources, json, "@array", blocks)
+      connect(block.sources, json, arrayField, blocks)
     }
   }
 
-  object ConcatAdapter extends AbstractRxBlockAdapter[Concat[Any]](
-    "Concat", COMBINE, input(1), input(2)) {
+  object ConcatAdapter extends AbstractRxBlockAdapter[Concat[Any]]("Concat", COMBINE, input(1), input(2)) {
     def createBlock(json: JsonObject) = Concat[Any]
     def setupBlock(block: Concat[Any], json: JsonObject, blocks: DSABlockMap) = {
       connect(block.source1, json, "input1", blocks)
@@ -188,8 +187,7 @@ object CoreBlockFactory extends TypeConverters {
     }
   }
 
-  object MergeAdapter extends AbstractRxBlockAdapter[Merge[Any]](
-    "Merge", COMBINE, input(1), input(2)) {
+  object MergeAdapter extends AbstractRxBlockAdapter[Merge[Any]]("Merge", COMBINE, input(1), input(2)) {
     def createBlock(json: JsonObject) = Merge[Any]
     def setupBlock(block: Merge[Any], json: JsonObject, blocks: DSABlockMap) = {
       connect(block.source1, json, "input1", blocks)
@@ -197,48 +195,39 @@ object CoreBlockFactory extends TypeConverters {
     }
   }
 
-  object ZipAdapter extends AbstractRxBlockAdapter[Zip[Any]](
-    "Zip", COMBINE, "input 0" -> TABLE) {
+  object ZipAdapter extends AbstractRxBlockAdapter[Zip[Any]]("Zip", COMBINE, "input" -> listOf(TABLE)) {
     def createBlock(json: JsonObject) = Zip[Any]
     def setupBlock(block: Zip[Any], json: JsonObject, blocks: DSABlockMap) = {
-      connect(block.sources, json, "@array", blocks)
+      connect(block.sources, json, arrayField, blocks)
     }
   }
 
-  object SelectFirstAdapter extends AbstractRxBlockAdapter[AMB[Any]]("SelectFirst", COMBINE, "input 0" -> TABLE) {
+  object SelectFirstAdapter extends AbstractRxBlockAdapter[AMB[Any]]("SelectFirst", COMBINE, "input" -> listOf(TABLE)) {
     def createBlock(json: JsonObject) = AMB[Any]
     def setupBlock(block: AMB[Any], json: JsonObject, blocks: DSABlockMap) = {
-      connect(block.sources, json, "@array", blocks)
+      connect(block.sources, json, arrayField, blocks)
     }
   }
 
   /* aggregate */
 
-  object SumAdapter extends AbstractRxBlockAdapter[Sum[Value]]("Sum", AGGREGATE, input) {
+  object SumAdapter extends TransformerAdapter[Value, Sum[Value]]("Sum", AGGREGATE, input) {
     def createBlock(json: JsonObject) = Sum[Value](true)
-    def setupBlock(block: Sum[Value], json: JsonObject, blocks: DSABlockMap) = {
-      connect(block.source, json, "input", blocks)
-    }
+    def setupAttributes(block: Sum[Value], json: JsonObject, blocks: DSABlockMap) = {}
   }
 
-  object ProductAdapter extends AbstractRxBlockAdapter[Mul[Value]]("Product", AGGREGATE, input) {
+  object ProductAdapter extends TransformerAdapter[Value, Mul[Value]]("Product", AGGREGATE, input) {
     def createBlock(json: JsonObject) = Mul[Value](true)
-    def setupBlock(block: Mul[Value], json: JsonObject, blocks: DSABlockMap) = {
-      connect(block.source, json, "input", blocks)
-    }
+    def setupAttributes(block: Mul[Value], json: JsonObject, blocks: DSABlockMap) = {}
   }
 
-  object MinAdapter extends AbstractRxBlockAdapter[Min[Value]]("Min", AGGREGATE, input) {
+  object MinAdapter extends TransformerAdapter[Value, Min[Value]]("Min", AGGREGATE, input) {
     def createBlock(json: JsonObject) = Min[Value](true)
-    def setupBlock(block: Min[Value], json: JsonObject, blocks: DSABlockMap) = {
-      connect(block.source, json, "input", blocks)
-    }
+    def setupAttributes(block: Min[Value], json: JsonObject, blocks: DSABlockMap) = {}
   }
 
-  object MaxAdapter extends AbstractRxBlockAdapter[Max[Value]]("Max", AGGREGATE, input) {
+  object MaxAdapter extends TransformerAdapter[Value, Max[Value]]("Max", AGGREGATE, input) {
     def createBlock(json: JsonObject) = Max[Value](true)
-    def setupBlock(block: Max[Value], json: JsonObject, blocks: DSABlockMap) = {
-      connect(block.source, json, "input", blocks)
-    }
+    def setupAttributes(block: Max[Value], json: JsonObject, blocks: DSABlockMap) = {}
   }
 }

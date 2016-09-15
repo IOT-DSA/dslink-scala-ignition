@@ -18,8 +18,8 @@ import org.dsa.iot.util.Logging
  * @param defValue optional default value for the parameter.
  */
 case class ParamInfo(name: String, dataType: String, defValue: Option[Any] = None) {
-
-  def default(value: Any) = copy(name, dataType, Some(value))
+  
+  def default(value: Any) = copy(defValue = Some(value))
 
   def toJson = {
     def inQuotes(s: String) = "\"" + s + "\""
@@ -92,6 +92,12 @@ private[ignition] class TypeAdapter[T](implicit cnv: Any => T) extends RxTransfo
  */
 abstract class AbstractRxBlockAdapter[S <: DSARxBlock](val name: String, val category: String,
                                                        params: ParamInfo*) extends RxBlockAdapter[S] {
+  
+  /**
+   * The name of the field that stores list-type attribute values.
+   */
+  val arrayField = "@array"
+  
   /**
    * The specified block parameters plus output.
    */
