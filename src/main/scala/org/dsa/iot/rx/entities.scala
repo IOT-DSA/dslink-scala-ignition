@@ -252,6 +252,11 @@ abstract class AbstractRxBlock[R] extends RxBlock[R] with Logging { self =>
     def ins = ports map (_.in) toIndexedSeq
 
     /**
+     * Combines all input observables into a single observable of a Seq[X].
+     */
+    def combinedIns = Observable.combineLatest(ins.toIterable)(identity)
+
+    /**
      * Returns the specified port.
      */
     def apply(index: Int) = ports(index)

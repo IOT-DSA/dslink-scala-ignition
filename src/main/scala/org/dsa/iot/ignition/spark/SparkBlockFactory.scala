@@ -1,18 +1,18 @@
 package org.dsa.iot.ignition.spark
 
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.{ DataFrame, SaveMode }
 import org.apache.spark.sql.types.StructField
 import org.dsa.iot.dslink.util.json.JsonObject
 import org.dsa.iot.ignition._
 import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect
+
 import com.ignition.{ SparkHelper, frame }
-import com.ignition.frame.{ FrameSplitter, FrameTransformer, SparkRuntime }
+import com.ignition.frame.{ FrameSplitter, FrameTransformer, JoinType, SparkRuntime }
 import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
-import com.ignition.frame.JoinType
 
 abstract class RxFrameTransformer extends RxTransformer[DataFrame, DataFrame] {
 
@@ -71,6 +71,22 @@ object SparkBlockFactory extends TypeConverters {
     }
   }
 
+  object JdbcInputAdapter extends AbstractRxBlockAdapter[JdbcInput]("JdbcInput", INPUT,
+    "url" -> TEXT, "username" -> TEXT, "password" -> TEXT, "sql" -> TEXTAREA,
+    "propName" -> listOf(TEXT), "propValue" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = JdbcInput()
+    def setupBlock(block: JdbcInput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.url, json, "url", blocks)
+      init(block.username, json, "username", blocks)
+      init(block.password, json, "password", blocks)
+      init(block.sql, json, "sql", blocks)
+      set(block.properties, json, arrayField)(extractProperties)
+    }
+    private def extractProperties(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, value) => name -> value
+    }
+  }
+
   object DataGridAdapter extends AbstractRxBlockAdapter[DataGrid]("DataGrid", INPUT,
     "schema" -> TEXT, "row" -> listOf(TEXT)) {
     def createBlock(json: JsonObject) = DataGrid()
@@ -100,6 +116,25 @@ object SparkBlockFactory extends TypeConverters {
       init(block.keyspace, json, "keyspace", blocks)
       init(block.table, json, "table", blocks)
     }
+  }
+
+  object JdbcOutputAdapter extends TransformerAdapter[DataFrame, JdbcOutput]("JdbcOutput", OUTPUT,
+    "url" -> TEXT, "username" -> TEXT, "password" -> TEXT, "table" -> TEXT,
+    "mode" -> enum(SaveMode.values) default SaveMode.Append,
+    "propName" -> listOf(TEXT), "propValue" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = JdbcOutput()
+    def setupAttributes(block: JdbcOutput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.url, json, "url", blocks)
+      init(block.username, json, "username", blocks)
+      init(block.password, json, "password", blocks)
+      init(block.table, json, "table", blocks)
+      set(block.mode, json, "mode")(extractMode)
+      set(block.properties, json, arrayField)(extractProperties)
+    }
+    private def extractProperties(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, value) => name -> value
+    }
+    private def extractMode(json: JsonObject, key: String) = SaveMode.valueOf(json asString key)
   }
 
   /* stats */
