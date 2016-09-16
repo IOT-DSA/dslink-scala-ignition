@@ -10,10 +10,7 @@ import rx.lang.scala.Observable
 class AddFields(implicit rt: SparkRuntime) extends RxFrameTransformer {
   val fields = PortList[(String, Any)]("fields")
 
-  protected def compute = {
-    val flds = Observable.combineLatest(fields.ins.toIterable)(identity)
-    flds flatMap { list => doTransform(com.ignition.frame.AddFields(list)) }
-  }
+  protected def compute = fields.combinedIns flatMap { list => doTransform(com.ignition.frame.AddFields(list)) }
 }
 
 /**

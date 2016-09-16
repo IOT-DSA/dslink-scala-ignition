@@ -12,11 +12,8 @@ class BasicStats(implicit rt: SparkRuntime) extends RxFrameTransformer {
   val columns = PortList[(String, BasicAggregator)]("columns")
   val groupBy = Port[List[String]]("groupBy")
 
-  protected def compute = {
-    val fields = Observable.combineLatest(columns.ins.toIterable)(identity)
-    (groupBy.in combineLatest fields) flatMap {
-      case (grp, flds) => doTransform(com.ignition.frame.BasicStats(flds, grp))
-    }
+  protected def compute = (groupBy.in combineLatest columns.combinedIns) flatMap {
+    case (grp, flds) => doTransform(com.ignition.frame.BasicStats(flds, grp))
   }
 }
 

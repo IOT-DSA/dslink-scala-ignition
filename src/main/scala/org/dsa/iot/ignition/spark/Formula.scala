@@ -13,10 +13,7 @@ import rx.lang.scala.Observable
 class Formula(implicit rt: SparkRuntime) extends RxFrameTransformer {
   val fields = PortList[(String, RowExpression[_ <: DataType])]("fields")
 
-  protected def compute = {
-    val flds = Observable.combineLatest(fields.ins.toIterable)(identity)
-    flds flatMap { list => doTransform(com.ignition.frame.Formula(list)) }
-  }
+  protected def compute = fields.combinedIns flatMap { list => doTransform(com.ignition.frame.Formula(list)) }
 }
 
 /**

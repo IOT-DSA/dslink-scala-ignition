@@ -13,11 +13,10 @@ import rx.lang.scala.Observable
 class Union(implicit rt: SparkRuntime) extends RxMergerN[DataFrame, DataFrame] {
 
   protected def compute = {
-    val isn = com.ignition.frame.Union()
-    val inputs = Observable.combineLatest(sources.ins.toIterable)(identity)
-    inputs map { dfs =>
-      dfs.zipWithIndex foreach { case (df, idx) => producer(df) --> isn.in(idx) }
-      isn.output
+    val union = com.ignition.frame.Union()
+    sources.combinedIns map { dfs =>
+      dfs.zipWithIndex foreach { case (df, idx) => producer(df) --> union.in(idx) }
+      union.output
     }
   }
 }

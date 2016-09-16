@@ -15,14 +15,11 @@ class DataGrid(implicit rt: SparkRuntime) extends AbstractRxBlock[DataFrame] {
   val columns = PortList[StructField]("columns")
   val rows = Port[List[Row]]("rows")
 
-  protected def compute = {
-    val fields = Observable.combineLatest(columns.ins.toIterable)(identity)
-    fields combineLatest rows.in flatMap {
-      case (cols, rows) =>
-        val schema = StructType(cols)
-        val dg = com.ignition.frame.DataGrid(schema, rows)
-        Observable.just(dg.output)
-    }
+  protected def compute = columns.combinedIns combineLatest rows.in flatMap {
+    case (cols, rows) =>
+      val schema = StructType(cols)
+      val dg = com.ignition.frame.DataGrid(schema, rows)
+      Observable.just(dg.output)
   }
 }
 
