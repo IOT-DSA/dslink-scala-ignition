@@ -71,6 +71,26 @@ object SparkBlockFactory extends TypeConverters {
     }
   }
 
+  object MongoInputAdapter extends AbstractRxBlockAdapter[MongoInput]("MongoInput", INPUT,
+    "database" -> TEXT, "collection" -> TEXT,
+    "name" -> listOf(TEXT), "type" -> listOf(DATA_TYPE), "nullable" -> listOf(BOOLEAN),
+    "sort" -> TEXT, "limit" -> NUMBER, "offset" -> NUMBER) {
+    def createBlock(json: JsonObject) = MongoInput()
+    def setupBlock(block: MongoInput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.database, json, "database", blocks)
+      init(block.collection, json, "collection", blocks)
+      set(block.columns, json, arrayField)(extractStructFields(true))
+      set(block.sort, json, "sort")(extractSort)
+      init(block.limit, json, "limit", blocks)
+      init(block.offset, json, "offset", blocks)
+    }
+    private def extractSort(json: JsonObject, key: String) = json getAsString key map splitAndTrim(",") getOrElse Nil map (str =>
+      str split "\\s+" match {
+        case Array(name)      => frame.SortOrder(name)
+        case Array(name, dir) => frame.SortOrder(name, dir.toLowerCase startsWith "asc")
+      })
+  }
+
   object JdbcInputAdapter extends AbstractRxBlockAdapter[JdbcInput]("JdbcInput", INPUT,
     "url" -> TEXT, "username" -> TEXT, "password" -> TEXT, "sql" -> TEXTAREA,
     "propName" -> listOf(TEXT), "propValue" -> listOf(TEXT)) {
@@ -83,6 +103,18 @@ object SparkBlockFactory extends TypeConverters {
       set(block.properties, json, arrayField)(extractProperties)
     }
     private def extractProperties(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, value) => name -> value
+    }
+  }
+
+  object JsonFileInputAdapter extends AbstractRxBlockAdapter[JsonFileInput]("JsonFileInput", INPUT,
+    "path" -> TEXT, "name" -> listOf(TEXT), "jsonPath" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = JsonFileInput()
+    def setupBlock(block: JsonFileInput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.path, json, "path", blocks)
+      set(block.fields, json, arrayField)(extractFields)
+    }
+    private def extractFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
       case (name, value) => name -> value
     }
   }
@@ -110,11 +142,20 @@ object SparkBlockFactory extends TypeConverters {
   /* output */
 
   object CassandraOutputAdapter extends TransformerAdapter[DataFrame, CassandraOutput]("CassandraOutput", OUTPUT,
-    "keyspace" -> TEXT, "table" -> TEXT, input) {
+    "keyspace" -> TEXT, "table" -> TEXT) {
     def createBlock(json: JsonObject) = CassandraOutput()
     def setupAttributes(block: CassandraOutput, json: JsonObject, blocks: DSABlockMap) = {
       init(block.keyspace, json, "keyspace", blocks)
       init(block.table, json, "table", blocks)
+    }
+  }
+
+  object MongoOutputAdapter extends TransformerAdapter[DataFrame, MongoOutput]("MongoOutput", OUTPUT,
+    "database" -> TEXT, "collection" -> TEXT) {
+    def createBlock(json: JsonObject) = MongoOutput()
+    def setupAttributes(block: MongoOutput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.database, json, "database", blocks)
+      init(block.collection, json, "collection", blocks)
     }
   }
 
@@ -140,7 +181,7 @@ object SparkBlockFactory extends TypeConverters {
   /* stats */
 
   object BasicStatsAdapter extends TransformerAdapter[DataFrame, BasicStats]("BasicStats", STATS,
-    "name" -> listOf(TEXT), "func" -> listOf(enum(frame.BasicAggregator)), "groupBy" -> TEXT, input) {
+    "name" -> listOf(TEXT), "func" -> listOf(enum(frame.BasicAggregator)), "groupBy" -> TEXT) {
     def createBlock(json: JsonObject) = BasicStats()
     def setupAttributes(block: BasicStats, json: JsonObject, blocks: DSABlockMap) = {
       set(block.columns, json, arrayField)(extractAggregatedFields)

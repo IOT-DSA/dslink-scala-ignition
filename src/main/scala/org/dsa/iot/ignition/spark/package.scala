@@ -44,8 +44,8 @@ package object spark {
    * Extracts a list of `StructFields` elements from JSON.
    */
   def extractStructFields(withNullable: Boolean)(json: JsonObject, key: String) =
-    if (withNullable) json.asTupledList3[String, String, String](key) map {
-      case (name, typeName, nullable) => new StructField(name, TypeUtils.typeForName(typeName), nullable.toBoolean)
+    if (withNullable) json.asTupledList3[String, String, Boolean](key) map {
+      case (name, typeName, nullable) => new StructField(name, TypeUtils.typeForName(typeName), nullable)
     }
     else json.asTupledList2[String, String](key) map {
       case (name, typeName) => new StructField(name, TypeUtils.typeForName(typeName), true)
