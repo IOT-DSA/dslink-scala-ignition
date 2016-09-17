@@ -13,7 +13,7 @@ import scala.tools.nsc.interpreter.IMain
  */
 object ScriptDialect extends Enumeration {
 
-  abstract class ScriptDialect(name: String) extends super.Val(name) {
+  abstract class ScriptDialect(val name: String) extends super.Val(name) {
     def execute[T: TypeTag](code: String, context: Map[String, Any]): T
   }
   implicit def valueToDialect(v: Value) = v.asInstanceOf[ScriptDialect]

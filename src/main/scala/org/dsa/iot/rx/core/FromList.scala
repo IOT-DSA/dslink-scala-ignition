@@ -12,7 +12,7 @@ import rx.lang.scala.Observable
 class FromList[A] extends AbstractRxBlock[A] {
   val items = PortList[A]("items")
 
-  protected def compute = Observable.combineLatest(items.ins.toIterable)(identity) flatMap Observable.from[A]
+  protected def compute = items.combinedIns flatMap Observable.from[A]
 }
 
 /**

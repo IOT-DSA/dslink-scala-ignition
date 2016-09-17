@@ -16,14 +16,11 @@ class CsvFileInput(implicit rt: SparkRuntime) extends AbstractRxBlock[DataFrame]
   val separator = Port[Option[String]]("separator")
   val columns = PortList[StructField]("columns")
 
-  protected def compute = {
-    val fields = Observable.combineLatest(columns.ins.toIterable)(identity)
-    path.in combineLatest separator.in combineLatest fields flatMap {
-      case ((p, sep), cols) =>
-        val schema = if (cols.isEmpty) None else Some(StructType(cols))
-        val cfi = com.ignition.frame.CsvFileInput(p, sep, schema)
-        Observable.just(cfi.output)
-    }
+  protected def compute = path.in combineLatest separator.in combineLatest columns.combinedIns flatMap {
+    case ((p, sep), cols) =>
+      val schema = if (cols.isEmpty) None else Some(StructType(cols))
+      val cfi = com.ignition.frame.CsvFileInput(p, sep, schema)
+      Observable.just(cfi.output)
   }
 }
 

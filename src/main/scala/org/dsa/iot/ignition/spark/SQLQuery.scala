@@ -16,8 +16,7 @@ class SQLQuery(implicit rt: SparkRuntime) extends RxMergerN[DataFrame, DataFrame
 
   protected def compute = query.in flatMap { cql =>
     val sqlq = com.ignition.frame.SQLQuery(cql)
-    val inputs = Observable.combineLatest(sources.ins.toIterable)(identity)
-    inputs map { dfs =>
+    sources.combinedIns map { dfs =>
       dfs.zipWithIndex foreach {
         case (df, idx) => producer(df) --> sqlq.in(idx)
       }
@@ -30,7 +29,7 @@ class SQLQuery(implicit rt: SparkRuntime) extends RxMergerN[DataFrame, DataFrame
  * Factory for [[SQLQuery]] instances.
  */
 object SQLQuery {
- 
+
   /**
    * Creates a new SQLQuery instance.
    */

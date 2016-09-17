@@ -14,7 +14,7 @@ abstract class TransformerAdapter[T, S <: RxTransformer[T, _]](
 
   def setupBlock(block: S, json: JsonObject, blocks: DSABlockMap): Unit = {
     setupAttributes(block, json, blocks)
-    connect(block.source, json, "input", blocks)
+    connect(block.source, json, ParamInfo.input.name, blocks)
   }
 
   def setupAttributes(block: S, json: JsonObject, blocks: DSABlockMap): Unit

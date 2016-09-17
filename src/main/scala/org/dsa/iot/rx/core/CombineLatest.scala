@@ -11,7 +11,7 @@ import rx.lang.scala.Observable
  * @see <a href="http://reactivex.io/documentation/operators/combinelatest.html">ReactiveX operators documentation: CombineLatest</a>
  */
 class CombineLatest[T] extends RxMergerN[T, Seq[T]] {
-  protected def compute = Observable.combineLatest(sources.ins.toIterable)(identity)
+  protected def compute = sources.combinedIns
 }
 
 /**
