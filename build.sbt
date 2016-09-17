@@ -15,6 +15,7 @@ scalaVersion := SCALA_VERSION
 // building
 resolvers += "sparkts.repo" at "https://repository.cloudera.com/artifactory/libs-release-local/"
 resolvers += Resolver.sonatypeRepo("snapshots")
+resolvers += "Bintray megamsys" at "https://dl.bintray.com/megamsys/scala/"
 scalacOptions ++= Seq("-feature", "-unchecked", "-deprecation", "-Xlint", "-language:_", "-target:jvm-1.7", "-encoding", "UTF-8")
 run in Compile <<= Defaults.runTask(fullClasspath in Compile, mainClass in (Compile, run), runner in (Compile, run))
 mainClass in Compile := Some("org.dsa.iot.ignition.Main")
