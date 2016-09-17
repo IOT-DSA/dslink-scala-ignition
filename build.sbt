@@ -10,7 +10,7 @@ name := "dslink-scala-ignition"
 organization := "org.iot-dsa"
 version := APP_VERSION
 scalaVersion := SCALA_VERSION
-crossScalaVersions := Seq("2.10.5", SCALA_VERSION)
+//crossScalaVersions := Seq("2.10.5", SCALA_VERSION)
 
 // building
 resolvers += "sparkts.repo" at "https://repository.cloudera.com/artifactory/libs-release-local/"
