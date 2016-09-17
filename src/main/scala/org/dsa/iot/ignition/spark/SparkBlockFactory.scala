@@ -7,7 +7,6 @@ import org.dsa.iot.ignition._
 import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect
-
 import com.ignition.{ SparkHelper, frame }
 import com.ignition.frame.{ FrameSplitter, FrameTransformer, JoinType }
 import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
@@ -15,6 +14,7 @@ import com.ignition.frame.ReduceOp.{ ReduceOp, valueToOp }
 import com.ignition.frame.SparkRuntime
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
+import com.ignition.frame.HttpMethod
 
 /**
  * RX Transformer built on top of an Ignition FrameTransformer class, works as a bridge
@@ -207,6 +207,50 @@ object SparkBlockFactory extends TypeConverters {
       case (name, ScriptDialect.MVEL.name, expression, src)  => name -> MvelExpression(expression)
       case (name, ScriptDialect.XPATH.name, expression, src) => name -> XPathExpression(expression, src)
       case (name, ScriptDialect.JPATH.name, expression, src) => name -> JsonPathExpression(expression, src)
+    }
+  }
+
+  object RestClientAdapter extends TransformerAdapter[DataFrame, RestClient]("RestClient", TRANSFORM,
+    "url" -> TEXT, "method" -> enum(HttpMethod) default HttpMethod.GET,
+    "body" -> TEXTAREA, "header" -> listOf(TEXT), "headerValue" -> listOf(TEXT),
+    "resultField" -> TEXT default "result", "statusField" -> TEXT default "status", "headersField" -> TEXT) {
+    def createBlock(json: JsonObject) = RestClient()
+    def setupAttributes(block: RestClient, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.url, json, "url", blocks)
+      set(block.method, json, "method")(extractMethod)
+      init(block.body, json, "body", blocks)
+      set(block.headers, json, arrayField)(extractHeaders)
+      init(block.resultField, json, "resultField", blocks)
+      init(block.statusField, json, "statusField", blocks)
+      init(block.headersField, json, "headersField", blocks)
+    }
+    private def extractMethod(json: JsonObject, key: String) = json.asEnum[HttpMethod.HttpMethod](HttpMethod)(key)
+    private def extractHeaders(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, value) => name -> value
+    }
+  }
+
+  object SelectValuesAdapter extends TransformerAdapter[DataFrame, SelectValues]("SelectValues", TRANSFORM,
+    "action" -> listOf(enum("retain", "rename", "remove", "retype")), "data" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = SelectValues()
+    def setupAttributes(block: SelectValues, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.actions, json, arrayField)(extractActions)
+    }
+    private def extractActions(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case ("retain", data) => frame.SelectAction.Retain(splitAndTrim(",")(data))
+      case ("rename", data) =>
+        val pairs = splitAndTrim(",")(data) map { str =>
+          val Array(oldName, newName) = str.split(":").map(_.trim)
+          oldName -> newName
+        }
+        frame.SelectAction.Rename(pairs.toMap)
+      case ("remove", data) => frame.SelectAction.Remove(splitAndTrim(",")(data))
+      case ("retype", data) =>
+        val pairs = splitAndTrim(",")(data) map { str =>
+          val Array(field, typeName) = str.split(":").map(_.trim)
+          field -> TypeUtils.typeForName(typeName)
+        }
+        frame.SelectAction.Retype(pairs.toMap)
     }
   }
 
