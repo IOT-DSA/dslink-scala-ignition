@@ -9,11 +9,17 @@ import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect
 
 import com.ignition.{ SparkHelper, frame }
-import com.ignition.frame.{ FrameSplitter, FrameTransformer, JoinType, SparkRuntime }
+import com.ignition.frame.{ FrameSplitter, FrameTransformer, JoinType }
 import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
+import com.ignition.frame.ReduceOp.{ ReduceOp, valueToOp }
+import com.ignition.frame.SparkRuntime
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
 
+/**
+ * RX Transformer built on top of an Ignition FrameTransformer class, works as a bridge
+ * between ignition transformers and RX transformers.
+ */
 abstract class RxFrameTransformer extends RxTransformer[DataFrame, DataFrame] {
 
   protected def doTransform(tx: FrameTransformer)(implicit rt: SparkRuntime) = source.in map { df =>
@@ -37,7 +43,6 @@ object SparkBlockFactory extends TypeConverters {
   object Categories {
     val INPUT = "Spark.Input"
     val OUTPUT = "Spark.Output"
-    val STATS = "Spark.Statistics"
     val TRANSFORM = "Spark.Transform"
     val FILTER = "Spark.Filter"
     val COMBINE = "Spark.Combine"
@@ -178,20 +183,6 @@ object SparkBlockFactory extends TypeConverters {
     private def extractMode(json: JsonObject, key: String) = SaveMode.valueOf(json asString key)
   }
 
-  /* stats */
-
-  object BasicStatsAdapter extends TransformerAdapter[DataFrame, BasicStats]("BasicStats", STATS,
-    "name" -> listOf(TEXT), "func" -> listOf(enum(frame.BasicAggregator)), "groupBy" -> TEXT) {
-    def createBlock(json: JsonObject) = BasicStats()
-    def setupAttributes(block: BasicStats, json: JsonObject, blocks: DSABlockMap) = {
-      set(block.columns, json, arrayField)(extractAggregatedFields)
-      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
-    }
-    private def extractAggregatedFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
-      case (name, strFunc) => name -> (frame.BasicAggregator.withName(strFunc): BasicAggregator)
-    }
-  }
-
   /* transform */
 
   object AddFieldsAdapter extends TransformerAdapter[DataFrame, AddFields]("AddFields", TRANSFORM,
@@ -267,6 +258,32 @@ object SparkBlockFactory extends TypeConverters {
     private def extJoinType(json: JsonObject, key: String) = json.asEnum[JoinType.JoinType](JoinType)(key)
   }
 
+  /* aggregate */
+
+  object BasicStatsAdapter extends TransformerAdapter[DataFrame, BasicStats]("BasicStats", AGGREGATE,
+    "name" -> listOf(TEXT), "func" -> listOf(enum(frame.BasicAggregator)), "groupBy" -> TEXT) {
+    def createBlock(json: JsonObject) = BasicStats()
+    def setupAttributes(block: BasicStats, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.columns, json, arrayField)(extractAggregatedFields)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+    }
+    private def extractAggregatedFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, strFunc) => name -> (frame.BasicAggregator.withName(strFunc): BasicAggregator)
+    }
+  }
+
+  object ReduceAdapter extends TransformerAdapter[DataFrame, Reduce]("Reduce", AGGREGATE,
+    "name" -> listOf(TEXT), "operation" -> listOf(enum(frame.ReduceOp)), "groupBy" -> TEXT) {
+    def createBlock(json: JsonObject) = Reduce()
+    def setupAttributes(block: Reduce, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.columns, json, arrayField)(extractReducedFields)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+    }
+    private def extractReducedFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, strFunc) => name -> (frame.ReduceOp.withName(strFunc): ReduceOp)
+    }
+  }
+
   /* utilities */
 
   object CacheAdapter extends TransformerAdapter[DataFrame, Cache]("Cache", UTIL) {
@@ -282,6 +299,15 @@ object SparkBlockFactory extends TypeConverters {
       init(block.showTypes, json, "showTypes", blocks)
       init(block.title, json, "title", blocks)
       init(block.maxWidth, json, "maxWidth", blocks)
+    }
+  }
+
+  object RepartitionAdapter extends TransformerAdapter[DataFrame, Repartition]("Repartition", UTIL,
+    "size" -> NUMBER default 8, "shuffle" -> BOOLEAN default false) {
+    def createBlock(json: JsonObject) = Repartition()
+    def setupAttributes(block: Repartition, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.size, json, "size", blocks)
+      init(block.shuffle, json, "shuffle", blocks)
     }
   }
 }
