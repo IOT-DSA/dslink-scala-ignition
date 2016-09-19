@@ -1,0 +1,963 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>RxMerger2 - org.dsa.iot.rx.RxMerger2</title>
+          <meta name="description" content="RxMerger2 - org.dsa.iot.rx.RxMerger2" />
+          <meta name="keywords" content="RxMerger2 org.dsa.iot.rx.RxMerger2" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.dsa.iot.rx.RxMerger2';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img alt="Class" src="../../../../lib/class_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.dsa">dsa</a>.<a href="../package.html" class="extype" name="org.dsa.iot">iot</a>.<a href="package.html" class="extype" name="org.dsa.iot.rx">rx</a></p>
+        <h1>RxMerger2</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="org.dsa.iot.rx">package rx</a>
+          </div></span></h3><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">RxMerger2</span><span class="tparams">[<span name="T1">T1</span>, <span name="T2">T2</span>, <span name="R">R</span>]</span><span class="result"> extends <a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A block that has two inputs.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>], <a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a>, <a href="RxBlock.html" class="extype" name="org.dsa.iot.rx.RxBlock">RxBlock</a>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>], <a href="../../../../scala/package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="core/CombineLatest2.html" class="extype" name="org.dsa.iot.rx.core.CombineLatest2">CombineLatest2</a>, <a href="core/Concat.html" class="extype" name="org.dsa.iot.rx.core.Concat">Concat</a>, <a href="../ignition/spark/Join.html" class="extype" name="org.dsa.iot.ignition.spark.Join">Join</a>, <a href="core/Merge.html" class="extype" name="org.dsa.iot.rx.core.Merge">Merge</a>, <a href="core/Zip2.html" class="extype" name="org.dsa.iot.rx.core.Zip2">Zip2</a></div>
+          </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.dsa.iot.rx.RxMerger2"><span>RxMerger2</span></li><li class="in" name="org.dsa.iot.rx.AbstractRxBlock"><span>AbstractRxBlock</span></li><li class="in" name="org.dsa.iot.util.Logging"><span>Logging</span></li><li class="in" name="org.dsa.iot.rx.RxBlock"><span>RxBlock</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="org.dsa.iot.rx.RxMerger2#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;():org.dsa.iot.rx.RxMerger2[T1,T2,R]"></a>
+      <a id="&lt;init&gt;:RxMerger2[T1,T2,R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">RxMerger2</span><span class="params">()</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@&lt;init&gt;():org.dsa.iot.rx.RxMerger2[T1,T2,R]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.dsa.iot.rx.AbstractRxBlock.Port" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Port[X]extendsProductwithSerializable"></a>
+      <a id="Port[X]:Port[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="AbstractRxBlock$Port.html"><span class="name">Port</span></a><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.AbstractRxBlock@Port[X]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Connector for attributes and inputs.</p><div class="fullcomment"><div class="comment cmt"><p>Connector for attributes and inputs. Provides the input as Observable[X].
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock.PortList" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PortList[X]extendsIndexedSeq[AbstractRxBlock.this.Port[X]]withProductwithSerializable"></a>
+      <a id="PortList[X]:PortList[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="AbstractRxBlock$PortList.html"><span class="name">PortList</span></a><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="../../../../scala/package.html#IndexedSeq[+A]=IndexedSeq[A]" class="extmbr" name="scala.IndexedSeq">IndexedSeq</a>[<a href="AbstractRxBlock$Port.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock.Port">Port</a>[<span class="extype" name="org.dsa.iot.rx.AbstractRxBlock.PortList.X">X</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.AbstractRxBlock@PortList[X]extendsIndexedSeq[AbstractRxBlock.this.Port[X]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Connector for a list of attributes or inputs.</p><div class="fullcomment"><div class="comment cmt"><p>Connector for a list of attributes or inputs.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="org.dsa.iot.rx.AbstractRxBlock#compute" visbl="prt" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="compute:rx.lang.scala.Observable[R]"></a>
+      <a id="compute:Observable[R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">compute</span><span class="result">: <span class="extype" name="rx.lang.scala.Observable">Observable</span>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@compute:rx.lang.scala.Observable[R]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">computes the block's output
+</p><div class="fullcomment"><div class="comment cmt"><p>computes the block's output
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Concrete Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.dsa.iot.rx.RxMerger2#&lt;~" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;~(a:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T1],b:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T2]):Unit"></a>
+      <a id="&lt;~(AbstractRxBlock[_&lt;:T1],AbstractRxBlock[_&lt;:T2]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$tilde" class="name">&lt;~</span><span class="params">(<span name="a">a: <a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[_ &lt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.T1">T1</span>]</span>, <span name="b">b: <a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[_ &lt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.T2">T2</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@&lt;~(a:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T1],b:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T2]):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="../../../../scala/package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.dsa.iot.util.Logging#debug" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="debug(message:=&gt;String,args:Any*):Unit"></a>
+      <a id="debug(⇒String,Any*):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">debug</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="args">args: <span class="extype" name="scala.Any">Any</span>*</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@debug(message:=&gt;String,args:Any*):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="../../../../scala/package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.dsa.iot.util.Logging#error" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="error(message:=&gt;String,err:Throwable):Unit"></a>
+      <a id="error(⇒String,Throwable):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">error</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="err">err: <a href="../../../../scala/package.html#Throwable=Throwable" class="extmbr" name="scala.Throwable">Throwable</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@error(message:=&gt;String,err:Throwable):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></dd></dl></div>
+    </li><li name="org.dsa.iot.util.Logging#error" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="error(message:=&gt;String,args:Any*):Unit"></a>
+      <a id="error(⇒String,Any*):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">error</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="args">args: <span class="extype" name="scala.Any">Any</span>*</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@error(message:=&gt;String,args:Any*):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.dsa.iot.rx.RxMerger2#from" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="from(a:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T1],b:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T2]):Unit"></a>
+      <a id="from(AbstractRxBlock[_&lt;:T1],AbstractRxBlock[_&lt;:T2]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">from</span><span class="params">(<span name="a">a: <a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[_ &lt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.T1">T1</span>]</span>, <span name="b">b: <a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[_ &lt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.T2">T2</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@from(a:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T1],b:org.dsa.iot.rx.AbstractRxBlock[_&lt;:T2]):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#id" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="id:String"></a>
+      <a id="id:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">id</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@id:String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generates block's id for logging.</p><div class="fullcomment"><div class="comment cmt"><p>Generates block's id for logging.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.util.Logging#info" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="info(message:=&gt;String,args:Any*):Unit"></a>
+      <a id="info(⇒String,Any*):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">info</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="args">args: <span class="extype" name="scala.Any">Any</span>*</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@info(message:=&gt;String,args:Any*):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="../../../../scala/package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#observe" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="observe:rx.lang.scala.Observable[R]"></a>
+      <a id="observe:Observable[R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">observe</span><span class="result">: <span class="extype" name="rx.lang.scala.Observable">Observable</span>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@observe:rx.lang.scala.Observable[R]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The currently established Observable output.</p><div class="fullcomment"><div class="comment cmt"><p>The currently established Observable output.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a> → <a href="RxBlock.html" class="extype" name="org.dsa.iot.rx.RxBlock">RxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#output" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="output:rx.lang.scala.Observable[R]"></a>
+      <a id="output:Observable[R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">output</span><span class="result">: <span class="extype" name="rx.lang.scala.Observable">Observable</span>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@output:rx.lang.scala.Observable[R]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the block's output as an Observable.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the block's output as an Observable. This observable is stable in the sense that
+it keeps emitting items, whether the block has been reset, or its inputs changed etc., i.e.
+it never calls <code>onError</code> or <code>onCompleted</code> methods on its subscribers until the block's
+<code>shutdown()</code> method is called.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a> → <a href="RxBlock.html" class="extype" name="org.dsa.iot.rx.RxBlock">RxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#reset" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reset():Unit"></a>
+      <a id="reset():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reset</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@reset():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Resets the block by renewing the subscriptions and re-initiating the sequence.</p><div class="fullcomment"><div class="comment cmt"><p>Resets the block by renewing the subscriptions and re-initiating the sequence.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a> → <a href="RxBlock.html" class="extype" name="org.dsa.iot.rx.RxBlock">RxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#shutdown" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="shutdown():Unit"></a>
+      <a id="shutdown():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shutdown</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@shutdown():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Cancels all subscriptions and stops emitting items.</p><div class="fullcomment"><div class="comment cmt"><p>Cancels all subscriptions and stops emitting items.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a> → <a href="RxBlock.html" class="extype" name="org.dsa.iot.rx.RxBlock">RxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.RxMerger2#source1" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="source1:RxMerger2.this.Port[T1]"></a>
+      <a id="source1:Port[T1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">source1</span><span class="result">: <a href="#Port[X]extendsProductwithSerializable" class="extmbr" name="org.dsa.iot.rx.AbstractRxBlock.Port">Port</a>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.T1">T1</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@source1:RxMerger2.this.Port[T1]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.dsa.iot.rx.RxMerger2#source2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="source2:RxMerger2.this.Port[T2]"></a>
+      <a id="source2:Port[T2]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">source2</span><span class="result">: <a href="#Port[X]extendsProductwithSerializable" class="extmbr" name="org.dsa.iot.rx.AbstractRxBlock.Port">Port</a>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.T2">T2</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@source2:RxMerger2.this.Port[T2]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#to" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="to[U](block:org.dsa.iot.rx.RxTransformer[_&gt;:R,U]):block.type"></a>
+      <a id="to[U](RxTransformer[_&gt;:R,U]):block.type"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">to</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="block">block: <a href="RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[_ &gt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>, <span class="extype" name="org.dsa.iot.rx.AbstractRxBlock.to.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="org.dsa.iot.rx.AbstractRxBlock.to.block">block</span>.type</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@to[U](block:org.dsa.iot.rx.RxTransformer[_&gt;:R,U]):block.type" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Connects the output of this block to <code>source</code> input port of a transformer block.</p><div class="fullcomment"><div class="comment cmt"><p>Connects the output of this block to <code>source</code> input port of a transformer block.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#to" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="to[T](port:org.dsa.iot.rx.AbstractRxBlock[T]#Port[_&gt;:R]):port.owner.type"></a>
+      <a id="to[T](Port[_&gt;:R]):owner.type"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">to</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="port">port: <a href="AbstractRxBlock$Port.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock.Port">Port</a>[_ &gt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>)</span><span class="result">: <a href="AbstractRxBlock$Port.html#owner:org.dsa.iot.rx.AbstractRxBlock[R]" class="extmbr" name="org.dsa.iot.rx.AbstractRxBlock.Port#owner">owner</a>.type</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@to[T](port:org.dsa.iot.rx.AbstractRxBlock[T]#Port[_&gt;:R]):port.owner.type" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Connects the output of this block to an input port of another block.</p><div class="fullcomment"><div class="comment cmt"><p>Connects the output of this block to an input port of another block.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.dsa.iot.util.Logging#trace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="trace(message:=&gt;String,args:Any*):Unit"></a>
+      <a id="trace(⇒String,Any*):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">trace</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="args">args: <span class="extype" name="scala.Any">Any</span>*</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@trace(message:=&gt;String,args:Any*):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#unsubsribeOutput" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unsubsribeOutput():Unit"></a>
+      <a id="unsubsribeOutput():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unsubsribeOutput</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@unsubsribeOutput():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Cancels the output subscription.</p><div class="fullcomment"><div class="comment cmt"><p>Cancels the output subscription.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.dsa.iot.util.Logging#warn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="warn(message:=&gt;String,err:Throwable):Unit"></a>
+      <a id="warn(⇒String,Throwable):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">warn</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="err">err: <a href="../../../../scala/package.html#Throwable=Throwable" class="extmbr" name="scala.Throwable">Throwable</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@warn(message:=&gt;String,err:Throwable):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></dd></dl></div>
+    </li><li name="org.dsa.iot.util.Logging#warn" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="warn(message:=&gt;String,args:Any*):Unit"></a>
+      <a id="warn(⇒String,Any*):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">warn</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="args">args: <span class="extype" name="scala.Any">Any</span>*</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@warn(message:=&gt;String,args:Any*):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#withEvents" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="withEvents(name:String)(stream:rx.lang.scala.Observable[R]):rx.lang.scala.Observable[R]"></a>
+      <a id="withEvents(String)(Observable[R]):Observable[R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withEvents</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="stream">stream: <span class="extype" name="rx.lang.scala.Observable">Observable</span>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>)</span><span class="result">: <span class="extype" name="rx.lang.scala.Observable">Observable</span>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@withEvents(name:String)(stream:rx.lang.scala.Observable[R]):rx.lang.scala.Observable[R]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Decorates the observable by adding listeners for its lifecycle events.</p><div class="fullcomment"><div class="comment cmt"><p>Decorates the observable by adding listeners for its lifecycle events.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#~&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="~&gt;[U](block:org.dsa.iot.rx.RxTransformer[_&gt;:R,U]):block.type"></a>
+      <a id="~&gt;[U](RxTransformer[_&gt;:R,U]):block.type"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $tilde$greater" class="name">~&gt;</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="block">block: <a href="RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[_ &gt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>, <span class="extype" name="org.dsa.iot.rx.AbstractRxBlock.~&gt;.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="org.dsa.iot.rx.AbstractRxBlock.~&gt;.block">block</span>.type</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@~&gt;[U](block:org.dsa.iot.rx.RxTransformer[_&gt;:R,U]):block.type" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Connects the output of this block to <code>source</code> input port of a transformer block.</p><div class="fullcomment"><div class="comment cmt"><p>Connects the output of this block to <code>source</code> input port of a transformer block.
+An alias for <code>to(block)</code>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.AbstractRxBlock#~&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="~&gt;[T](port:org.dsa.iot.rx.AbstractRxBlock[T]#Port[_&gt;:R]):org.dsa.iot.rx.AbstractRxBlock[T]"></a>
+      <a id="~&gt;[T](Port[_&gt;:R]):AbstractRxBlock[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $tilde$greater" class="name">~&gt;</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="port">port: <a href="AbstractRxBlock$Port.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock.Port">Port</a>[_ &gt;: <span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</span>)</span><span class="result">: <a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.AbstractRxBlock.~&gt;.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.dsa.iot.rx.RxMerger2@~&gt;[T](port:org.dsa.iot.rx.AbstractRxBlock[T]#Port[_&gt;:R]):org.dsa.iot.rx.AbstractRxBlock[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Connects the output of this block to an input port of another block.</p><div class="fullcomment"><div class="comment cmt"><p>Connects the output of this block to an input port of another block.
+An alias for <code>to(port)</code>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="org.dsa.iot.rx.AbstractRxBlock">
+              <h3>Inherited from <a href="AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</h3>
+            </div><div class="parent" name="org.dsa.iot.util.Logging">
+              <h3>Inherited from <a href="../util/Logging.html" class="extype" name="org.dsa.iot.util.Logging">Logging</a></h3>
+            </div><div class="parent" name="org.dsa.iot.rx.RxBlock">
+              <h3>Inherited from <a href="RxBlock.html" class="extype" name="org.dsa.iot.rx.RxBlock">RxBlock</a>[<span class="extype" name="org.dsa.iot.rx.RxMerger2.R">R</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <a href="../../../../scala/package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

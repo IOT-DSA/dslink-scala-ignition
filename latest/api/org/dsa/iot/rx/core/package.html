@@ -1,0 +1,1882 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>core - org.dsa.iot.rx.core</title>
+          <meta name="description" content="core - org.dsa.iot.rx.core" />
+          <meta name="keywords" content="core org.dsa.iot.rx.core" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../index.html';
+            var hash = 'org.dsa.iot.rx.core.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../package.html" class="extype" name="org">org</a>.<a href="../../../package.html" class="extype" name="org.dsa">dsa</a>.<a href="../../package.html" class="extype" name="org.dsa.iot">iot</a>.<a href="../package.html" class="extype" name="org.dsa.iot.rx">rx</a></p>
+        <h1>core</h1><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">core</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.dsa.iot.rx.core.AMB" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AMB[T]extendsRxMergerN[T,T]"></a>
+      <a id="AMB[T]:AMB[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AMB.html"><span class="name">AMB</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxMergerN.html" class="extype" name="org.dsa.iot.rx.RxMergerN">RxMergerN</a>[<span class="extype" name="org.dsa.iot.rx.core.AMB.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.AMB.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@AMB[T]extendsRxMergerN[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Mirrors the one Observable in an Iterable of several Observables that first emits an item.</p><div class="fullcomment"><div class="comment cmt"><p>Mirrors the one Observable in an Iterable of several Observables that first emits an item.</p><p><img width="640" height="385" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/amb.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Cache" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Cache[T]extendsRxTransformer[T,T]"></a>
+      <a id="Cache[T]:Cache[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Cache.html"><span class="name">Cache</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Cache.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Cache.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Cache[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Caches the items emitted by the source, so that future subscriptions can &quot;replay&quot; them from the
+beginning.</p><div class="fullcomment"><div class="comment cmt"><p>Caches the items emitted by the source, so that future subscriptions can &quot;replay&quot; them from the
+beginning.</p><p><img width="640" height="410" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/cache.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Collect" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Collect[T,R]extendsRxTransformer[T,R]"></a>
+      <a id="Collect[T,R]:Collect[T,R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Collect.html"><span class="name">Collect</span></a><span class="tparams">[<span name="T">T</span>, <span name="R">R</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Collect.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Collect.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Collect[T,R]extendsRxTransformer[T,R]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Applies a partial function to all elements emitted by the source.</p>
+    </li><li name="org.dsa.iot.rx.core.CombineLatest" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CombineLatest[T]extendsRxMergerN[T,Seq[T]]"></a>
+      <a id="CombineLatest[T]:CombineLatest[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CombineLatest.html"><span class="name">CombineLatest</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxMergerN.html" class="extype" name="org.dsa.iot.rx.RxMergerN">RxMergerN</a>[<span class="extype" name="org.dsa.iot.rx.core.CombineLatest.T">T</span>, <a href="../../../../../scala/package.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="org.dsa.iot.rx.core.CombineLatest.T">T</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@CombineLatest[T]extendsRxMergerN[T,Seq[T]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines multiple Observables into a single Observable of lists, emitting a new list each time any
+of the sources emits a new item.</p><div class="fullcomment"><div class="comment cmt"><p>Combines multiple Observables into a single Observable of lists, emitting a new list each time any
+of the sources emits a new item.
+</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="http://reactivex.io/documentation/operators/combinelatest.html">ReactiveX operators documentation: CombineLatest</a></p></span></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.core.CombineLatest2" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CombineLatest2[T1,T2]extendsRxMerger2[T1,T2,(T1,T2)]"></a>
+      <a id="CombineLatest2[T1,T2]:CombineLatest2[T1,T2]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CombineLatest2.html"><span class="name">CombineLatest2</span></a><span class="tparams">[<span name="T1">T1</span>, <span name="T2">T2</span>]</span><span class="result"> extends <a href="../RxMerger2.html" class="extype" name="org.dsa.iot.rx.RxMerger2">RxMerger2</a>[<span class="extype" name="org.dsa.iot.rx.core.CombineLatest2.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.CombineLatest2.T2">T2</span>, (<span class="extype" name="org.dsa.iot.rx.core.CombineLatest2.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.CombineLatest2.T2">T2</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@CombineLatest2[T1,T2]extendsRxMerger2[T1,T2,(T1,T2)]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines two Observables into a single Observable of Tuple2, emitting a new tuple each time either
+of the sources emits a new item.</p><div class="fullcomment"><div class="comment cmt"><p>Combines two Observables into a single Observable of Tuple2, emitting a new tuple each time either
+of the sources emits a new item.
+</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="http://reactivex.io/documentation/operators/combinelatest.html">ReactiveX operators documentation: CombineLatest</a></p></span></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.core.CombineLatest3" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CombineLatest3[T1,T2,T3]extendsRxMerger3[T1,T2,T3,(T1,T2,T3)]"></a>
+      <a id="CombineLatest3[T1,T2,T3]:CombineLatest3[T1,T2,T3]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CombineLatest3.html"><span class="name">CombineLatest3</span></a><span class="tparams">[<span name="T1">T1</span>, <span name="T2">T2</span>, <span name="T3">T3</span>]</span><span class="result"> extends <a href="../RxMerger3.html" class="extype" name="org.dsa.iot.rx.RxMerger3">RxMerger3</a>[<span class="extype" name="org.dsa.iot.rx.core.CombineLatest3.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.CombineLatest3.T2">T2</span>, <span class="extype" name="org.dsa.iot.rx.core.CombineLatest3.T3">T3</span>, (<span class="extype" name="org.dsa.iot.rx.core.CombineLatest3.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.CombineLatest3.T2">T2</span>, <span class="extype" name="org.dsa.iot.rx.core.CombineLatest3.T3">T3</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@CombineLatest3[T1,T2,T3]extendsRxMerger3[T1,T2,T3,(T1,T2,T3)]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines three Observables into a single Observable of Tuple3, emitting a new tuple each time any
+of the sources emits a new item.</p><div class="fullcomment"><div class="comment cmt"><p>Combines three Observables into a single Observable of Tuple3, emitting a new tuple each time any
+of the sources emits a new item.
+</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="http://reactivex.io/documentation/operators/combinelatest.html">ReactiveX operators documentation: CombineLatest</a></p></span></dd></dl></div>
+    </li><li name="org.dsa.iot.rx.core.Concat" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Concat[T]extendsRxMerger2[T,T,T]"></a>
+      <a id="Concat[T]:Concat[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Concat.html"><span class="name">Concat</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxMerger2.html" class="extype" name="org.dsa.iot.rx.RxMerger2">RxMerger2</a>[<span class="extype" name="org.dsa.iot.rx.core.Concat.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Concat.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Concat.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Concat[T]extendsRxMerger2[T,T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">First emits the items emitted by the first source, and then the items emitted by the second.</p><div class="fullcomment"><div class="comment cmt"><p>First emits the items emitted by the first source, and then the items emitted by the second.</p><p><img width="640" height="380" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/concat.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Contains" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Contains[T]extendsRxTransformer[T,Boolean]"></a>
+      <a id="Contains[T]:Contains[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Contains.html"><span class="name">Contains</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Contains.T">T</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Contains[T]extendsRxTransformer[T,Boolean]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits a Boolean that indicates whether the source emitted a specified item.</p><div class="fullcomment"><div class="comment cmt"><p>Emits a Boolean that indicates whether the source emitted a specified item.</p><p><img width="640" height="320" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/contains.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Count" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Count[T]extendsRxTransformer[T,Int]"></a>
+      <a id="Count[T]:Count[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Count.html"><span class="name">Count</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Count.T">T</span>, <span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Count[T]extendsRxTransformer[T,Int]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Counts the total number of elements in the source sequence.</p><div class="fullcomment"><div class="comment cmt"><p>Counts the total number of elements in the source sequence. It can either produce a rolling count
+on each item, or just one final result when source is complete.
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Debounce" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Debounce[T]extendsRxTransformer[T,T]"></a>
+      <a id="Debounce[T]:Debounce[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Debounce.html"><span class="name">Debounce</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Debounce.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Debounce.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Debounce[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Drops all values from the source that are followed by newer values before the timeout value expires.</p><div class="fullcomment"><div class="comment cmt"><p>Drops all values from the source that are followed by newer values before the timeout value expires.</p><p><img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/debounce.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Delay" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Delay[T]extendsRxTransformer[T,T]"></a>
+      <a id="Delay[T]:Delay[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Delay.html"><span class="name">Delay</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Delay.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Delay.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Delay[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits the items emitted by the source shifted forward in time by a specified delay.</p><div class="fullcomment"><div class="comment cmt"><p>Emits the items emitted by the source shifted forward in time by a specified delay.</p><p><img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/delay.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Distinct" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Distinct[T]extendsRxTransformer[T,T]"></a>
+      <a id="Distinct[T]:Distinct[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Distinct.html"><span class="name">Distinct</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Distinct.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Distinct.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Distinct[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Applies the selector function to the source sequence and then drops the repeated items.</p><div class="fullcomment"><div class="comment cmt"><p>Applies the selector function to the source sequence and then drops the repeated items.
+If <code>global</code> parameter is <i>false</i> it deletes sequential repeated elements; if it is <i>true</i>,
+then it deletes <b>all</b> repeated elements.</p><p><img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/distinct.key.png" alt="" />
+<img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/distinctUntilChanged.key.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.DropByCount" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DropByCount[T]extendsRxTransformer[T,T]"></a>
+      <a id="DropByCount[T]:DropByCount[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DropByCount.html"><span class="name">DropByCount</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.DropByCount.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.DropByCount.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@DropByCount[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Drops a specified number of items from the beginning or end of source sequence.</p><div class="fullcomment"><div class="comment cmt"><p> Drops a specified number of items from the beginning or end of source sequence.</p><p> <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skip.png" alt="" />
+ <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skipLast.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.DropByTime" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DropByTime[T]extendsRxTransformer[T,T]"></a>
+      <a id="DropByTime[T]:DropByTime[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DropByTime.html"><span class="name">DropByTime</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.DropByTime.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.DropByTime.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@DropByTime[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Drops items from either a beginning or end of the source sequence, for the duration of the
+specified time window.</p><div class="fullcomment"><div class="comment cmt"><p>Drops items from either a beginning or end of the source sequence, for the duration of the
+specified time window.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skip.t.png" alt="" />
+<img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skipLast.t.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.DropWhile" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DropWhile[T]extendsRxTransformer[T,T]"></a>
+      <a id="DropWhile[T]:DropWhile[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DropWhile.html"><span class="name">DropWhile</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.DropWhile.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.DropWhile.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@DropWhile[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Drops items from the source as long as the predicate condition is true.</p><div class="fullcomment"><div class="comment cmt"><p>Drops items from the source as long as the predicate condition is true.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/skipWhile.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.ElementAt" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ElementAt[T]extendsRxTransformer[T,T]"></a>
+      <a id="ElementAt[T]:ElementAt[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ElementAt.html"><span class="name">ElementAt</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.ElementAt.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.ElementAt.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@ElementAt[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits the item found at a specified index in a sequence of emissions from a source,
+or a default item if that index is out of range.</p><div class="fullcomment"><div class="comment cmt"><p>Emits the item found at a specified index in a sequence of emissions from a source,
+or a default item if that index is out of range.</p><p><img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/elementAtOrDefault.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Empty" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EmptyextendsAbstractRxBlock[Nothing]"></a>
+      <a id="Empty:Empty"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Empty.html"><span class="name">Empty</span></a><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@EmptyextendsAbstractRxBlock[Nothing]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits no data and completes immediately.</p><div class="fullcomment"><div class="comment cmt"><p>Emits no data and completes immediately.</p><p><img width="640" height="190" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/empty.s.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Exists" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Exists[T]extendsRxTransformer[T,Boolean]"></a>
+      <a id="Exists[T]:Exists[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Exists.html"><span class="name">Exists</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Exists.T">T</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Exists[T]extendsRxTransformer[T,Boolean]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Tests whether a predicate holds for some of the elements of the source.</p>
+    </li><li name="org.dsa.iot.rx.core.Filter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Filter[T]extendsRxTransformer[T,T]"></a>
+      <a id="Filter[T]:Filter[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Filter.html"><span class="name">Filter</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Filter.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Filter.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Filter[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Only emits those items from the source sequence for which a given predicate holds.</p><div class="fullcomment"><div class="comment cmt"><p>Only emits those items from the source sequence for which a given predicate holds.</p><p><img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/filter.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.First" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="First[T]extendsRxTransformer[T,T]"></a>
+      <a id="First[T]:First[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="First.html"><span class="name">First</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.First.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.First.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@First[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits the very first item emitted by the source, or a default if the source is empty.</p><div class="fullcomment"><div class="comment cmt"><p>Emits the very first item emitted by the source, or a default if the source is empty.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/firstOrDefault.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Fold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Fold[T,R]extendsRxTransformer[T,R]"></a>
+      <a id="Fold[T,R]:Fold[T,R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Fold.html"><span class="name">Fold</span></a><span class="tparams">[<span name="T">T</span>, <span name="R">R</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Fold.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Fold.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Fold[T,R]extendsRxTransformer[T,R]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Repeatedly applies a function, where the first argument is the result obtained in the previous
+application (first time - the <code>initial</code> value), and the second argument is each element of the
+source sequence.</p><div class="fullcomment"><div class="comment cmt"><p>Repeatedly applies a function, where the first argument is the result obtained in the previous
+application (first time - the <code>initial</code> value), and the second argument is each element of the
+source sequence. Unlike <code>scan</code> it only emits the final result when the source sequence is complete.</p><p><img width="640" height="325" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/reduceSeed.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.FromList" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FromList[A]extendsAbstractRxBlock[A]"></a>
+      <a id="FromList[A]:FromList[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="FromList.html"><span class="name">FromList</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.core.FromList.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@FromList[A]extendsAbstractRxBlock[A]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines items passed into its ports into a single Observable.</p><div class="fullcomment"><div class="comment cmt"><p>Combines items passed into its ports into a single Observable.</p><p><img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Insert" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Insert[T]extendsRxTransformer[T,T]"></a>
+      <a id="Insert[T]:Insert[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Insert.html"><span class="name">Insert</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Insert.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Insert.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Insert[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits a specified item either before or after it emits items from the source.</p><div class="fullcomment"><div class="comment cmt"><p>Emits a specified item either before or after it emits items from the source.</p><p><img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/startWith.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Interval" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="IntervalextendsAbstractRxBlock[Long]"></a>
+      <a id="Interval:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Interval.html"><span class="name">Interval</span></a><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="scala.Long">Long</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@IntervalextendsAbstractRxBlock[Long]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits values 0, 1, 2 and so on at equal time intervals.</p><div class="fullcomment"><div class="comment cmt"><p>Emits values 0, 1, 2 and so on at equal time intervals.</p><p><img width="640" height="200" src="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/timer.p.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.IsEmpty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IsEmptyextendsRxTransformer[Any,Boolean]"></a>
+      <a id="IsEmpty:IsEmpty"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IsEmpty.html"><span class="name">IsEmpty</span></a><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="scala.Any">Any</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@IsEmptyextendsRxTransformer[Any,Boolean]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Tests whether the source emits no elements.</p>
+    </li><li name="org.dsa.iot.rx.core.Last" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Last[T]extendsRxTransformer[T,T]"></a>
+      <a id="Last[T]:Last[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Last.html"><span class="name">Last</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Last.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Last.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Last[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits the very last item emitted by the source, or a default if the source is empty.</p><div class="fullcomment"><div class="comment cmt"><p>Emits the very last item emitted by the source, or a default if the source is empty.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/lastOrDefault.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Length" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LengthextendsCount[Any]"></a>
+      <a id="Length:Length"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Length.html"><span class="name">Length</span></a><span class="result"> extends <a href="Count.html" class="extype" name="org.dsa.iot.rx.core.Count">Count</a>[<span class="extype" name="scala.Any">Any</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@LengthextendsCount[Any]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A shortcut for <a href="Count.html" class="extype" name="org.dsa.iot.rx.core.Count">Count</a> with a trivial predicate that always returns <code>true</code>, i.e.</p><div class="fullcomment"><div class="comment cmt"><p>A shortcut for <a href="Count.html" class="extype" name="org.dsa.iot.rx.core.Count">Count</a> with a trivial predicate that always returns <code>true</code>, i.e. it
+counts all the items in the source sequence.
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Merge" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Merge[T]extendsRxMerger2[T,T,T]"></a>
+      <a id="Merge[T]:Merge[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Merge.html"><span class="name">Merge</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxMerger2.html" class="extype" name="org.dsa.iot.rx.RxMerger2">RxMerger2</a>[<span class="extype" name="org.dsa.iot.rx.core.Merge.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Merge.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Merge.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Merge[T]extendsRxMerger2[T,T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Flattens two Observables into one Observable, without any transformation.</p><div class="fullcomment"><div class="comment cmt"><p>Flattens two Observables into one Observable, without any transformation.</p><p><img width="640" height="380" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/merge.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.RandomInterval" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RandomIntervalextendsAbstractRxBlock[Long]"></a>
+      <a id="RandomInterval:RandomInterval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomInterval.html"><span class="name">RandomInterval</span></a><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="scala.Long">Long</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@RandomIntervalextendsAbstractRxBlock[Long]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits <code>0</code>, <code>1</code>, <code>2</code>, <code>...</code> with a delay, randomly chosen for each item.</p>
+    </li><li name="org.dsa.iot.rx.core.Reduce" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Reduce[T]extendsRxTransformer[T,T]"></a>
+      <a id="Reduce[T]:Reduce[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Reduce.html"><span class="name">Reduce</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Reduce.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Reduce.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Reduce[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Repeatedly applies a function, where the first argument is the result obtained in the previous
+application and the second argument is each element of the source sequence.</p><div class="fullcomment"><div class="comment cmt"><p>Repeatedly applies a function, where the first argument is the result obtained in the previous
+application and the second argument is each element of the source sequence.</p><p><img width="640" height="320" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/reduce.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Repeat" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Repeat[T]extendsRxTransformer[T,T]"></a>
+      <a id="Repeat[T]:Repeat[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Repeat.html"><span class="name">Repeat</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Repeat.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Repeat.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Repeat[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Repeats the sequence of items emitted by the source either indefinitely or at most <code>count</code> times.</p><div class="fullcomment"><div class="comment cmt"><p>Repeats the sequence of items emitted by the source either indefinitely or at most <code>count</code> times.</p><p><img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/repeat.on.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Retry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Retry[T]extendsRxTransformer[T,T]"></a>
+      <a id="Retry[T]:Retry[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Retry.html"><span class="name">Retry</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Retry.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Retry.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Retry[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Retries the sequence emitted by the source in case of an error, either indefinitely
+or at most <code>count</code> times.</p><div class="fullcomment"><div class="comment cmt"><p>Retries the sequence emitted by the source in case of an error, either indefinitely
+or at most <code>count</code> times.</p><p><img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/retry.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Sample" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Sample[T]extendsRxTransformer[T,T]"></a>
+      <a id="Sample[T]:Sample[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Sample.html"><span class="name">Sample</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Sample.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Sample.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Sample[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits the results of sampling the items emitted by the source at a specified time interval.</p><div class="fullcomment"><div class="comment cmt"><p>Emits the results of sampling the items emitted by the source at a specified time interval.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/sample.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Scan" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Scan[T,R]extendsRxTransformer[T,R]"></a>
+      <a id="Scan[T,R]:Scan[T,R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Scan.html"><span class="name">Scan</span></a><span class="tparams">[<span name="T">T</span>, <span name="R">R</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Scan.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Scan.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Scan[T,R]extendsRxTransformer[T,R]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Continuouly applies a function, where the first argument is the result obtained in the previous
+application (first time - the <code>initial</code> value), and the second argument is each element of the
+source sequence.</p><div class="fullcomment"><div class="comment cmt"><p>Continuouly applies a function, where the first argument is the result obtained in the previous
+application (first time - the <code>initial</code> value), and the second argument is each element of the
+source sequence. Unlike <code>fold</code> it emits each intermediate result.</p><p><img width="640" height="320" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/scanSeed.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Sequence" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Sequence[A]extendsAbstractRxBlock[A]"></a>
+      <a id="Sequence[A]:Sequence[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Sequence.html"><span class="name">Sequence</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.core.Sequence.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Sequence[A]extendsAbstractRxBlock[A]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits items from the supplied collection.</p><div class="fullcomment"><div class="comment cmt"><p>Emits items from the supplied collection.</p><p><img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.TakeByCount" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TakeByCount[T]extendsRxTransformer[T,T]"></a>
+      <a id="TakeByCount[T]:TakeByCount[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeByCount.html"><span class="name">TakeByCount</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.TakeByCount.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.TakeByCount.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeByCount[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits only first <code>count</code> items emitted by the source.</p><div class="fullcomment"><div class="comment cmt"><p>Emits only first <code>count</code> items emitted by the source.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/take.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.TakeByTime" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TakeByTime[T]extendsRxTransformer[T,T]"></a>
+      <a id="TakeByTime[T]:TakeByTime[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeByTime.html"><span class="name">TakeByTime</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.TakeByTime.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.TakeByTime.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeByTime[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits items from the source before a specified time runs out.</p><div class="fullcomment"><div class="comment cmt"><p>Emits items from the source before a specified time runs out.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/take.t.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.TakeRight" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TakeRight[T]extendsRxTransformer[T,T]"></a>
+      <a id="TakeRight[T]:TakeRight[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeRight.html"><span class="name">TakeRight</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.TakeRight.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.TakeRight.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeRight[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits items from the source that were emitted in a specified window of time before the source
+completed, or the last <code>count</code> items of the source.</p><div class="fullcomment"><div class="comment cmt"><p>Emits items from the source that were emitted in a specified window of time before the source
+completed, or the last <code>count</code> items of the source.</p><p><img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/takeLast.tn.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.TakeWhile" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TakeWhile[T]extendsRxTransformer[T,T]"></a>
+      <a id="TakeWhile[T]:TakeWhile[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeWhile.html"><span class="name">TakeWhile</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.TakeWhile.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.TakeWhile.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeWhile[T]extendsRxTransformer[T,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits items from the source as long as the predicate condition is true.</p><div class="fullcomment"><div class="comment cmt"><p>Emits items from the source as long as the predicate condition is true.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/takeWhile.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Timer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TimerextendsAbstractRxBlock[Long]"></a>
+      <a id="Timer:Timer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Timer.html"><span class="name">Timer</span></a><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="scala.Long">Long</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TimerextendsAbstractRxBlock[Long]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits 0L after the specified delay and completes.</p><div class="fullcomment"><div class="comment cmt"><p>Emits 0L after the specified delay and completes.</p><p><img width="640" height="200" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/timer.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Transform" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Transform[T,R]extendsRxTransformer[T,R]"></a>
+      <a id="Transform[T,R]:Transform[T,R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Transform.html"><span class="name">Transform</span></a><span class="tparams">[<span name="T">T</span>, <span name="R">R</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.Transform.T">T</span>, <span class="extype" name="org.dsa.iot.rx.core.Transform.R">R</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Transform[T,R]extendsRxTransformer[T,R]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Transforms each item of the source sequence into a new one, using the functional operator.</p><div class="fullcomment"><div class="comment cmt"><p>Transforms each item of the source sequence into a new one, using the functional operator.</p><p><img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/map.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.ValueHolder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ValueHolder[A]extendsAbstractRxBlock[A]"></a>
+      <a id="ValueHolder[A]:ValueHolder[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueHolder.html"><span class="name">ValueHolder</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.core.ValueHolder.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@ValueHolder[A]extendsAbstractRxBlock[A]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Forwards the values passed into its <code>value</code> port.</p><div class="fullcomment"><div class="comment cmt"><p>Forwards the values passed into its <code>value</code> port.</p><p><img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.WindowBySize" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="WindowBySize[T]extendsRxTransformer[T,Seq[T]]"></a>
+      <a id="WindowBySize[T]:WindowBySize[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="WindowBySize.html"><span class="name">WindowBySize</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.WindowBySize.T">T</span>, <a href="../../../../../scala/package.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="org.dsa.iot.rx.core.WindowBySize.T">T</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@WindowBySize[T]extendsRxTransformer[T,Seq[T]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Creates an Observable which produces buffers of collected values.</p><div class="fullcomment"><div class="comment cmt"><p>Creates an Observable which produces buffers of collected values.</p><p>It produces a new buffer of at most <code>count</code> size every <code>skip</code> values. Therefore if <code>count == skip</code>,
+it produces non-overlapping buffers.
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.WindowByTime" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WindowByTime[T]extendsRxTransformer[T,Seq[T]]"></a>
+      <a id="WindowByTime[T]:WindowByTime[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="WindowByTime.html"><span class="name">WindowByTime</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.WindowByTime.T">T</span>, <a href="../../../../../scala/package.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="org.dsa.iot.rx.core.WindowByTime.T">T</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@WindowByTime[T]extendsRxTransformer[T,Seq[T]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Creates an Observable which produces buffers of collected values.</p>
+    </li><li name="org.dsa.iot.rx.core.Zero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zero[T]extendsAbstractRxBlock[T]"></a>
+      <a id="Zero[T]:Zero[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Zero.html"><span class="name">Zero</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../AbstractRxBlock.html" class="extype" name="org.dsa.iot.rx.AbstractRxBlock">AbstractRxBlock</a>[<span class="extype" name="org.dsa.iot.rx.core.Zero.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zero[T]extendsAbstractRxBlock[T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Emits a single &quot;zero&quot; item for the specified numeric type.</p>
+    </li><li name="org.dsa.iot.rx.core.Zip" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Zip[T]extendsRxMergerN[T,Seq[T]]"></a>
+      <a id="Zip[T]:Zip[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip.html"><span class="name">Zip</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxMergerN.html" class="extype" name="org.dsa.iot.rx.RxMergerN">RxMergerN</a>[<span class="extype" name="org.dsa.iot.rx.core.Zip.T">T</span>, <a href="../../../../../scala/package.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="org.dsa.iot.rx.core.Zip.T">T</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip[T]extendsRxMergerN[T,Seq[T]]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines multiple Observables into a single Observable of lists.</p><div class="fullcomment"><div class="comment cmt"><p>Combines multiple Observables into a single Observable of lists. Unlike <a href="CombineLatest.html" class="extype" name="org.dsa.iot.rx.core.CombineLatest">CombineLatest</a> it emits
+a new value only when <i>all</i> sources have emitted the next item.
+</p></div></div>
+    </li><li name="org.dsa.iot.rx.core.Zip2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zip2[T1,T2]extendsRxMerger2[T1,T2,(T1,T2)]"></a>
+      <a id="Zip2[T1,T2]:Zip2[T1,T2]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip2.html"><span class="name">Zip2</span></a><span class="tparams">[<span name="T1">T1</span>, <span name="T2">T2</span>]</span><span class="result"> extends <a href="../RxMerger2.html" class="extype" name="org.dsa.iot.rx.RxMerger2">RxMerger2</a>[<span class="extype" name="org.dsa.iot.rx.core.Zip2.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip2.T2">T2</span>, (<span class="extype" name="org.dsa.iot.rx.core.Zip2.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip2.T2">T2</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip2[T1,T2]extendsRxMerger2[T1,T2,(T1,T2)]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines two Observables into a single Observable of Tuple2, emitting a new tuple
+after both sources emitted the next item.</p>
+    </li><li name="org.dsa.iot.rx.core.Zip3" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zip3[T1,T2,T3]extendsRxMerger3[T1,T2,T3,(T1,T2,T3)]"></a>
+      <a id="Zip3[T1,T2,T3]:Zip3[T1,T2,T3]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip3.html"><span class="name">Zip3</span></a><span class="tparams">[<span name="T1">T1</span>, <span name="T2">T2</span>, <span name="T3">T3</span>]</span><span class="result"> extends <a href="../RxMerger3.html" class="extype" name="org.dsa.iot.rx.RxMerger3">RxMerger3</a>[<span class="extype" name="org.dsa.iot.rx.core.Zip3.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip3.T2">T2</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip3.T3">T3</span>, (<span class="extype" name="org.dsa.iot.rx.core.Zip3.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip3.T2">T2</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip3.T3">T3</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip3[T1,T2,T3]extendsRxMerger3[T1,T2,T3,(T1,T2,T3)]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines three Observables into a single Observable of Tuple3, emitting a new tuple
+after all sources emitted the next item.</p>
+    </li><li name="org.dsa.iot.rx.core.Zip4" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zip4[T1,T2,T3,T4]extendsRxMerger4[T1,T2,T3,T4,(T1,T2,T3,T4)]"></a>
+      <a id="Zip4[T1,T2,T3,T4]:Zip4[T1,T2,T3,T4]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip4.html"><span class="name">Zip4</span></a><span class="tparams">[<span name="T1">T1</span>, <span name="T2">T2</span>, <span name="T3">T3</span>, <span name="T4">T4</span>]</span><span class="result"> extends <a href="../RxMerger4.html" class="extype" name="org.dsa.iot.rx.RxMerger4">RxMerger4</a>[<span class="extype" name="org.dsa.iot.rx.core.Zip4.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip4.T2">T2</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip4.T3">T3</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip4.T4">T4</span>, (<span class="extype" name="org.dsa.iot.rx.core.Zip4.T1">T1</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip4.T2">T2</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip4.T3">T3</span>, <span class="extype" name="org.dsa.iot.rx.core.Zip4.T4">T4</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip4[T1,T2,T3,T4]extendsRxMerger4[T1,T2,T3,T4,(T1,T2,T3,T4)]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines three Observables into a single Observable of Tuple4, emitting a new tuple
+after all sources emitted the next item.</p>
+    </li><li name="org.dsa.iot.rx.core.ZipWithIndex" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ZipWithIndex[T]extendsRxTransformer[T,(T,Int)]"></a>
+      <a id="ZipWithIndex[T]:ZipWithIndex[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ZipWithIndex.html"><span class="name">ZipWithIndex</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../RxTransformer.html" class="extype" name="org.dsa.iot.rx.RxTransformer">RxTransformer</a>[<span class="extype" name="org.dsa.iot.rx.core.ZipWithIndex.T">T</span>, (<span class="extype" name="org.dsa.iot.rx.core.ZipWithIndex.T">T</span>, <span class="extype" name="scala.Int">Int</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@ZipWithIndex[T]extendsRxTransformer[T,(T,Int)]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Combines the items from the source Observable with their indices.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.dsa.iot.rx.core.AMB" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AMB"></a>
+      <a id="AMB:AMB"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AMB$.html"><span class="name">AMB</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@AMB" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="AMB.html" class="extype" name="org.dsa.iot.rx.core.AMB">AMB</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Cache" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Cache"></a>
+      <a id="Cache:Cache"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Cache$.html"><span class="name">Cache</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Cache" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Cache.html" class="extype" name="org.dsa.iot.rx.core.Cache">Cache</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Collect" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Collect"></a>
+      <a id="Collect:Collect"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Collect$.html"><span class="name">Collect</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Collect" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Collect.html" class="extype" name="org.dsa.iot.rx.core.Collect">Collect</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.CombineLatest" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CombineLatest"></a>
+      <a id="CombineLatest:CombineLatest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CombineLatest$.html"><span class="name">CombineLatest</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@CombineLatest" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="CombineLatest.html" class="extype" name="org.dsa.iot.rx.core.CombineLatest">CombineLatest</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.CombineLatest2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CombineLatest2"></a>
+      <a id="CombineLatest2:CombineLatest2"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CombineLatest2$.html"><span class="name">CombineLatest2</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@CombineLatest2" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="CombineLatest2.html" class="extype" name="org.dsa.iot.rx.core.CombineLatest2">CombineLatest2</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.CombineLatest3" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CombineLatest3"></a>
+      <a id="CombineLatest3:CombineLatest3"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CombineLatest3$.html"><span class="name">CombineLatest3</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@CombineLatest3" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="CombineLatest3.html" class="extype" name="org.dsa.iot.rx.core.CombineLatest3">CombineLatest3</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Concat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Concat"></a>
+      <a id="Concat:Concat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Concat$.html"><span class="name">Concat</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Concat" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Concat.html" class="extype" name="org.dsa.iot.rx.core.Concat">Concat</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Contains" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Contains"></a>
+      <a id="Contains:Contains"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Contains$.html"><span class="name">Contains</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Contains" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Contains.html" class="extype" name="org.dsa.iot.rx.core.Contains">Contains</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Count" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Count"></a>
+      <a id="Count:Count"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Count$.html"><span class="name">Count</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Count" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Count.html" class="extype" name="org.dsa.iot.rx.core.Count">Count</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Debounce" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Debounce"></a>
+      <a id="Debounce:Debounce"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Debounce$.html"><span class="name">Debounce</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Debounce" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Debounce.html" class="extype" name="org.dsa.iot.rx.core.Debounce">Debounce</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Delay" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Delay"></a>
+      <a id="Delay:Delay"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Delay$.html"><span class="name">Delay</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Delay" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Delay.html" class="extype" name="org.dsa.iot.rx.core.Delay">Delay</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Distinct" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Distinct"></a>
+      <a id="Distinct:Distinct"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Distinct$.html"><span class="name">Distinct</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Distinct" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Distinct.html" class="extype" name="org.dsa.iot.rx.core.Distinct">Distinct</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.DropByCount" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DropByCount"></a>
+      <a id="DropByCount:DropByCount"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DropByCount$.html"><span class="name">DropByCount</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@DropByCount" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="DropByCount.html" class="extype" name="org.dsa.iot.rx.core.DropByCount">DropByCount</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.DropByTime" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DropByTime"></a>
+      <a id="DropByTime:DropByTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DropByTime$.html"><span class="name">DropByTime</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@DropByTime" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="DropByTime.html" class="extype" name="org.dsa.iot.rx.core.DropByTime">DropByTime</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.DropWhile" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DropWhile"></a>
+      <a id="DropWhile:DropWhile"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DropWhile$.html"><span class="name">DropWhile</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@DropWhile" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="DropWhile.html" class="extype" name="org.dsa.iot.rx.core.DropWhile">DropWhile</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.ElementAt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ElementAt"></a>
+      <a id="ElementAt:ElementAt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ElementAt$.html"><span class="name">ElementAt</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@ElementAt" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="ElementAt.html" class="extype" name="org.dsa.iot.rx.core.ElementAt">ElementAt</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Empty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Empty"></a>
+      <a id="Empty:Empty"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Empty$.html"><span class="name">Empty</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Empty" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Empty.html" class="extype" name="org.dsa.iot.rx.core.Empty">Empty</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Exists" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Exists"></a>
+      <a id="Exists:Exists"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Exists$.html"><span class="name">Exists</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Exists" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Exists.html" class="extype" name="org.dsa.iot.rx.core.Exists">Exists</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Filter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Filter"></a>
+      <a id="Filter:Filter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Filter$.html"><span class="name">Filter</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Filter" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Filter.html" class="extype" name="org.dsa.iot.rx.core.Filter">Filter</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.First" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="First"></a>
+      <a id="First:First"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="First$.html"><span class="name">First</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@First" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="First.html" class="extype" name="org.dsa.iot.rx.core.First">First</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Fold"></a>
+      <a id="Fold:Fold"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Fold$.html"><span class="name">Fold</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Fold" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Fold.html" class="extype" name="org.dsa.iot.rx.core.Fold">Fold</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.FromList" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FromList"></a>
+      <a id="FromList:FromList"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FromList$.html"><span class="name">FromList</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@FromList" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="FromList.html" class="extype" name="org.dsa.iot.rx.core.FromList">FromList</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Insert" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Insert"></a>
+      <a id="Insert:Insert"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Insert$.html"><span class="name">Insert</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Insert" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Insert.html" class="extype" name="org.dsa.iot.rx.core.Insert">Insert</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Interval" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Interval"></a>
+      <a id="Interval:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Interval$.html"><span class="name">Interval</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Interval" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Interval.html" class="extype" name="org.dsa.iot.rx.core.Interval">Interval</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.IsEmpty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IsEmpty"></a>
+      <a id="IsEmpty:IsEmpty"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IsEmpty$.html"><span class="name">IsEmpty</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@IsEmpty" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="IsEmpty.html" class="extype" name="org.dsa.iot.rx.core.IsEmpty">IsEmpty</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Last" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Last"></a>
+      <a id="Last:Last"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Last$.html"><span class="name">Last</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Last" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Last.html" class="extype" name="org.dsa.iot.rx.core.Last">Last</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Length" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Length"></a>
+      <a id="Length:Length"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Length$.html"><span class="name">Length</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Length" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Length.html" class="extype" name="org.dsa.iot.rx.core.Length">Length</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Merge" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Merge"></a>
+      <a id="Merge:Merge"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Merge$.html"><span class="name">Merge</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Merge" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Merge.html" class="extype" name="org.dsa.iot.rx.core.Merge">Merge</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.RandomInterval" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RandomInterval"></a>
+      <a id="RandomInterval:RandomInterval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomInterval$.html"><span class="name">RandomInterval</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@RandomInterval" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="RandomInterval.html" class="extype" name="org.dsa.iot.rx.core.RandomInterval">RandomInterval</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Reduce" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Reduce"></a>
+      <a id="Reduce:Reduce"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Reduce$.html"><span class="name">Reduce</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Reduce" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Reduce.html" class="extype" name="org.dsa.iot.rx.core.Reduce">Reduce</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Repeat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Repeat"></a>
+      <a id="Repeat:Repeat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Repeat$.html"><span class="name">Repeat</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Repeat" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Repeat.html" class="extype" name="org.dsa.iot.rx.core.Repeat">Repeat</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Retry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Retry"></a>
+      <a id="Retry:Retry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Retry$.html"><span class="name">Retry</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Retry" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Retry.html" class="extype" name="org.dsa.iot.rx.core.Retry">Retry</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Sample" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Sample"></a>
+      <a id="Sample:Sample"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Sample$.html"><span class="name">Sample</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Sample" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Sample.html" class="extype" name="org.dsa.iot.rx.core.Sample">Sample</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Scan" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Scan"></a>
+      <a id="Scan:Scan"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Scan$.html"><span class="name">Scan</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Scan" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Scan.html" class="extype" name="org.dsa.iot.rx.core.Scan">Scan</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Sequence" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Sequence"></a>
+      <a id="Sequence:Sequence"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Sequence$.html"><span class="name">Sequence</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Sequence" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Sequence.html" class="extype" name="org.dsa.iot.rx.core.Sequence">Sequence</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.TakeByCount" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TakeByCount"></a>
+      <a id="TakeByCount:TakeByCount"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeByCount$.html"><span class="name">TakeByCount</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeByCount" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="TakeByCount.html" class="extype" name="org.dsa.iot.rx.core.TakeByCount">TakeByCount</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.TakeByTime" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TakeByTime"></a>
+      <a id="TakeByTime:TakeByTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeByTime$.html"><span class="name">TakeByTime</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeByTime" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="TakeByTime.html" class="extype" name="org.dsa.iot.rx.core.TakeByTime">TakeByTime</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.TakeRight" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TakeRight"></a>
+      <a id="TakeRight:TakeRight"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeRight$.html"><span class="name">TakeRight</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeRight" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="TakeRight.html" class="extype" name="org.dsa.iot.rx.core.TakeRight">TakeRight</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.TakeWhile" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TakeWhile"></a>
+      <a id="TakeWhile:TakeWhile"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TakeWhile$.html"><span class="name">TakeWhile</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@TakeWhile" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="TakeWhile.html" class="extype" name="org.dsa.iot.rx.core.TakeWhile">TakeWhile</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Timer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Timer"></a>
+      <a id="Timer:Timer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Timer$.html"><span class="name">Timer</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Timer" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Timer.html" class="extype" name="org.dsa.iot.rx.core.Timer">Timer</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Transform" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Transform"></a>
+      <a id="Transform:Transform"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Transform$.html"><span class="name">Transform</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Transform" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Transform.html" class="extype" name="org.dsa.iot.rx.core.Transform">Transform</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.ValueHolder" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueHolder"></a>
+      <a id="ValueHolder:ValueHolder"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueHolder$.html"><span class="name">ValueHolder</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@ValueHolder" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="ValueHolder.html" class="extype" name="org.dsa.iot.rx.core.ValueHolder">ValueHolder</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.WindowBySize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WindowBySize"></a>
+      <a id="WindowBySize:WindowBySize"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="WindowBySize$.html"><span class="name">WindowBySize</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@WindowBySize" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="WindowBySize.html" class="extype" name="org.dsa.iot.rx.core.WindowBySize">WindowBySize</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.WindowByTime" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WindowByTime"></a>
+      <a id="WindowByTime:WindowByTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="WindowByTime$.html"><span class="name">WindowByTime</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@WindowByTime" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="WindowByTime.html" class="extype" name="org.dsa.iot.rx.core.WindowByTime">WindowByTime</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Zero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zero"></a>
+      <a id="Zero:Zero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Zero$.html"><span class="name">Zero</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zero" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Zero.html" class="extype" name="org.dsa.iot.rx.core.Zero">Zero</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Zip" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zip"></a>
+      <a id="Zip:Zip"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip$.html"><span class="name">Zip</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Zip.html" class="extype" name="org.dsa.iot.rx.core.Zip">Zip</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Zip2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zip2"></a>
+      <a id="Zip2:Zip2"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip2$.html"><span class="name">Zip2</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip2" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Zip2.html" class="extype" name="org.dsa.iot.rx.core.Zip2">Zip2</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Zip3" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zip3"></a>
+      <a id="Zip3:Zip3"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip3$.html"><span class="name">Zip3</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip3" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Zip3.html" class="extype" name="org.dsa.iot.rx.core.Zip3">Zip3</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.Zip4" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Zip4"></a>
+      <a id="Zip4:Zip4"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Zip4$.html"><span class="name">Zip4</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@Zip4" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="Zip4.html" class="extype" name="org.dsa.iot.rx.core.Zip4">Zip4</a> instances.</p>
+    </li><li name="org.dsa.iot.rx.core.ZipWithIndex" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ZipWithIndex"></a>
+      <a id="ZipWithIndex:ZipWithIndex"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ZipWithIndex$.html"><span class="name">ZipWithIndex</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.dsa.iot.rx.core.package@ZipWithIndex" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Factory for <a href="ZipWithIndex.html" class="extype" name="org.dsa.iot.rx.core.ZipWithIndex">ZipWithIndex</a> instances.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
