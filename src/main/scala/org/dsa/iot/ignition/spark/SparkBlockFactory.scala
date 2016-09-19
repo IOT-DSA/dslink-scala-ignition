@@ -8,13 +8,12 @@ import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect
 import com.ignition.{ SparkHelper, frame }
-import com.ignition.frame.{ FrameSplitter, FrameTransformer, JoinType }
-import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
-import com.ignition.frame.ReduceOp.{ ReduceOp, valueToOp }
+import com.ignition.frame.{ BasicAggregator, FrameSplitter, FrameTransformer, HttpMethod, JoinType, ReduceOp }
 import com.ignition.frame.SparkRuntime
+import com.ignition.frame.mllib.{ CorrelationMethod, RegressionMethod }
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
-import com.ignition.frame.HttpMethod
+import org.apache.spark.mllib.regression.GeneralizedLinearModel
 
 /**
  * RX Transformer built on top of an Ignition FrameTransformer class, works as a bridge
@@ -351,27 +350,70 @@ object SparkBlockFactory extends TypeConverters {
   /* aggregate */
 
   object BasicStatsAdapter extends TransformerAdapter[DataFrame, BasicStats]("BasicStats", AGGREGATE,
-    "name" -> listOf(TEXT), "func" -> listOf(enum(frame.BasicAggregator)), "groupBy" -> TEXT) {
+    "name" -> listOf(TEXT), "func" -> listOf(enum(BasicAggregator)), "groupBy" -> TEXT) {
     def createBlock(json: JsonObject) = BasicStats()
     def setupAttributes(block: BasicStats, json: JsonObject, blocks: DSABlockMap) = {
       set(block.columns, json, arrayField)(extractAggregatedFields)
       set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
     }
     private def extractAggregatedFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
-      case (name, strFunc) => name -> (frame.BasicAggregator.withName(strFunc): BasicAggregator)
+      case (name, strFunc) => name -> (BasicAggregator.withName(strFunc): BasicAggregator.BasicAggregator)
     }
   }
 
   object ReduceAdapter extends TransformerAdapter[DataFrame, Reduce]("Reduce", AGGREGATE,
-    "name" -> listOf(TEXT), "operation" -> listOf(enum(frame.ReduceOp)), "groupBy" -> TEXT) {
+    "name" -> listOf(TEXT), "operation" -> listOf(enum(ReduceOp)), "groupBy" -> TEXT) {
     def createBlock(json: JsonObject) = Reduce()
     def setupAttributes(block: Reduce, json: JsonObject, blocks: DSABlockMap) = {
       set(block.columns, json, arrayField)(extractReducedFields)
       set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
     }
     private def extractReducedFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
-      case (name, strFunc) => name -> (frame.ReduceOp.withName(strFunc): ReduceOp)
+      case (name, strFunc) => name -> (ReduceOp.withName(strFunc): ReduceOp.ReduceOp)
     }
+  }
+
+  object ColumnStatsAdapter extends TransformerAdapter[DataFrame, ColumnStats]("ColumnStats", AGGREGATE,
+    "field" -> listOf(TEXT), "groupBy" -> TEXT) {
+    def createBlock(json: JsonObject) = ColumnStats()
+    def setupAttributes(block: ColumnStats, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.columns, json, arrayField)(extractColumns)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+    }
+    private def extractColumns(json: JsonObject, key: String) = json asStringList key
+  }
+
+  object CorrelationAdapter extends TransformerAdapter[DataFrame, Correlation]("Correlation", AGGREGATE,
+    "field" -> listOf(TEXT), "groupBy" -> TEXT,
+    "method" -> enum(CorrelationMethod) default CorrelationMethod.PEARSON) {
+    def createBlock(json: JsonObject) = Correlation()
+    def setupAttributes(block: Correlation, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.dataFields, json, arrayField)(extractFields)
+      set(block.method, json, "method")(extractMethod)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+    }
+    private def extractFields(json: JsonObject, key: String) = json asStringList key
+    private def extractMethod(json: JsonObject, key: String) =
+      json.asEnum[CorrelationMethod.CorrelationMethod](CorrelationMethod)(key)
+  }
+
+  object RegressionAdapter extends TransformerAdapter[DataFrame, Regression]("Regression", AGGREGATE,
+    "labelField" -> TEXT, "field" -> listOf(TEXT), "groupBy" -> TEXT,
+    "method" -> enum(RegressionMethod) default RegressionMethod.LINEAR,
+    "iterations" -> NUMBER default 100, "step" -> NUMBER default 1, "intercept" -> BOOLEAN default false) {
+    def createBlock(json: JsonObject) = Regression()
+    def setupAttributes(block: Regression, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.labelField, json, "labelField", blocks)
+      set(block.dataFields, json, arrayField)(extractFields)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+      set(block.method, json, "method")(extractMethod)
+      init(block.iterationCount, json, "iterations", blocks)
+      init(block.stepSize, json, "step", blocks)
+      init(block.allowIntercept, json, "intercept", blocks)
+    }
+    private def extractFields(json: JsonObject, key: String) = json asStringList key
+    private def extractMethod(json: JsonObject, key: String) =
+      json.asEnum[RegressionMethod.RegressionMethod[_ <: GeneralizedLinearModel]](RegressionMethod)(key)
   }
 
   /* utilities */

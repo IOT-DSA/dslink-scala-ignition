@@ -3,8 +3,6 @@ package org.dsa.iot.ignition.spark
 import com.ignition.frame.BasicAggregator.BasicAggregator
 import com.ignition.frame.SparkRuntime
 
-import rx.lang.scala.Observable
-
 /**
  * Calculates basic statistics.
  */
