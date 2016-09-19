@@ -7,14 +7,13 @@ import org.dsa.iot.ignition._
 import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect
-
 import com.ignition.{ SparkHelper, frame }
-import com.ignition.frame.{ FrameSplitter, FrameTransformer, JoinType }
-import com.ignition.frame.BasicAggregator.{ BasicAggregator, valueToAggregator }
-import com.ignition.frame.ReduceOp.{ ReduceOp, valueToOp }
+import com.ignition.frame.{ BasicAggregator, FrameSplitter, FrameTransformer, HttpMethod, JoinType, ReduceOp }
 import com.ignition.frame.SparkRuntime
+import com.ignition.frame.mllib.{ CorrelationMethod, RegressionMethod }
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
+import org.apache.spark.mllib.regression.GeneralizedLinearModel
 
 /**
  * RX Transformer built on top of an Ignition FrameTransformer class, works as a bridge
@@ -124,6 +123,26 @@ object SparkBlockFactory extends TypeConverters {
     }
   }
 
+  object TextFileInputAdapter extends AbstractRxBlockAdapter[TextFileInput]("TextFileInput", INPUT,
+    "path" -> TEXT, "separator" -> TEXT, "field" -> TEXT default "content") {
+    def createBlock(json: JsonObject) = TextFileInput()
+    def setupBlock(block: TextFileInput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.path, json, "path", blocks)
+      init(block.separator, json, "separator", blocks)
+      init(block.field, json, "field", blocks)
+    }
+  }
+
+  object TextFolderInputAdapter extends AbstractRxBlockAdapter[TextFolderInput]("TextFolderInput",
+    INPUT, "path" -> TEXT, "nameField" -> TEXT default "filename", "dataField" -> TEXT default "content") {
+    def createBlock(json: JsonObject) = TextFolderInput()
+    def setupBlock(block: TextFolderInput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.path, json, "path", blocks)
+      init(block.nameField, json, "nameField", blocks)
+      init(block.dataField, json, "dataField", blocks)
+    }
+  }
+
   object DataGridAdapter extends AbstractRxBlockAdapter[DataGrid]("DataGrid", INPUT,
     "schema" -> TEXT, "row" -> listOf(TEXT)) {
     def createBlock(json: JsonObject) = DataGrid()
@@ -183,6 +202,21 @@ object SparkBlockFactory extends TypeConverters {
     private def extractMode(json: JsonObject, key: String) = SaveMode.valueOf(json asString key)
   }
 
+  object TextFileOutputAdapter extends TransformerAdapter[DataFrame, TextFileOutput]("TextFileOutput",
+    OUTPUT, "filename" -> TEXT, "field" -> listOf(TEXT), "format" -> listOf(TEXT),
+    "separator" -> TEXT default ",", "showHeader" -> BOOLEAN default true) {
+    def createBlock(json: JsonObject) = TextFileOutput()
+    def setupAttributes(block: TextFileOutput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.filename, json, "filename", blocks)
+      set(block.formats, json, arrayField)(extractFormats)
+      init(block.separator, json, "separator", blocks)
+      init(block.header, json, "showHeader", blocks)
+    }
+    private def extractFormats(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, value) => name -> value
+    }
+  }
+
   /* transform */
 
   object AddFieldsAdapter extends TransformerAdapter[DataFrame, AddFields]("AddFields", TRANSFORM,
@@ -207,6 +241,61 @@ object SparkBlockFactory extends TypeConverters {
       case (name, ScriptDialect.MVEL.name, expression, src)  => name -> MvelExpression(expression)
       case (name, ScriptDialect.XPATH.name, expression, src) => name -> XPathExpression(expression, src)
       case (name, ScriptDialect.JPATH.name, expression, src) => name -> JsonPathExpression(expression, src)
+    }
+  }
+
+  object RestClientAdapter extends TransformerAdapter[DataFrame, RestClient]("RestClient", TRANSFORM,
+    "url" -> TEXT, "method" -> enum(HttpMethod) default HttpMethod.GET,
+    "body" -> TEXTAREA, "header" -> listOf(TEXT), "headerValue" -> listOf(TEXT),
+    "resultField" -> TEXT default "result", "statusField" -> TEXT default "status", "headersField" -> TEXT) {
+    def createBlock(json: JsonObject) = RestClient()
+    def setupAttributes(block: RestClient, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.url, json, "url", blocks)
+      set(block.method, json, "method")(extractMethod)
+      init(block.body, json, "body", blocks)
+      set(block.headers, json, arrayField)(extractHeaders)
+      init(block.resultField, json, "resultField", blocks)
+      init(block.statusField, json, "statusField", blocks)
+      init(block.headersField, json, "headersField", blocks)
+    }
+    private def extractMethod(json: JsonObject, key: String) = json.asEnum[HttpMethod.HttpMethod](HttpMethod)(key)
+    private def extractHeaders(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, value) => name -> value
+    }
+  }
+
+  object SelectValuesAdapter extends TransformerAdapter[DataFrame, SelectValues]("SelectValues", TRANSFORM,
+    "action" -> listOf(enum("retain", "rename", "remove", "retype")), "data" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = SelectValues()
+    def setupAttributes(block: SelectValues, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.actions, json, arrayField)(extractActions)
+    }
+    private def extractActions(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case ("retain", data) => frame.SelectAction.Retain(splitAndTrim(",")(data))
+      case ("rename", data) =>
+        val pairs = splitAndTrim(",")(data) map { str =>
+          val Array(oldName, newName) = str.split(":").map(_.trim)
+          oldName -> newName
+        }
+        frame.SelectAction.Rename(pairs.toMap)
+      case ("remove", data) => frame.SelectAction.Remove(splitAndTrim(",")(data))
+      case ("retype", data) =>
+        val pairs = splitAndTrim(",")(data) map { str =>
+          val Array(field, typeName) = str.split(":").map(_.trim)
+          field -> TypeUtils.typeForName(typeName)
+        }
+        frame.SelectAction.Retype(pairs.toMap)
+    }
+  }
+
+  object SetVariablesAdapter extends TransformerAdapter[DataFrame, SetVariables]("SetVariables", TRANSFORM,
+    "name" -> listOf(TEXT), "type" -> listOf(DATA_TYPE), "value" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = SetVariables()
+    def setupAttributes(block: SetVariables, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.vars, json, arrayField)(extractVars)
+    }
+    private def extractVars(json: JsonObject, key: String) = json.asTupledList3[String, String, String](key) map {
+      case (name, typeName, strValue) => name -> parseValue(strValue, typeName)
     }
   }
 
@@ -261,27 +350,70 @@ object SparkBlockFactory extends TypeConverters {
   /* aggregate */
 
   object BasicStatsAdapter extends TransformerAdapter[DataFrame, BasicStats]("BasicStats", AGGREGATE,
-    "name" -> listOf(TEXT), "func" -> listOf(enum(frame.BasicAggregator)), "groupBy" -> TEXT) {
+    "name" -> listOf(TEXT), "func" -> listOf(enum(BasicAggregator)), "groupBy" -> TEXT) {
     def createBlock(json: JsonObject) = BasicStats()
     def setupAttributes(block: BasicStats, json: JsonObject, blocks: DSABlockMap) = {
       set(block.columns, json, arrayField)(extractAggregatedFields)
       set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
     }
     private def extractAggregatedFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
-      case (name, strFunc) => name -> (frame.BasicAggregator.withName(strFunc): BasicAggregator)
+      case (name, strFunc) => name -> (BasicAggregator.withName(strFunc): BasicAggregator.BasicAggregator)
     }
   }
 
   object ReduceAdapter extends TransformerAdapter[DataFrame, Reduce]("Reduce", AGGREGATE,
-    "name" -> listOf(TEXT), "operation" -> listOf(enum(frame.ReduceOp)), "groupBy" -> TEXT) {
+    "name" -> listOf(TEXT), "operation" -> listOf(enum(ReduceOp)), "groupBy" -> TEXT) {
     def createBlock(json: JsonObject) = Reduce()
     def setupAttributes(block: Reduce, json: JsonObject, blocks: DSABlockMap) = {
       set(block.columns, json, arrayField)(extractReducedFields)
       set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
     }
     private def extractReducedFields(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
-      case (name, strFunc) => name -> (frame.ReduceOp.withName(strFunc): ReduceOp)
+      case (name, strFunc) => name -> (ReduceOp.withName(strFunc): ReduceOp.ReduceOp)
     }
+  }
+
+  object ColumnStatsAdapter extends TransformerAdapter[DataFrame, ColumnStats]("ColumnStats", AGGREGATE,
+    "field" -> listOf(TEXT), "groupBy" -> TEXT) {
+    def createBlock(json: JsonObject) = ColumnStats()
+    def setupAttributes(block: ColumnStats, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.columns, json, arrayField)(extractColumns)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+    }
+    private def extractColumns(json: JsonObject, key: String) = json asStringList key
+  }
+
+  object CorrelationAdapter extends TransformerAdapter[DataFrame, Correlation]("Correlation", AGGREGATE,
+    "field" -> listOf(TEXT), "groupBy" -> TEXT,
+    "method" -> enum(CorrelationMethod) default CorrelationMethod.PEARSON) {
+    def createBlock(json: JsonObject) = Correlation()
+    def setupAttributes(block: Correlation, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.dataFields, json, arrayField)(extractFields)
+      set(block.method, json, "method")(extractMethod)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+    }
+    private def extractFields(json: JsonObject, key: String) = json asStringList key
+    private def extractMethod(json: JsonObject, key: String) =
+      json.asEnum[CorrelationMethod.CorrelationMethod](CorrelationMethod)(key)
+  }
+
+  object RegressionAdapter extends TransformerAdapter[DataFrame, Regression]("Regression", AGGREGATE,
+    "labelField" -> TEXT, "field" -> listOf(TEXT), "groupBy" -> TEXT,
+    "method" -> enum(RegressionMethod) default RegressionMethod.LINEAR,
+    "iterations" -> NUMBER default 100, "step" -> NUMBER default 1, "intercept" -> BOOLEAN default false) {
+    def createBlock(json: JsonObject) = Regression()
+    def setupAttributes(block: Regression, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.labelField, json, "labelField", blocks)
+      set(block.dataFields, json, arrayField)(extractFields)
+      set(block.groupBy, json, "groupBy")(extractSeparatedStrings)
+      set(block.method, json, "method")(extractMethod)
+      init(block.iterationCount, json, "iterations", blocks)
+      init(block.stepSize, json, "step", blocks)
+      init(block.allowIntercept, json, "intercept", blocks)
+    }
+    private def extractFields(json: JsonObject, key: String) = json asStringList key
+    private def extractMethod(json: JsonObject, key: String) =
+      json.asEnum[RegressionMethod.RegressionMethod[_ <: GeneralizedLinearModel]](RegressionMethod)(key)
   }
 
   /* utilities */

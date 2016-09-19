@@ -2,8 +2,6 @@ package org.dsa.iot.ignition.spark
 
 import com.ignition.frame.SparkRuntime
 
-import rx.lang.scala.Observable
-
 /**
  * Adds extra columns to the DataFrame.
  */
