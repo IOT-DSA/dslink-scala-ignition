@@ -24,6 +24,12 @@ mainClass in Compile := Some("org.dsa.iot.ignition.Main")
 enablePlugins(JavaAppPackaging)
 mappings in Universal += file("dslink.json") -> "dslink.json"
 
+// publishing
+site.settings
+site.includeScaladoc()
+ghpages.settings
+git.remoteRepo := "https://github.com/IOT-DSA/dslink-scala-ignition.git"
+
 // dependencies
 val sparkLibs = Seq(
   "org.apache.spark"         %% "spark-core"                 % SPARK_VERSION,
