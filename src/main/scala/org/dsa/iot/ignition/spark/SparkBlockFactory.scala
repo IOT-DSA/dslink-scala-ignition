@@ -124,6 +124,26 @@ object SparkBlockFactory extends TypeConverters {
     }
   }
 
+  object TextFileInputAdapter extends AbstractRxBlockAdapter[TextFileInput]("TextFileInput", INPUT,
+    "path" -> TEXT, "separator" -> TEXT, "field" -> TEXT default "content") {
+    def createBlock(json: JsonObject) = TextFileInput()
+    def setupBlock(block: TextFileInput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.path, json, "path", blocks)
+      init(block.separator, json, "separator", blocks)
+      init(block.field, json, "field", blocks)
+    }
+  }
+
+  object TextFolderInputAdapter extends AbstractRxBlockAdapter[TextFolderInput]("TextFolderInput",
+    INPUT, "path" -> TEXT, "nameField" -> TEXT default "filename", "dataField" -> TEXT default "content") {
+    def createBlock(json: JsonObject) = TextFolderInput()
+    def setupBlock(block: TextFolderInput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.path, json, "path", blocks)
+      init(block.nameField, json, "nameField", blocks)
+      init(block.dataField, json, "dataField", blocks)
+    }
+  }
+
   object DataGridAdapter extends AbstractRxBlockAdapter[DataGrid]("DataGrid", INPUT,
     "schema" -> TEXT, "row" -> listOf(TEXT)) {
     def createBlock(json: JsonObject) = DataGrid()
@@ -181,6 +201,21 @@ object SparkBlockFactory extends TypeConverters {
       case (name, value) => name -> value
     }
     private def extractMode(json: JsonObject, key: String) = SaveMode.valueOf(json asString key)
+  }
+
+  object TextFileOutputAdapter extends TransformerAdapter[DataFrame, TextFileOutput]("TextFileOutput",
+    OUTPUT, "filename" -> TEXT, "field" -> listOf(TEXT), "format" -> listOf(TEXT),
+    "separator" -> TEXT default ",", "showHeader" -> BOOLEAN default true) {
+    def createBlock(json: JsonObject) = TextFileOutput()
+    def setupAttributes(block: TextFileOutput, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.filename, json, "filename", blocks)
+      set(block.formats, json, arrayField)(extractFormats)
+      init(block.separator, json, "separator", blocks)
+      init(block.header, json, "showHeader", blocks)
+    }
+    private def extractFormats(json: JsonObject, key: String) = json.asTupledList2[String, String](key) map {
+      case (name, value) => name -> value
+    }
   }
 
   /* transform */
@@ -251,6 +286,17 @@ object SparkBlockFactory extends TypeConverters {
           field -> TypeUtils.typeForName(typeName)
         }
         frame.SelectAction.Retype(pairs.toMap)
+    }
+  }
+
+  object SetVariablesAdapter extends TransformerAdapter[DataFrame, SetVariables]("SetVariables", TRANSFORM,
+    "name" -> listOf(TEXT), "type" -> listOf(DATA_TYPE), "value" -> listOf(TEXT)) {
+    def createBlock(json: JsonObject) = SetVariables()
+    def setupAttributes(block: SetVariables, json: JsonObject, blocks: DSABlockMap) = {
+      set(block.vars, json, arrayField)(extractVars)
+    }
+    private def extractVars(json: JsonObject, key: String) = json.asTupledList3[String, String, String](key) map {
+      case (name, typeName, strValue) => name -> parseValue(strValue, typeName)
     }
   }
 
