@@ -10,7 +10,7 @@ import org.dsa.iot.ignition.NUMBER
 import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.core._
 import org.dsa.iot.rx.numeric._
-import org.dsa.iot.rx.script.{ ScriptDialect, ScriptFilter, ScriptTransform, ScriptCount }
+import org.dsa.iot.rx.script._
 
 /**
  * Core RX blocks.
@@ -112,6 +112,15 @@ object CoreBlockFactory extends TypeConverters {
     }
   }
   
+  object TakeWhileAdapter extends TransformerAdapter[Any, ScriptTakeWhile[Any]]("TakeWhile", TRANSFORM,
+    "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
+    def createBlock(json: JsonObject) = ScriptTakeWhile[Any]
+    def setupAttributes(block: ScriptTakeWhile[Any], json: JsonObject, blocks: DSABlockMap) = {
+      set(block.dialect, json, "dialect")
+      init(block.script, json, "predicate", blocks)
+    }
+  }
+  
   object DropByCountAdapter extends TransformerAdapter[Any, DropByCount[Any]]("DropBySize", TRANSFORM,
     "right" -> BOOLEAN default false, "count" -> NUMBER default 10) {
     def createBlock(json: JsonObject) = DropByCount[Any](json asBoolean "right")
@@ -125,6 +134,15 @@ object CoreBlockFactory extends TypeConverters {
     def createBlock(json: JsonObject) = DropByTime[Any](json asBoolean "right")
     def setupAttributes(block: DropByTime[Any], json: JsonObject, blocks: DSABlockMap) = {
       init(block.period, json, "period", blocks)
+    }
+  }
+  
+  object DropWhileAdapter extends TransformerAdapter[Any, ScriptDropWhile[Any]]("DropWhile", TRANSFORM,
+    "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
+    def createBlock(json: JsonObject) = ScriptDropWhile[Any]
+    def setupAttributes(block: ScriptDropWhile[Any], json: JsonObject, blocks: DSABlockMap) = {
+      set(block.dialect, json, "dialect")
+      init(block.script, json, "predicate", blocks)
     }
   }
 
@@ -172,7 +190,7 @@ object CoreBlockFactory extends TypeConverters {
     def createBlock(json: JsonObject) = ScriptFilter[Any]
     def setupAttributes(block: ScriptFilter[Any], json: JsonObject, blocks: DSABlockMap) = {
       set(block.dialect, json, "dialect")
-      init(block.predicate, json, "predicate", blocks)
+      init(block.script, json, "predicate", blocks)
     }
   }
 
@@ -270,7 +288,7 @@ object CoreBlockFactory extends TypeConverters {
     def createBlock(json: JsonObject) = ScriptCount[Any](true)
     def setupAttributes(block: ScriptCount[Any], json: JsonObject, blocks: DSABlockMap) = {
       set(block.dialect, json, "dialect")
-      init(block.predicate, json, "predicate", blocks)
+      init(block.script, json, "predicate", blocks)
     }
   }
 }
