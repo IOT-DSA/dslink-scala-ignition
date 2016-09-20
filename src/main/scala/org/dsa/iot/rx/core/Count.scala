@@ -3,8 +3,9 @@ package org.dsa.iot.rx.core
 import org.dsa.iot.rx.RxTransformer
 
 /**
- * Counts the total number of elements in the source sequence. It can either produce a rolling count
- * on each item, or just one final result when source is complete.
+ * Counts the number of elements in the source sequence that satisfy the predicate. 
+ * It can either produce a rolling count on each item, or just one final result when source 
+ * sequence is complete.
  */
 class Count[T](rolling: Boolean) extends RxTransformer[T, Int] {
   val predicate = Port[T => Boolean]("predicate")

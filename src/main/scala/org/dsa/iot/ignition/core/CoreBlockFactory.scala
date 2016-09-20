@@ -10,7 +10,7 @@ import org.dsa.iot.ignition.NUMBER
 import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.core._
 import org.dsa.iot.rx.numeric._
-import org.dsa.iot.rx.script.{ ScriptDialect, ScriptFilter, ScriptTransform }
+import org.dsa.iot.rx.script.{ ScriptDialect, ScriptFilter, ScriptTransform, ScriptCount }
 
 /**
  * Core RX blocks.
@@ -79,6 +79,14 @@ object CoreBlockFactory extends TypeConverters {
 
   /* transform */
 
+  object DelayAdapter extends TransformerAdapter[Any, Delay[Any]](
+    "Delay", TRANSFORM, "period" -> NUMBER default 1000) {
+    def createBlock(json: JsonObject) = Delay[Any]
+    def setupAttributes(block: Delay[Any], json: JsonObject, blocks: DSABlockMap) = {
+      init(block.period, json, "period", blocks)
+    }
+  }
+
   object TakeByCountAdapter extends TransformerAdapter[Any, TakeByCount[Any]]("TakeBySize", TRANSFORM,
     "count" -> NUMBER default 10) {
     def createBlock(json: JsonObject) = TakeByCount[Any]
@@ -101,6 +109,22 @@ object CoreBlockFactory extends TypeConverters {
     def setupAttributes(block: TakeRight[Any], json: JsonObject, blocks: DSABlockMap) = {
       init(block.period, json, "period", blocks)
       init(block.count, json, "count", blocks)
+    }
+  }
+  
+  object DropByCountAdapter extends TransformerAdapter[Any, DropByCount[Any]]("DropBySize", TRANSFORM,
+    "right" -> BOOLEAN default false, "count" -> NUMBER default 10) {
+    def createBlock(json: JsonObject) = DropByCount[Any](json asBoolean "right")
+    def setupAttributes(block: DropByCount[Any], json: JsonObject, blocks: DSABlockMap) = {
+      init(block.count, json, "count", blocks)
+    }
+  }
+  
+  object DropByTimeAdapter extends TransformerAdapter[Any, DropByTime[Any]]("DropByTime", TRANSFORM,
+    "right" -> BOOLEAN default false, "period" -> NUMBER default 10000) {
+    def createBlock(json: JsonObject) = DropByTime[Any](json asBoolean "right")
+    def setupAttributes(block: DropByTime[Any], json: JsonObject, blocks: DSABlockMap) = {
+      init(block.period, json, "period", blocks)
     }
   }
 
@@ -137,7 +161,7 @@ object CoreBlockFactory extends TypeConverters {
   }
 
   object DSAInvokeAdapter extends TransformerAdapter[Value, DSAInvoke]("DSAInvoke", TRANSFORM) {
-    def createBlock(json: JsonObject) = new DSAInvoke
+    def createBlock(json: JsonObject) = DSAInvoke()
     def setupAttributes(block: DSAInvoke, json: JsonObject, blocks: DSABlockMap) = {}
   }
 
@@ -211,23 +235,42 @@ object CoreBlockFactory extends TypeConverters {
 
   /* aggregate */
 
-  object SumAdapter extends TransformerAdapter[Value, Sum[Value]]("Sum", AGGREGATE, input) {
+  object SumAdapter extends TransformerAdapter[Value, Sum[Value]]("Sum", AGGREGATE) {
     def createBlock(json: JsonObject) = Sum[Value](true)
     def setupAttributes(block: Sum[Value], json: JsonObject, blocks: DSABlockMap) = {}
   }
 
-  object ProductAdapter extends TransformerAdapter[Value, Mul[Value]]("Product", AGGREGATE, input) {
+  object ProductAdapter extends TransformerAdapter[Value, Mul[Value]]("Product", AGGREGATE) {
     def createBlock(json: JsonObject) = Mul[Value](true)
     def setupAttributes(block: Mul[Value], json: JsonObject, blocks: DSABlockMap) = {}
   }
 
-  object MinAdapter extends TransformerAdapter[Value, Min[Value]]("Min", AGGREGATE, input) {
+  object MinAdapter extends TransformerAdapter[Value, Min[Value]]("Min", AGGREGATE) {
     def createBlock(json: JsonObject) = Min[Value](true)
     def setupAttributes(block: Min[Value], json: JsonObject, blocks: DSABlockMap) = {}
   }
 
-  object MaxAdapter extends TransformerAdapter[Value, Max[Value]]("Max", AGGREGATE, input) {
+  object MaxAdapter extends TransformerAdapter[Value, Max[Value]]("Max", AGGREGATE) {
     def createBlock(json: JsonObject) = Max[Value](true)
     def setupAttributes(block: Max[Value], json: JsonObject, blocks: DSABlockMap) = {}
+  }
+
+  object AvgAdapter extends TransformerAdapter[Value, Avg[Value]]("Avg", AGGREGATE) {
+    def createBlock(json: JsonObject) = Avg[Value](true)
+    def setupAttributes(block: Avg[Value], json: JsonObject, blocks: DSABlockMap) = {}
+  }
+
+  object BasicStatsAdapter extends TransformerAdapter[Value, BasicStats[Value]]("Stats", AGGREGATE) {
+    def createBlock(json: JsonObject) = BasicStats[Value](true)
+    def setupAttributes(block: BasicStats[Value], json: JsonObject, blocks: DSABlockMap) = {}
+  }
+
+  object CountAdapter extends TransformerAdapter[Any, ScriptCount[Any]]("Count", AGGREGATE,
+    "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
+    def createBlock(json: JsonObject) = ScriptCount[Any](true)
+    def setupAttributes(block: ScriptCount[Any], json: JsonObject, blocks: DSABlockMap) = {
+      set(block.dialect, json, "dialect")
+      init(block.predicate, json, "predicate", blocks)
+    }
   }
 }
