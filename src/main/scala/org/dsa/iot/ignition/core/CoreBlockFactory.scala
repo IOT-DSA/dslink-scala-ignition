@@ -210,6 +210,13 @@ object CoreBlockFactory extends TypeConverters {
     def setupAttributes(block: Last[Any], json: JsonObject, blocks: DSABlockMap) = {}
   }
 
+  object RepeatAdapter extends TransformerAdapter[Any, Repeat[Any]]("Repeat", TRANSFORM, "count" -> NUMBER) {
+    def createBlock(json: JsonObject) = Repeat[Any]
+    def setupAttributes(block: Repeat[Any], json: JsonObject, blocks: DSABlockMap) = {
+      init(block.count, json, "count", blocks)
+    }
+  }
+
   /* filter */
 
   object FilterAdapter extends TransformerAdapter[Any, ScriptFilter[Any]]("Filter", FILTER,
