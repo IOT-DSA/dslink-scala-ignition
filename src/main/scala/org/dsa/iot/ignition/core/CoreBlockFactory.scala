@@ -111,7 +111,7 @@ object CoreBlockFactory extends TypeConverters {
       init(block.count, json, "count", blocks)
     }
   }
-  
+
   object TakeWhileAdapter extends TransformerAdapter[Any, ScriptTakeWhile[Any]]("TakeWhile", TRANSFORM,
     "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
     def createBlock(json: JsonObject) = ScriptTakeWhile[Any]
@@ -120,7 +120,7 @@ object CoreBlockFactory extends TypeConverters {
       init(block.script, json, "predicate", blocks)
     }
   }
-  
+
   object DropByCountAdapter extends TransformerAdapter[Any, DropByCount[Any]]("DropBySize", TRANSFORM,
     "right" -> BOOLEAN default false, "count" -> NUMBER default 10) {
     def createBlock(json: JsonObject) = DropByCount[Any](json asBoolean "right")
@@ -128,7 +128,7 @@ object CoreBlockFactory extends TypeConverters {
       init(block.count, json, "count", blocks)
     }
   }
-  
+
   object DropByTimeAdapter extends TransformerAdapter[Any, DropByTime[Any]]("DropByTime", TRANSFORM,
     "right" -> BOOLEAN default false, "period" -> NUMBER default 10000) {
     def createBlock(json: JsonObject) = DropByTime[Any](json asBoolean "right")
@@ -136,7 +136,7 @@ object CoreBlockFactory extends TypeConverters {
       init(block.period, json, "period", blocks)
     }
   }
-  
+
   object DropWhileAdapter extends TransformerAdapter[Any, ScriptDropWhile[Any]]("DropWhile", TRANSFORM,
     "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
     def createBlock(json: JsonObject) = ScriptDropWhile[Any]
@@ -183,6 +183,33 @@ object CoreBlockFactory extends TypeConverters {
     def setupAttributes(block: DSAInvoke, json: JsonObject, blocks: DSABlockMap) = {}
   }
 
+  object ElementAtAdapter extends TransformerAdapter[Any, ElementAt[Any]]("ElementAt",
+    TRANSFORM, "index" -> NUMBER default 0) {
+    def createBlock(json: JsonObject) = ElementAt[Any](0)
+    def setupAttributes(block: ElementAt[Any], json: JsonObject, blocks: DSABlockMap) = {
+      init(block.index, json, "index", blocks)
+    }
+  }
+
+  object ExistsAdapter extends TransformerAdapter[Any, ScriptExists[Any]]("Exists", TRANSFORM,
+    "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
+    def createBlock(json: JsonObject) = ScriptExists[Any]
+    def setupAttributes(block: ScriptExists[Any], json: JsonObject, blocks: DSABlockMap) = {
+      set(block.dialect, json, "dialect")
+      init(block.script, json, "predicate", blocks)
+    }
+  }
+
+  object FirstAdapter extends TransformerAdapter[Any, First[Any]]("First", TRANSFORM) {
+    def createBlock(json: JsonObject) = First[Any]
+    def setupAttributes(block: First[Any], json: JsonObject, blocks: DSABlockMap) = {}
+  }
+
+  object LastAdapter extends TransformerAdapter[Any, Last[Any]]("Last", TRANSFORM) {
+    def createBlock(json: JsonObject) = Last[Any]
+    def setupAttributes(block: Last[Any], json: JsonObject, blocks: DSABlockMap) = {}
+  }
+  
   /* filter */
 
   object FilterAdapter extends TransformerAdapter[Any, ScriptFilter[Any]]("Filter", FILTER,
