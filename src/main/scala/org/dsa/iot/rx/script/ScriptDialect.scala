@@ -27,7 +27,11 @@ object ScriptDialect extends Enumeration {
       varMap.putAll(context.asJava)
       val factory = new MapVariableResolverFactory(varMap)
       val tag = implicitly[TypeTag[T]]
-      val targetType = tag.mirror.runtimeClass(tag.tpe).asInstanceOf[Class[T]]
+      val targetType = try {
+        tag.mirror.runtimeClass(tag.tpe).asInstanceOf[Class[T]]
+      } catch {
+        case e : java.lang.ClassNotFoundException => classOf[AnyRef].asInstanceOf[Class[T]]
+      }
       org.mvel2.MVEL.eval(code, ScriptFunctions, factory, targetType)
     }
   }

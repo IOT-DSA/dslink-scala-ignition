@@ -323,4 +323,13 @@ object CoreBlockFactory extends TypeConverters {
     def createBlock(json: JsonObject) = Length(true)
     def setupAttributes(block: Length, json: JsonObject, blocks: DSABlockMap) = {}
   }
+
+  object ReduceAdapter extends TransformerAdapter[Any, ScriptReduce[Any]]("Reduce", AGGREGATE,
+    "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
+    def createBlock(json: JsonObject) = ScriptReduce[Any]
+    def setupAttributes(block: ScriptReduce[Any], json: JsonObject, blocks: DSABlockMap) = {
+      set(block.dialect, json, "dialect")
+      init(block.script, json, "predicate", blocks)
+    }
+  }
 }

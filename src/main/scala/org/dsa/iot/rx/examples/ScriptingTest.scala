@@ -23,7 +23,10 @@ object ScriptingTest extends TestHarness {
 
   testMvelDropWhile
   testScalaDropWhile
-  
+
+  testMvelReduce
+  testScalaReduce
+
   def testMvelTransform() = run("MvelTransform") {
     val rng = Sequence.from(1 to 5)
 
@@ -86,41 +89,61 @@ object ScriptingTest extends TestHarness {
 
   def testMvelTakeWhile() = run("MvelTakeWhile") {
     val rng = Sequence.from(1 to 10)
-    
+
     val tx = ScriptTakeWhile[Any](MVEL, "input < 3")
     tx.output subscribe testSub("TAKE-WHILE-MVEL")
-    
+
     rng ~> tx
     rng.reset
   }
-  
+
   def testScalaTakeWhile() = run("ScalaTakeWhile") {
     val rng = Sequence.from(1 to 10)
-    
+
     val tx = ScriptTakeWhile[Any](SCALA, "val x = input.asInstanceOf[Int]; x <= 5")
     tx.output subscribe testSub("TAKE-WHILE-SCALA")
-    
+
     rng ~> tx
     rng.reset
   }
-  
+
   def testMvelDropWhile() = run("MvelDropWhile") {
     val rng = Sequence.from(1 to 10)
-    
+
     val tx = ScriptDropWhile[Any](MVEL, "input < 5")
     tx.output subscribe testSub("DROP-WHILE-MVEL")
-    
+
     rng ~> tx
     rng.reset
   }
-  
+
   def testScalaDropWhile() = run("ScalaDropWhile") {
     val rng = Sequence.from(1 to 10)
-    
+
     val tx = ScriptDropWhile[Any](SCALA, "val x = input.asInstanceOf[Int]; x <= 5")
     tx.output subscribe testSub("DROP-WHILE-SCALA")
-    
+
     rng ~> tx
     rng.reset
-  }  
+  }
+
+  def testMvelReduce() = run("MvelReduce") {
+    val rng = Sequence.from(1 to 5)
+
+    val tx = ScriptReduce[Any](MVEL, "input1 * input2")
+    tx.output subscribe testSub("REDUCE-MVEL")
+
+    rng ~> tx
+    rng.reset
+  }
+
+  def testScalaReduce() = run("ScalaReduce") {
+    val rng = Sequence.from(1 to 5)
+
+    val tx = ScriptReduce[Any](SCALA, "input1.asInstanceOf[Int] * input2.asInstanceOf[Int]")
+    tx.output subscribe testSub("REDUCE-SCALA")
+
+    rng ~> tx
+    rng.reset
+  }
 }
