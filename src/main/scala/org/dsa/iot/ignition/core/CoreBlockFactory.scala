@@ -209,7 +209,7 @@ object CoreBlockFactory extends TypeConverters {
     def createBlock(json: JsonObject) = Last[Any]
     def setupAttributes(block: Last[Any], json: JsonObject, blocks: DSABlockMap) = {}
   }
-  
+
   /* filter */
 
   object FilterAdapter extends TransformerAdapter[Any, ScriptFilter[Any]]("Filter", FILTER,
@@ -317,5 +317,10 @@ object CoreBlockFactory extends TypeConverters {
       set(block.dialect, json, "dialect")
       init(block.script, json, "predicate", blocks)
     }
+  }
+
+  object LengthAdapter extends TransformerAdapter[Any, Length]("Length", AGGREGATE) {
+    def createBlock(json: JsonObject) = Length(true)
+    def setupAttributes(block: Length, json: JsonObject, blocks: DSABlockMap) = {}
   }
 }
