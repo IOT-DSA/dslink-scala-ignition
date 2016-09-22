@@ -8,13 +8,10 @@ import scala.reflect.runtime.universe.TypeTag
 /**
  * Transforms each value in the source sequence using a script in the specified dialect.
  */
-class ScriptTransform[T, R: TypeTag] extends RxTransformer[T, R] {
-  val dialect = Port[ScriptDialect]("dialect")
-  val script = Port[String]("script")
+class ScriptTransform[T, R: TypeTag] extends RxTransformer[T, R] with ScriptedBlock[R] {
+  val ttag = implicitly[TypeTag[R]]
 
-  protected def compute = (dialect.in combineLatest script.in) flatMap {
-    case (lang, code) => source.in.map { x => lang.execute[R](code, Map("input" -> x)) }
-  }
+  protected def compute = scriptStream flatMap { source.in map _.evaluateInput }
 }
 
 /**

@@ -1,18 +1,26 @@
 package org.dsa.iot.ignition.spark
 
-import org.apache.spark.sql.{ DataFrame, SaveMode }
-import org.apache.spark.sql.types.StructField
+import scala.collection.JavaConverters.seqAsJavaListConverter
+
+import org.apache.spark.sql.{ DataFrame, Row, SaveMode }
+import org.apache.spark.sql.types.{ StructField, StructType }
+import org.dsa.iot.dslink.node.value.Value
 import org.dsa.iot.dslink.util.json.JsonObject
 import org.dsa.iot.ignition._
 import org.dsa.iot.ignition.ParamInfo.input
 import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect
+import org.dsa.iot.scala.valueToAny
+import org.dsa.iot.util.Logging
+
 import com.ignition.{ SparkHelper, frame }
-import com.ignition.frame.{ BasicAggregator, FrameSplitter, FrameTransformer, HttpMethod, JoinType, ReduceOp }
-import com.ignition.frame.SparkRuntime
+import com.ignition.frame._
+import com.ignition.frame.BasicAggregator.valueToAggregator
+import com.ignition.frame.ReduceOp.valueToOp
 import com.ignition.frame.mllib.{ CorrelationMethod, RegressionMethod }
 import com.ignition.script.{ JsonPathExpression, MvelExpression, XPathExpression }
 import com.ignition.types.TypeUtils
+
 import org.apache.spark.mllib.regression.GeneralizedLinearModel
 
 /**
@@ -37,7 +45,7 @@ abstract class RxFrameTransformer extends RxTransformer[DataFrame, DataFrame] {
 /**
  * Spark RX blocks.
  */
-object SparkBlockFactory extends TypeConverters {
+object SparkBlockFactory extends TypeConverters with Logging {
 
   object Categories {
     val INPUT = "Spark.Input"
@@ -51,6 +59,28 @@ object SparkBlockFactory extends TypeConverters {
   import Categories._
 
   implicit lazy val sparkRuntime = new frame.DefaultSparkRuntime(SparkHelper.sqlContext, true)
+
+  implicit def anyToDataFrame(any: Any): DataFrame = any match {
+    case x: DataFrame                => x
+    case x: Map[_, _] if x.isEmpty   => sparkRuntime.ctx.emptyDataFrame
+    case x: Iterable[_] if x.isEmpty => sparkRuntime.ctx.emptyDataFrame
+    case x: Iterable[_] =>
+      val list = x map {
+        case v: Value => valueToAny(v)
+        case v        => v
+      }
+      val elem = list find (_ != null)
+      elem map { e =>
+        val dataType = TypeUtils.typeForValue(e)
+        val schema = StructType(StructField("c0", dataType) :: Nil)
+        val rows = list.map(Row(_)).toList.asJava
+        sparkRuntime.ctx.createDataFrame(rows, schema)
+      } getOrElse sparkRuntime.ctx.emptyDataFrame
+    case x =>
+      error(s"Unknown data type for $x: " + (if (x == null) "null" else x.getClass.getName))
+      sparkRuntime.ctx.emptyDataFrame
+  }
+  implicit def anyToOptDataFrame(x: Any): Option[DataFrame] = Option(x) map anyToDataFrame
 
   /* input */
 

@@ -99,11 +99,6 @@ trait TypeConverters {
   }
   implicit def anyToOptDuration(x: Any): Option[Duration] = Option(x) map anyToDuration
 
-  implicit def anyToDataFrame(x: Any): DataFrame = x match {
-    case d: DataFrame => d
-  }
-  implicit def anyToOptDataFrame(x: Any): Option[DataFrame] = Option(x) map anyToDataFrame
-
   implicit def anyToMap(x: Any) = x match {
     case m: Map[_, _] => m.asInstanceOf[Map[String, Any]]
     case v: Value     => org.dsa.iot.scala.valueToMap(v)

@@ -1,25 +1,24 @@
 package org.dsa.iot.rx.script
 
+import scala.reflect.runtime.universe.typeTag
+
 import org.dsa.iot.rx.RxTransformer
 import org.dsa.iot.rx.script.ScriptDialect.ScriptDialect
 
 /**
  * Filters values in the source sequence using a script in the specified dialect.
  */
-class ScriptFilter[T] extends RxTransformer[T, T] {
-  val dialect = Port[ScriptDialect]("dialect")
-  val predicate = Port[String]("predicate")
+class ScriptFilter[T] extends RxTransformer[T, T] with ScriptedBlock[Boolean] {
+  val ttag = typeTag[Boolean]
 
-  protected def compute = (dialect.in combineLatest predicate.in) flatMap {
-    case (lang, code) => source.in.filter { x => lang.execute[Boolean](code, Map("input" -> x)) }
-  }
+  protected def compute = scriptStream flatMap { source.in filter _.evaluateInput }
 }
 
 /**
  * Factory for [[ScriptFilter]] instances.
  */
 object ScriptFilter {
-  
+
   /**
    * Creates a new ScriptFilter instance.
    */
@@ -31,7 +30,7 @@ object ScriptFilter {
   def apply[T](dialect: ScriptDialect, predicate: String): ScriptFilter[T] = {
     val block = new ScriptFilter[T]
     block.dialect <~ dialect
-    block.predicate <~ predicate
+    block.script <~ predicate
     block
   }
 }
