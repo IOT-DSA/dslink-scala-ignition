@@ -53,7 +53,7 @@ at [github.io](http://iot-dsa.github.io/dslink-scala-ignition/latest/api/).
 
 ### Installation in DGLux
 
-1. Connect to DGLux platform by navigating to http://localhost:8080 in your browser.
+1. Connect to DGLux platform by navigating to <http://localhost:8080> in your browser.
 2. Switch to **Data** panel on the left, expand **sys** node and right click on **links**. 
 4. Select *Install Link* command in the context menu and choose **Ignition**.
 5. Choose any name you want and click *Invoke*. The Ignition DSLink will be installed to your platform.
@@ -149,7 +149,7 @@ We subscribe to the output of the second block to print out each such tuple as i
 emerges on its output.
 
 Then, we connect the first input of CombineLatest to the output of Interval (i.e. it is 
-going receive numbers 1, 2, 3, ... once the workflow has been started). We set the second
+going to receive numbers 0, 1, 2, ... once the workflow has started). We set the second
 input to a static value "hello", and the third - to the static value `true`. Note how the type
 of each input is consistent with the type parameters of the block: 
 `CombineLatest3[Long, String, Boolean]`, otherwise the compiler would generate an error.
@@ -160,7 +160,56 @@ milliseconds allows a few items to be generated, then we change the Interval's p
 reset the CombineLatest's second input to another static value - "world". After resetting the
 Interval once again, its sequence is restarted and a few more items are produced. Finally,
 we change the third input of CombineLatest to `false` and now restart only the second block,
-without touching the interval. As you can see, the number sequence is not restarted, but the
-third value of each tuple is now `false`.
+without touching the interval. As you can see, the number sequence has not been restarted, 
+and the third value in each tuple is now `false`.
 
+### Ignition RX and DSA
 
+It is easy to acquire and process DSA data using Ignition RX. A simple example below shows
+how an application can using CPU and Memory usage data to generate/handle system alarms.
+
+```scala
+import scala.concurrent.duration._
+import org.dsa.iot.scala._
+import org.dsa.iot.dslink.node.value._
+
+// connect to the DSA broker
+val connector = DSAConnector("-b", "<brokerUrl>")
+val connection = connector start LinkMode.REQUESTER
+implicit val requester = connection.requester
+
+// create an input block to supply CPU_Usage values
+val cpu = DSAInput()
+cpu.path <~ "/downstream/System/CPU_Usage"
+
+// input to supply Memory_Usage, a "shortcut" initialization 
+val mem = DSAInput("/downstream/System/Memory_Usage")
+
+// filter out values that come more often than once a second
+val dbCpu = Debounce[Value](1 second)
+val dbMem = Debounce[Value](1 second)
+
+// combine CPU and Memory values into tuples
+val combine = CombineLatest2[Value, Value]
+
+// filter with alarm criteria
+val filter = Filter[(Value, Value)] { cm: (Value, Value) =>
+  val cpu = cm._1.getNumber.intValue
+  val mem = cm._2.getNumber.intValue
+  cpu > 95 || mem > 80 || (cpu > 75 && mem > 75)
+}
+
+// combine the two pipelines 
+(cpu ~> dbCpu, mem ~> dbMem) ~> combine ~> filter
+
+// subscribe to filter output to handle alarms
+filter.output subscribe (handleAlarm(_)) 
+
+// start workflow
+cpu.reset
+mem.reset
+
+// ...
+
+connector.stop
+```
