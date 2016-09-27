@@ -27,7 +27,7 @@ Scala-based DSLink for running dataflows based on [Reactive Streams](http://www.
 
 ### License
 
-The license is Apache 2.0, see [LICENSE](https://github.com/IOT-DSA/dslink-scala-ignition/blob/documentation/LICENSE).
+The license is Apache 2.0, see [LICENSE](LICENSE).
 
 ### Binary Releases
 
@@ -57,9 +57,10 @@ at [github.io](http://iot-dsa.github.io/dslink-scala-ignition/latest/api/).
 1. Connect to DGLux platform by navigating to <http://localhost:8080> in your browser.
 2. Switch to **Data** panel on the left, expand **sys** node and right click on **links**. 
 4. Select *Install Link* command in the context menu and choose **Ignition**.
-5. Choose any name you want and click *Invoke*. The Ignition DSLink will be installed to your platform.
+5. Choose any name you want and click *Invoke*. The Ignition DSLink will be installed 
+to your platform and you should see **ignition** node in the */downstream/* tree.
 
-## Using Ignition
+## Using Ignition RX
 
 ### Ignition RX architecture
 
@@ -144,7 +145,7 @@ milliseconds with the initial delay of 50 milliseconds, and *CombineLatest3* - a
 three inputs and generates a tuple of 3 elements each time the value of any of its inputs 
 changes. 
 
-![CombineLatest](https://blogs.endjin.com/wp-content/uploads/2014/05/combine-latest.png)
+![CombineLatest](src/site/images/combine_latest.png)
 
 We subscribe to the output of the second block to print out each such tuple as it 
 emerges on its output.
@@ -290,3 +291,38 @@ When started, the program will produce the output similar to one below:
 	|....|...|.....|.....|
 	+----+---+-----+-----+
 ```
+
+## Using Ignition DSLink
+
+1. Once you successfully installed Ignition DSLink in DGLux, right click on **ignition** node
+under */downstream/* and choose *New Flow* action. Specify a name and click *Invoke*.
+You should see a new flow node under */downstream/ignition/* now.
+2. Click on the edit button next to the flow node. A dataflow editor window will appear.
+3. You can drag and drop blocks from the *Blocks* palette on the left, input attribute values and
+connect their inputs and outputs.
+4. When done editing, right click on the flow node again and choose *(Re)start Flow*. This will 
+trigger all your input nodes and data will start traveling between the blocks. You can continue
+editing your flow; any change you make will be automatically picked up.
+5. You can stop the execution at any time by right clicking on the flow node and choosing 
+*Stop Flow* command.
+
+For example, the flow below starts with *DSAInput* block that subscribes to a path in the DSA
+node tree and broadcasts the received values to three other blocks:
+
+ - *Avg* computes the running average on all values;
+ - *Transform* applies an MVEL script to each input value (in this case simply returning a
+ boolean indicating whether the input value is less than 10);
+ - *Stats* computes the running statistics on the input values, which includes Mean, Standard 
+ Deviation and so on. 
+![CombineLatest](src/site/images/flow2.png)
+
+Another example below shows a set of interconnected Spark blocks.
+
+ - *CsvInput* reads a CSV file and converts it into a Spark DataFrame, selecting the first
+ two columns;
+ - *BasicStats* adds two more columns to the dataframe by computing MIN and MAX score values
+ grouped by student field;
+ - *SQLQuery* joins the original dataframe and stats dataframe by applying a SQL query over 
+ the two inputs.
+ Clicking on the **output** button of *SQLQuery* brings up the result table on the left. 
+![CombineLatest](src/site/images/flow5.png)
