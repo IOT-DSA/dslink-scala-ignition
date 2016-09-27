@@ -9,6 +9,7 @@ Scala-based DSLink for running dataflows based on [Reactive Streams](http://www.
  - Implements the majority of [RxScala](http://reactivex.io/rxscala/) operators for stream operations.
  - Easily extensible to implement your own building blocks.
  - Implements an adapter for Spark Ignition, allowing you to embed [Apache Spark](http://spark.apache.org/) operations.
+ - Supports all Spark SQL datatypes.
  - Supports input and output blocks for integration into DSA environment.
  - Supports scripting for implementing data processing logic. Currently supports the following dialects:
    - MVEL
@@ -200,7 +201,8 @@ val filter = Filter[(Value, Value)] { cm: (Value, Value) =>
 }
 
 // combine the two pipelines 
-(cpu ~> dbCpu, mem ~> dbMem) ~> combine ~> filter
+(cpu ~> dbCpu, mem ~> dbMem) ~> combine
+combine ~> filter
 
 // subscribe to filter output to handle alarms
 filter.output subscribe (handleAlarm(_)) 
@@ -212,4 +214,79 @@ mem.reset
 // ...
 
 connector.stop
+```
+
+### Ignition RX and Spark
+
+Ignition RX provides ReactiveX facade for all Spark Ignition steps. Here is an example of
+how an app loads two CSV files as Spark DataFrames, joins them and runs an SQL query on the
+result (of course, the join operation could also be done as part of the SQL statement,
+thereby reducing the number of blocks by one).
+
+The sample CSV files used in this example have the following structure:
+
+#### people.csv:
+	john,m,35,true
+	jake,m,44,false
+	josh,m,25,false
+	jill,m,19,false
+	...
+#### scores.csv:
+	jane,testC,91
+	john,testB,78
+	jake,testA,87
+	jane,testB,83
+	...
+
+The application demonstrates a wrapper around Spark Ignition steps and fluent
+builder syntax:
+
+```scala
+import org.dsa.iot.ignition.spark.{ CsvFileInput, Join, SQLQuery }
+import org.dsa.iot.rx.RichTuple2
+
+import com.ignition.SparkHelper
+import com.ignition.frame.{ DefaultSparkRuntime, JoinType }
+import com.ignition.types._
+
+implicit val rt = new DefaultSparkRuntime(SparkHelper.sqlContext)
+
+// read a CSV file into a DataFrame
+val people = CsvFileInput()
+people.path <~ "/data/people.csv"
+people.separator <~ Some(",")
+people.columns <~ (string("name"), string("gender"), int("age"), boolean("married"))
+
+// read another CSV file, this time using fluent syntax and defaults
+val scores = CsvFileInput("/data/scores.csv") columns (string("student"), string("task"), int("score"))
+
+// join two input dataframes
+val join = Join("student = name") joinType JoinType.LEFT
+
+// run SQL query on the input dataframe
+val sql = SQLQuery()
+sql.query <~ "SELECT name, age, ROUND(AVG(score)) AS score, COUNT(score) as count FROM input0 GROUP by name, age"
+
+// build workflow
+(people, scores) ~> join ~> sql
+
+// subscribe to the output and call `show()` on each dataframe (should be only one)
+sql.output subscribe (_.show)
+
+// start input blocks
+people.reset
+scores.reset
+```
+
+When started, the program will produce the output similar to one below:
+```
+	+----+---+-----+-----+
+	|name|age|score|count|
+	+----+---+-----+-----+
+	|jeff| 42| null|    0|
+	|jane| 28| 88.0|    3|
+	|josh| 25| 83.0|    2|
+	|jess| 47| 78.0|    3|
+	|....|...|.....|.....|
+	+----+---+-----+-----+
 ```
