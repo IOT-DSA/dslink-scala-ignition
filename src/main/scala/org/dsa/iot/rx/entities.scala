@@ -259,7 +259,10 @@ abstract class AbstractRxBlock[R] extends RxBlock[R] with Logging { self =>
     /**
      * Returns the specified port.
      */
-    def apply(index: Int) = ports(index)
+    def apply(index: Int) = if (index < ports.size) ports(index) else {
+      add(index - ports.size + 1)
+      ports(index)
+    }
 
     /**
      * Returns the number of ports in the list.
