@@ -13,19 +13,19 @@ import rx.lang.scala.Observable
  */
 object AggregatesTest extends TestHarness {
 
-  testFirst
-  testLast
-
-  testScan
-  testFold
-  testReduce
-  
+//  testFirst
+//  testLast
+//
+//  testScan
+//  testFold
+//  testReduce
+//  
   testMath
-
-  testCount
-  testLength
-  testExists
-  testIsEmpty
+//
+//  testCount
+//  testLength
+//  testExists
+//  testIsEmpty
   
   def testFirst() = run("First") {
     val rng = Sequence.from(1 to 10)
