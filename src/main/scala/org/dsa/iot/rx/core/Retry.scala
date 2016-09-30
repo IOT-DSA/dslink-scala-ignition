@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Retries the sequence emitted by the source in case of an error, either indefinitely
@@ -9,6 +10,10 @@ import org.dsa.iot.rx.RxTransformer
  * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/retry.png" alt="" />
  */
 class Retry[T] extends RxTransformer[T, T] {
+  
+  def count(n: Long): Retry[T] = this having (count <~ Some(n))
+  def infinite(): Retry[T] = this having (count <~ None) 
+  
   val count = Port[Option[Long]]("count")
 
   protected def compute = count.in flatMap {

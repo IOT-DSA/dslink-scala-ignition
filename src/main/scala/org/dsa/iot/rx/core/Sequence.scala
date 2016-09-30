@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.AbstractRxBlock
+import org.dsa.iot.scala.Having
 
 import rx.lang.scala.Observable
 
@@ -10,6 +11,9 @@ import rx.lang.scala.Observable
  * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
  */
 class Sequence[A] extends AbstractRxBlock[A] {
+  
+  def items(values: A*): Sequence[A] = this having (items <~ values)
+  
   val items = Port[Iterable[A]]("items")
 
   protected def compute = items.in flatMap Observable.from[A]
@@ -21,9 +25,9 @@ class Sequence[A] extends AbstractRxBlock[A] {
 object Sequence {
 
   /**
-   * Creates a new Sequence instance.
+   * Creates a new Sequence instance with an empty set.
    */
-  def apply[A]: Sequence[A] = new Sequence[A]
+  def apply[A]: Sequence[A] = from(Nil)
 
   /**
    * Creates a new Sequence instance from the supplied values.

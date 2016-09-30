@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Only emits those items from the source sequence for which a given predicate holds.
@@ -8,6 +9,9 @@ import org.dsa.iot.rx.RxTransformer
  * <img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/filter.png" alt="" />
  */
 class Filter[T] extends RxTransformer[T, T] {
+  
+  def predicate(func: T => Boolean): Filter[T] = this having (predicate <~ func)
+  
   val predicate = Port[T => Boolean]("predicate")
 
   protected def compute = predicate.in flatMap source.in.filter

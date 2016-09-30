@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Repeatedly applies a function, where the first argument is the result obtained in the previous
@@ -10,6 +11,10 @@ import org.dsa.iot.rx.RxTransformer
  * <img width="640" height="325" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/reduceSeed.png" alt="" />
  */
 class Fold[T, R] extends RxTransformer[T, R] {
+  
+  def initial(seed: R): Fold[T, R] = this having (initial <~ seed)
+  def accumulator(func: (R, T) => R): Fold[T, R] = this having (accumulator <~ func)
+  
   val initial = Port[R]("initial")
   val accumulator = Port[(R, T) => R]("accumulator")
 

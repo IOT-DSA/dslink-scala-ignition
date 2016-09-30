@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Emits items from the source as long as the predicate condition is true.
@@ -8,6 +9,9 @@ import org.dsa.iot.rx.RxTransformer
  * <img width="640" height="305" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/takeWhile.png" alt="" />
  */
 class TakeWhile[T] extends RxTransformer[T, T] {
+  
+  def predicate(func: T => Boolean): TakeWhile[T] = this having (predicate <~ func)
+  
   val predicate = Port[T => Boolean]("predicate")
 
   protected def compute = predicate.in flatMap source.in.takeWhile

@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.AbstractRxBlock
+import org.dsa.iot.scala.Having
 
 import rx.lang.scala.Observable
 
@@ -10,6 +11,10 @@ import rx.lang.scala.Observable
  * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
  */
 class ValueHolder[A] extends AbstractRxBlock[A] {
+  
+  def value(v: A): ValueHolder[A] = this having (value <~ v)
+  def source(o: Observable[A]): ValueHolder[A] = this having (value <~ o)
+  
   val value = Port[A]("value")
 
   protected def compute = value.in flatMap (Observable.just(_))

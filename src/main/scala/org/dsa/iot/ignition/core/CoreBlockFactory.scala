@@ -53,8 +53,9 @@ object CoreBlockFactory extends TypeConverters {
 
   object RandomIntervalAdapter extends AbstractRxBlockAdapter[RandomInterval]("RandomInterval", INPUT,
     "normal" -> BOOLEAN default false, "min" -> NUMBER default 1000, "max" -> NUMBER default 5000) {
-    def createBlock(json: JsonObject) = RandomInterval(json asBoolean "normal")
+    def createBlock(json: JsonObject) = RandomInterval()
     def setupBlock(block: RandomInterval, json: JsonObject, blocks: DSABlockMap) = {
+      init(block.gaussian, json, "normal", blocks)
       init(block.min, json, "min", blocks)
       init(block.max, json, "max", blocks)
     }
@@ -123,16 +124,18 @@ object CoreBlockFactory extends TypeConverters {
 
   object DropByCountAdapter extends TransformerAdapter[Any, DropByCount[Any]]("DropBySize", TRANSFORM,
     "right" -> BOOLEAN default false, "count" -> NUMBER default 10) {
-    def createBlock(json: JsonObject) = DropByCount[Any](json asBoolean "right")
+    def createBlock(json: JsonObject) = DropByCount[Any]
     def setupAttributes(block: DropByCount[Any], json: JsonObject, blocks: DSABlockMap) = {
+      init(block.right, json, "right", blocks)
       init(block.count, json, "count", blocks)
     }
   }
 
   object DropByTimeAdapter extends TransformerAdapter[Any, DropByTime[Any]]("DropByTime", TRANSFORM,
     "right" -> BOOLEAN default false, "period" -> NUMBER default 10000) {
-    def createBlock(json: JsonObject) = DropByTime[Any](json asBoolean "right")
+    def createBlock(json: JsonObject) = DropByTime[Any]
     def setupAttributes(block: DropByTime[Any], json: JsonObject, blocks: DSABlockMap) = {
+      init(block.right, json, "right", blocks)
       init(block.period, json, "period", blocks)
     }
   }

@@ -236,7 +236,7 @@ object TransformersTest extends TestHarness {
   def testTransform() = run("Transform") {
     val rng = Sequence.from(1 to 3)
 
-    val tx = Transform[Int]
+    val tx = Transform[Int, Int]
     tx.output subscribe testSub("TRANSFORM")
     rng ~> tx
 
