@@ -2,6 +2,7 @@ package org.dsa.iot.rx.script
 
 import org.dsa.iot.rx.AbstractRxBlock
 import org.dsa.iot.rx.script.ScriptDialect.ScriptDialect
+import org.dsa.iot.scala.Having
 
 import rx.lang.scala.Observable
 import scala.reflect.runtime.universe.TypeTag
@@ -11,6 +12,9 @@ import scala.reflect.runtime.universe.TypeTag
  */
 trait ScriptedBlock[U] { self: AbstractRxBlock[_] =>
   implicit val ttag: TypeTag[U]
+  
+  def dialect(lang: ScriptDialect): ScriptedBlock[U] with AbstractRxBlock[_] = this having (dialect <~ lang)
+  def script(code: String): ScriptedBlock[U] with AbstractRxBlock[_] = this having (script <~ code)
 
   val dialect = Port[ScriptDialect]("dialect")
   val script = Port[String]("script")

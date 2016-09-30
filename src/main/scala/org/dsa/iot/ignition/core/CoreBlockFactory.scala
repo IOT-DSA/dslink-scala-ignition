@@ -322,8 +322,9 @@ object CoreBlockFactory extends TypeConverters {
 
   object CountAdapter extends TransformerAdapter[Any, ScriptCount[Any]]("Count", AGGREGATE,
     "dialect" -> enum(ScriptDialect) default ScriptDialect.MVEL, "predicate" -> TEXTAREA) {
-    def createBlock(json: JsonObject) = ScriptCount[Any](true)
+    def createBlock(json: JsonObject) = ScriptCount[Any]
     def setupAttributes(block: ScriptCount[Any], json: JsonObject, blocks: DSABlockMap) = {
+      block.rolling <~ true
       set(block.dialect, json, "dialect")
       init(block.script, json, "predicate", blocks)
     }
