@@ -13,24 +13,24 @@ import rx.lang.scala.Observable
  */
 object AggregatesTest extends TestHarness {
 
-  testFirst
-  testLast
-
-  testScan
-  testFold
-  testReduce
-  
+//  testFirst
+//  testLast
+//
+//  testScan
+//  testFold
+//  testReduce
+//  
   testMath
-
-  testCount
-  testLength
-  testExists
-  testIsEmpty
+//
+//  testCount
+//  testLength
+//  testExists
+//  testIsEmpty
   
   def testFirst() = run("First") {
     val rng = Sequence.from(1 to 10)
 
-    val first = First[Int]
+    val first = First[Int] noDefault()
     first.output subscribe testSub("FIRST")
     rng ~> first
 
@@ -149,7 +149,7 @@ object AggregatesTest extends TestHarness {
   def testCount() = run("Count") {
     val rng = Sequence.from(1 to 10)
 
-    val cAll = Count[Int](false)
+    val cAll = Count[Int] single()
     cAll.output subscribe testSub("COUNT-ALL")
     rng ~> cAll
     

@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Creates an Observable which produces buffers of collected values.
@@ -9,6 +10,10 @@ import org.dsa.iot.rx.RxTransformer
  * it produces non-overlapping buffers.
  */
 class WindowBySize[T] extends RxTransformer[T, Seq[T]] {
+
+  def count(n: Int): WindowBySize[T] = this having (count <~ n)
+  def skip(n: Int): WindowBySize[T] = this having (skip <~ n)
+
   val count = Port[Int]("count")
   val skip = Port[Int]("skip")
 
@@ -24,14 +29,14 @@ class WindowBySize[T] extends RxTransformer[T, Seq[T]] {
 object WindowBySize {
 
   /**
-   * Creates a new WindowBySize instance.
+   * Creates a new WindowBySize instance of overlapping buffers of 10 elements with shift of 1.
    */
-  def apply[T]: WindowBySize[T] = new WindowBySize[T]
+  def apply[T]: WindowBySize[T] = WindowBySize(10, 1)
 
   /**
    * Creates a new WindowBySize instance for non-overlapping buffers of size `count`.
    */
-  def apply[T](count: Int): WindowBySize[T] = apply(count, count)
+  def apply[T](count: Int): WindowBySize[T] = WindowBySize(count, count)
 
   /**
    * Creates a new WindowBySize instance for buffers of size `count` created every `skip` items.

@@ -5,10 +5,21 @@ import com.ignition.frame.mllib.{ RegressionConfig, RegressionMethod }
 import com.ignition.frame.mllib.RegressionMethod.RegressionMethod
 import org.apache.spark.mllib.regression.GeneralizedLinearModel
 
+import org.dsa.iot.scala.Having
+
 /**
  * Computes the regression using MLLib library.
  */
 class Regression(implicit rt: SparkRuntime) extends RxFrameTransformer {
+
+  def label(fld: String): Regression = this having (labelField <~ fld)
+  def fields(flds: String*): Regression = this having (dataFields <~ flds)
+  def groupBy(fields: String*): Regression = this having (groupBy <~ fields.toList)
+  def method(md: RegressionMethod[_ <: GeneralizedLinearModel]): Regression = this having (method <~ md)
+  def iterations(n: Int): Regression = this having (iterationCount <~ n)
+  def step(size: Double): Regression = this having (stepSize <~ size)
+  def intercept(allow: Boolean): Regression = this having (allowIntercept <~ allow)
+
   val labelField = Port[String]("labelField")
   val dataFields = PortList[String]("dataFields")
   val groupBy = Port[List[String]]("groupBy")
@@ -32,18 +43,10 @@ class Regression(implicit rt: SparkRuntime) extends RxFrameTransformer {
 object Regression {
 
   /**
-   * Creates a new Regression instance with the specified regression method, iteration count, step
-   * size, intercept flag and GROUP BY columns.
+   * Creates a new Regression instance with the LINEAR regression method, 100 iterations
+   * with step of 0.1, no intercept and no grouping columns.
    */
-  def apply(regressionMethod: RegressionMethod[_ <: GeneralizedLinearModel] = RegressionMethod.LINEAR,
-            iterationCount: Int = 100, stepSize: Double = 1.0, allowIntercept: Boolean = false,
-            groupBy: List[String] = Nil)(implicit rt: SparkRuntime): Regression = {
-    val block = new Regression
-    block.method <~ regressionMethod
-    block.iterationCount <~ iterationCount
-    block.stepSize <~ stepSize
-    block.allowIntercept <~ allowIntercept
-    block.groupBy <~ groupBy
-    block
+  def apply()(implicit rt: SparkRuntime): Regression = {
+    new Regression method RegressionMethod.LINEAR iterations 100 step 1.0 intercept false groupBy ()
   }
 }

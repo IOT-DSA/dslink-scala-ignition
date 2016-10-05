@@ -2,6 +2,7 @@ package org.dsa.iot.ignition.spark
 
 import org.apache.spark.sql.DataFrame
 import org.dsa.iot.rx.AbstractRxBlock
+import org.dsa.iot.scala.Having
 
 import com.ignition.frame.SparkRuntime
 
@@ -11,6 +12,13 @@ import rx.lang.scala.Observable
  * Reads data from a JDBC source.
  */
 class JdbcInput(implicit rt: SparkRuntime) extends AbstractRxBlock[DataFrame] {
+
+  def url(str: String): JdbcInput = this having (url <~ str)
+  def username(user: String): JdbcInput = this having (username <~ Some(user))
+  def password(pwd: String): JdbcInput = this having (password <~ Some(pwd))
+  def sql(str: String): JdbcInput = this having (sql <~ str)
+  def properties(props: (String, String)*): JdbcInput = this having (properties <~ props)
+
   val url = Port[String]("url")
   val username = Port[Option[String]]("username")
   val password = Port[Option[String]]("password")
@@ -31,14 +39,13 @@ class JdbcInput(implicit rt: SparkRuntime) extends AbstractRxBlock[DataFrame] {
 object JdbcInput {
 
   /**
-   * Creates a new JdbcInput instance with the specified username, password and properties.
+   * Creates a new JdbcInput instance without username, password or properties.
    */
-  def apply(username: Option[String] = None, password: Option[String] = None,
-            properties: Map[String, String] = Map.empty)(implicit rt: SparkRuntime): JdbcInput = {
+  def apply()(implicit rt: SparkRuntime): JdbcInput = {
     val block = new JdbcInput
-    block.username <~ username
-    block.password <~ password
-    block.properties <~ (properties.toSeq: _*)
+    block.username <~ None
+    block.password <~ None
+    block.properties <~ Map.empty
     block
   }
 }

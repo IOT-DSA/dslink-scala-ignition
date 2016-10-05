@@ -299,9 +299,20 @@ abstract class AbstractRxBlock[R] extends RxBlock[R] with Logging { self =>
 
     /**
      * Clears the current associations and assigns the set of items to the ports.
+     */
+    def set(items: Iterable[X]): Unit = set(items.toSeq: _*)
+
+    /**
+     * Clears the current associations and assigns the set of items to the ports.
      * An alias for `set(items)`.
      */
     def <~(items: X*) = set(items: _*)
+
+    /**
+     * Clears the current associations and assigns the set of items to the ports.
+     * An alias for `set(items)`.
+     */
+    def <~(items: Iterable[X]) = set(items)
 
     /**
      * Removes the last port in the list.

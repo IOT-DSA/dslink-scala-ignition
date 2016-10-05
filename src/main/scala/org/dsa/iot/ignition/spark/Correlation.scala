@@ -4,10 +4,17 @@ import com.ignition.frame.SparkRuntime
 import com.ignition.frame.mllib.CorrelationMethod
 import com.ignition.frame.mllib.CorrelationMethod.CorrelationMethod
 
+import org.dsa.iot.scala.Having
+
 /**
  * Computes the correlation between data series using MLLib library.
  */
 class Correlation(implicit rt: SparkRuntime) extends RxFrameTransformer {
+
+  def fields(cols: String*): Correlation = this having (dataFields <~ cols)
+  def groupBy(fields: String*): Correlation = this having (groupBy <~ fields.toList)
+  def method(mtd: CorrelationMethod): Correlation = this having (method <~ mtd)
+
   val dataFields = PortList[String]("fields")
   val groupBy = Port[List[String]]("groupBy")
   val method = Port[CorrelationMethod]("method")
@@ -23,13 +30,9 @@ class Correlation(implicit rt: SparkRuntime) extends RxFrameTransformer {
 object Correlation {
 
   /**
-   * Creates a new Correlation instance with the specified method and GROUP BY columns.
+   * Creates a new Correlation instance.
    */
-  def apply(method: CorrelationMethod = CorrelationMethod.PEARSON,
-            groupBy: List[String] = Nil)(implicit rt: SparkRuntime): Correlation = {
-    val block = new Correlation
-    block.method <~ method
-    block.groupBy <~ groupBy
-    block
+  def apply()(implicit rt: SparkRuntime): Correlation = {
+    new Correlation method CorrelationMethod.PEARSON groupBy ()
   }
 }

@@ -1,14 +1,20 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Emits the item found at a specified index in a sequence of emissions from a source,
  * or a default item if that index is out of range.
- * 
+ *
  * <img width="640" height="310" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/elementAtOrDefault.png" alt="" />
  */
 class ElementAt[T] extends RxTransformer[T, T] {
+
+  def index(idx: Int): ElementAt[T] = this having (index <~ idx)
+  def default(value: T): ElementAt[T] = this having (default <~ Some(value))
+  def noDefault(): ElementAt[T] = this having (default <~ None)
+
   val index = Port[Int]("index")
   val default = Port[Option[T]]("default")
 

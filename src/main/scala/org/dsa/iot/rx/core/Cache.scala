@@ -1,14 +1,18 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Caches the items emitted by the source, so that future subscriptions can "replay" them from the
  * beginning.
- * 
+ *
  * <img width="640" height="410" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/cache.png" alt="" />
  */
 class Cache[T] extends RxTransformer[T, T] {
+
+  def capacity(size: Int): Cache[T] = this having (capacity <~ Some(size))
+
   val capacity = Port[Option[Int]]("capacity")
 
   protected def compute = capacity.in flatMap {

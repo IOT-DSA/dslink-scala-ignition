@@ -33,7 +33,7 @@ object CombinersTest extends TestHarness {
 
     val i1 = Interval(50 milliseconds, 200 milliseconds)
 
-    val i2 = Interval(200 milliseconds, 100 milliseconds)
+    val i2 = Interval() period (200 milliseconds) initial (100 milliseconds)
 
     val i3 = Interval(400 milliseconds, 300 milliseconds)
 
@@ -154,11 +154,11 @@ object CombinersTest extends TestHarness {
   def testInsert() = run("Insert") {
     val rng = Sequence.from(1 to 5)
 
-    val prep = Insert[Int](0, true)
+    val prep = Insert[Int] item 0 before()
     prep.output subscribe testSub("PREPEND")
     prep.source <~ rng
 
-    val app = Insert[Int](9, false)
+    val app = Insert[Int] item 9 after()
     app.output subscribe testSub("APPEND")
     app.source <~ rng
     

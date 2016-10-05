@@ -1,12 +1,18 @@
 package org.dsa.iot.rx.core
 
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{ Duration, DurationInt }
+
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Creates an Observable which produces buffers of collected values.
  */
 class WindowByTime[T] extends RxTransformer[T, Seq[T]] {
+
+  def span(time: Duration): WindowByTime[T] = this having (span <~ time)
+  def shift(time: Duration): WindowByTime[T] = this having (shift <~ time)
+
   val span = Port[Duration]("span")
   val shift = Port[Duration]("shift")
 
@@ -22,14 +28,14 @@ class WindowByTime[T] extends RxTransformer[T, Seq[T]] {
 object WindowByTime {
 
   /**
-   * Creates a new WindowByTime instance.
+   * Creates a new WindowByTime instance of non-overlapping buffers of 10 seconds.
    */
-  def apply[T]: WindowByTime[T] = new WindowByTime[T]
+  def apply[T]: WindowByTime[T] = WindowByTime(10 seconds)
 
   /**
    * Creates a new WindowByTime instance for non-overlapping buffers of `span` duration.
    */
-  def apply[T](span: Duration): WindowByTime[T] = apply(span, span)
+  def apply[T](span: Duration): WindowByTime[T] = WindowByTime(span, span)
 
   /**
    * Creates a new WindowByTime instance for buffers of `span` duration created every `shift`.

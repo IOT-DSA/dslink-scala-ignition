@@ -1,11 +1,16 @@
 package org.dsa.iot.ignition.spark
 
 import com.ignition.frame.SparkRuntime
+import org.dsa.iot.scala.Having
 
 /**
  * Writes rows into a Cassandra table.
  */
 class CassandraOutput(implicit rt: SparkRuntime) extends RxFrameTransformer {
+
+  def keyspace(kspace: String): CassandraOutput = this having (keyspace <~ kspace)
+  def table(tbl: String): CassandraOutput = this having (table <~ tbl)
+
   val keyspace = Port[String]("keyspace")
   val table = Port[String]("table")
 

@@ -5,7 +5,7 @@ import scala.collection.JavaConverters.asScalaBufferConverter
 import org.dsa.iot.dslink.link.Requester
 import org.dsa.iot.dslink.node.actions.table.Row
 import org.dsa.iot.rx.AbstractRxBlock
-import org.dsa.iot.scala.{ DSAHelper, valueToAny }
+import org.dsa.iot.scala.{ DSAHelper, Having, valueToAny }
 
 import rx.lang.scala.Observable
 
@@ -13,6 +13,9 @@ import rx.lang.scala.Observable
  * Runs a DQL query and returns the results as a data row (list of values).
  */
 class DQLInput(implicit requester: Requester) extends AbstractRxBlock[List[Any]] {
+  
+  def query(sql: String): DQLInput = this having (query <~ sql)
+  
   val query = Port[String]("query")
 
   protected def compute = query.in flatMap { dql =>

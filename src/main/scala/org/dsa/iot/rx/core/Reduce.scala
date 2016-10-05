@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.RxTransformer
+import org.dsa.iot.scala.Having
 
 /**
  * Repeatedly applies a function, where the first argument is the result obtained in the previous
@@ -9,6 +10,9 @@ import org.dsa.iot.rx.RxTransformer
  * <img width="640" height="320" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/reduce.png" alt="" />
  */
 class Reduce[T] extends RxTransformer[T, T] {
+  
+  def accumulator(func: (T, T) => T): Reduce[T] = this having (accumulator <~ func)
+  
   val accumulator = Port[(T, T) => T]("accumulator")
 
   protected def compute = accumulator.in flatMap source.in.reduce

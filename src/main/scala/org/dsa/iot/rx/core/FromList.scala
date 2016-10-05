@@ -1,6 +1,7 @@
 package org.dsa.iot.rx.core
 
 import org.dsa.iot.rx.AbstractRxBlock
+import org.dsa.iot.scala.Having
 
 import rx.lang.scala.Observable
 
@@ -10,6 +11,11 @@ import rx.lang.scala.Observable
  * <img width="640" height="315" src="https://raw.githubusercontent.com/wiki/ReactiveX/RxJava/images/rx-operators/from.png" alt="" />
  */
 class FromList[A] extends AbstractRxBlock[A] {
+  
+  def items(values: A*): FromList[A] = this having (items <~ values)
+  def add(value: A): FromList[A] = this having (items.add <~ value)
+  def %(value: A): FromList[A] = add(value)
+  
   val items = PortList[A]("items")
 
   protected def compute = items.combinedIns flatMap Observable.from[A]
