@@ -14,6 +14,7 @@ class FromList[A] extends AbstractRxBlock[A] {
   
   def items(values: A*): FromList[A] = this having (items <~ values)
   def add(value: A): FromList[A] = this having (items.add <~ value)
+  def %(value: A): FromList[A] = add(value)
   
   val items = PortList[A]("items")
 
