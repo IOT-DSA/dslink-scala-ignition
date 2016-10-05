@@ -1,11 +1,16 @@
 package org.dsa.iot.ignition.spark
 
 import com.ignition.frame.SparkRuntime
+import org.dsa.iot.scala.Having
 
 /**
  * Calculates column-based statistics using MLLib library.
  */
 class ColumnStats(implicit rt: SparkRuntime) extends RxFrameTransformer {
+
+  def columns(cols: String*): ColumnStats = this having (columns <~ cols)
+  def groupBy(fields: String*): ColumnStats = this having (groupBy <~ fields.toList)
+
   val columns = PortList[String]("columns")
   val groupBy = Port[List[String]]("groupBy")
 
@@ -20,11 +25,7 @@ class ColumnStats(implicit rt: SparkRuntime) extends RxFrameTransformer {
 object ColumnStats {
 
   /**
-   * Creates a new ColumnStats instance with the specified GROUP BY columns.
+   * Creates a new ColumnStats instance.
    */
-  def apply(groupBy: List[String] = Nil)(implicit rt: SparkRuntime): ColumnStats = {
-    val block = new ColumnStats
-    block.groupBy <~ groupBy
-    block
-  }
+  def apply()(implicit rt: SparkRuntime): ColumnStats = new ColumnStats groupBy ()
 }

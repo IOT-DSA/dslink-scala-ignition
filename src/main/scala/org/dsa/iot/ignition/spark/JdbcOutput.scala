@@ -3,11 +3,20 @@ package org.dsa.iot.ignition.spark
 import org.apache.spark.sql.SaveMode
 
 import com.ignition.frame.SparkRuntime
+import org.dsa.iot.scala.Having
 
 /**
  * Writes data into a database table over JDBC.
  */
 class JdbcOutput(implicit rt: SparkRuntime) extends RxFrameTransformer {
+
+  def url(str: String): JdbcOutput = this having (url <~ str)
+  def username(user: String): JdbcOutput = this having (username <~ Some(user))
+  def password(pwd: String): JdbcOutput = this having (password <~ Some(pwd))
+  def table(tbl: String): JdbcOutput = this having (table <~ tbl)
+  def mode(sm: SaveMode): JdbcOutput = this having (mode <~ sm)
+  def properties(props: (String, String)*): JdbcOutput = this having (properties <~ props)
+
   val url = Port[String]("url")
   val username = Port[Option[String]]("username")
   val password = Port[Option[String]]("password")
@@ -28,16 +37,15 @@ class JdbcOutput(implicit rt: SparkRuntime) extends RxFrameTransformer {
 object JdbcOutput {
 
   /**
-   * Creates a new JdbcOutput instance with the specified username, password, save mode and properties.
+   * Creates a new JdbcOutput instance with the no username, password or properties
+   * and save mode set to `Append`.
    */
-  def apply(username: Option[String] = None, password: Option[String] = None,
-            mode: SaveMode = SaveMode.Append,
-            properties: Map[String, String] = Map.empty)(implicit rt: SparkRuntime): JdbcOutput = {
+  def apply()(implicit rt: SparkRuntime): JdbcOutput = {
     val block = new JdbcOutput
-    block.username <~ username
-    block.password <~ password
-    block.mode <~ mode
-    block.properties <~ (properties.toSeq: _*)
+    block.username <~ None
+    block.password <~ None
+    block.mode <~ SaveMode.Append
+    block.properties <~ Map.empty
     block
   }
 }

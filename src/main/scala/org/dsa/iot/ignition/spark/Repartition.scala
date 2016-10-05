@@ -1,11 +1,16 @@
 package org.dsa.iot.ignition.spark
 
 import com.ignition.frame.SparkRuntime
+import org.dsa.iot.scala.Having
 
 /**
  * Repartitions the underlying Spark RDD.
  */
 class Repartition(implicit rt: SparkRuntime) extends RxFrameTransformer {
+
+  def size(n: Int): Repartition = this having (size <~ n)
+  def shuffle(flag: Boolean): Repartition = this having (shuffle <~ flag)
+
   val size = Port[Int]("size")
   val shuffle = Port[Boolean]("shuffle")
 
@@ -20,7 +25,7 @@ class Repartition(implicit rt: SparkRuntime) extends RxFrameTransformer {
 object Repartition {
 
   /**
-   * Creates a new Repartition instance.
+   * Creates a new Repartition instance with no shuffle.
    */
-  def apply()(implicit rt: SparkRuntime): Repartition = new Repartition
+  def apply()(implicit rt: SparkRuntime): Repartition = new Repartition shuffle false
 }

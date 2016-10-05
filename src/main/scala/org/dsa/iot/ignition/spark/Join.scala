@@ -2,8 +2,9 @@ package org.dsa.iot.ignition.spark
 
 import org.apache.spark.sql.DataFrame
 import org.dsa.iot.rx.RxMerger2
+import org.dsa.iot.scala.Having
 
-import com.ignition.frame.SparkRuntime
+import com.ignition.frame.{ SparkRuntime, JoinType }
 
 /**
  * Performs join of the two data frames.
@@ -11,8 +12,12 @@ import com.ignition.frame.SparkRuntime
  * prefixes for the first and second input respectively.
  */
 class Join(implicit rt: SparkRuntime) extends RxMerger2[DataFrame, DataFrame, DataFrame] {
+
+  def condition(str: String): Join = this having (condition <~ str)
+  def joinType(jt: JoinType.JoinType): Join = this having (joinType <~ jt)
+
   val condition = Port[String]("condition")
-  val joinType = Port[com.ignition.frame.JoinType.JoinType]("joinType")
+  val joinType = Port[JoinType.JoinType]("joinType")
 
   protected def compute = (condition.in combineLatest joinType.in) flatMap {
     case (cond, jt) =>
@@ -32,7 +37,7 @@ class Join(implicit rt: SparkRuntime) extends RxMerger2[DataFrame, DataFrame, Da
 object Join {
 
   /**
-   * Createa a new Join instance.
+   * Createa a new Join instance with INNER join type.
    */
-  def apply()(implicit rt: SparkRuntime): Join = new Join
+  def apply()(implicit rt: SparkRuntime): Join = new Join joinType JoinType.INNER
 }

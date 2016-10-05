@@ -1,11 +1,19 @@
 package org.dsa.iot.ignition.spark
 
 import com.ignition.frame.SparkRuntime
+import org.dsa.iot.scala.Having
 
 /**
  * Writes rows to a CSV file.
  */
 class TextFileOutput(implicit rt: SparkRuntime) extends RxFrameTransformer {
+
+  def filename(name: String): TextFileOutput = this having (filename <~ name)
+  def formats(values: (String, String)*): TextFileOutput = this having (formats <~ values)
+  def separator(str: String): TextFileOutput = this having (separator <~ str)
+  def withHeader(): TextFileOutput = this having (header <~ true)
+  def noHeader(): TextFileOutput = this having (header <~ false)
+
   val filename = Port[String]("filename")
   val formats = PortList[(String, String)]("formats")
   val separator = Port[String]("separator")
@@ -23,12 +31,7 @@ class TextFileOutput(implicit rt: SparkRuntime) extends RxFrameTransformer {
 object TextFileOutput {
 
   /**
-   * Creates a new TextFileOutput with the specified separator and header flag.
+   * Creates a new TextFileOutput with the "," as separator and header.
    */
-  def apply(separator: String = ",", header: Boolean = true)(implicit rt: SparkRuntime): TextFileOutput = {
-    val block = new TextFileOutput
-    block.separator <~ separator
-    block.header <~ header
-    block
-  }
+  def apply()(implicit rt: SparkRuntime): TextFileOutput = new TextFileOutput separator "," withHeader
 }

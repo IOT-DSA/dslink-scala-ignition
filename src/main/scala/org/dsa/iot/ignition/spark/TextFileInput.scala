@@ -2,6 +2,7 @@ package org.dsa.iot.ignition.spark
 
 import org.apache.spark.sql.DataFrame
 import org.dsa.iot.rx.AbstractRxBlock
+import org.dsa.iot.scala.Having
 
 import com.ignition.frame.SparkRuntime
 
@@ -13,6 +14,12 @@ import rx.lang.scala.Observable
  * the data frame will contain only one row.
  */
 class TextFileInput(implicit rt: SparkRuntime) extends AbstractRxBlock[DataFrame] {
+
+  def path(str: String): TextFileInput = this having (path <~ str)
+  def separator(str: String): TextFileInput = this having (separator <~ Some(str))
+  def noSeparator(): TextFileInput = this having (separator <~ None)
+  def field(str: String): TextFileInput = this having (field <~ str)
+
   val path = Port[String]("path")
   val separator = Port[Option[String]]("separator")
   val field = Port[String]("field")
@@ -30,11 +37,7 @@ class TextFileInput(implicit rt: SparkRuntime) extends AbstractRxBlock[DataFrame
 object TextFileInput {
 
   /**
-   * Creates a new TextFileInput instance with the specified separator.
+   * Creates a new TextFileInput instance with no separator.
    */
-  def apply(separator: Option[String] = None)(implicit rt: SparkRuntime): TextFileInput = {
-    val block = new TextFileInput
-    block.separator <~ separator
-    block
-  }
+  def apply()(implicit rt: SparkRuntime): TextFileInput = new TextFileInput noSeparator ()
 }
