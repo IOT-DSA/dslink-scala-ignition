@@ -3,6 +3,7 @@
 .key
 nodes.json
 nodes.json.bak
+local.*
 
 # sbt specific
 .cache
