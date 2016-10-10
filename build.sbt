@@ -24,11 +24,47 @@ mainClass in Compile := Some("org.dsa.iot.ignition.Main")
 enablePlugins(JavaAppPackaging)
 mappings in Universal += file("dslink.json") -> "dslink.json"
 
-// publishing
+// publishing docs to github
 site.settings
 site.includeScaladoc()
 ghpages.settings
 git.remoteRepo := "https://github.com/IOT-DSA/dslink-scala-ignition.git"
+
+// publishing to maven repo
+publishMavenStyle := true
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
+pomIncludeRepository := { _ => false }
+pomExtra := (
+  <url>https://github.com/IOT-DSA/dslink-scala-ignition</url>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>scm:git:https://github.com/IOT-DSA/dslink-scala-ignition.git</url>
+    <connection>scm:git:git@github.com:IOT-DSA/dslink-scala-ignition.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>snark</id>
+      <name>Vlad Orzhekhovskiy</name>
+      <email>vlad@uralian.com</email>
+      <url>http://uralian.com</url>
+    </developer>
+  </developers>)
+  
+pgpSecretRing := file("local.secring.gpg")
+
+pgpPublicRing := file("local.pubring.gpg")
 
 // dependencies
 val sparkLibs = Seq(

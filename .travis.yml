@@ -18,3 +18,15 @@ script: sbt +clean +test
 cache:
   directories:
   - $HOME/.ivy2
+
+env:
+  global:
+    secure: DeFJ3tF3EpVdb/ahPqb6OZmYdzCye/ijVHdmms7sQJ+IXEaS/tK4eh1omn1NJkiloZLGIrFgJQDnedoN/TVOU4yWuJSZKYhzWIyf9IXS58Ft5/hfjWcNK5VaQUe9ZVxd8FMHVeUlxFI7nfFgHoMFcMaH/uluEmWSxrRUfo0KHqwCjLQ9vadxao0Ej4WE4CP4vNu8K2ccscKTQ+Ht6L7teS5YEqCp4MJiceJLu2HXztJ82MkCQlq15E2+DcA7IhyCp5fk8axZol4/evYTmryVEPazxxG2HWODE+oOWN6CfiBxXUNyiUEr6V4QJq0qHZUorng0W1gEKujaPW9bM68IxG6pI8yAt18yE+r2WUYxnO+nhfyaiTFNKd+7Eh8DVSQKww5WTpvYFhyRIc/xzcfOccgLb0NYxjKz4EB62Sn4x2s1aOCl7c2wAN6Y4C/JlZnbEpjfA1Ch4IjSUUXV4Zo6Uwg8ChDK9RYK8sRlHfuHcOgxZrHMnFbWV5PGImKMgGboOpxTFE2oY+E18lm/8VMa2vymM21ZT+B+Gu8mMhth04dTFHrBvXjhys+Fczwq1x5IvPYUiSnedZRts/nS8IGC17yAG1t/hUTNVkwl2KcYShFt3uCBKZfGVOY2SVS4r5LVMQlXNgyUHygWlQIW4Oo0OUgy4D7+3GtHJNHt52FY+EI=
+
+before_install:
+- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in ci/secring.gpg.enc -out local.secring.gpg -d
+- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in ci/pubring.gpg.enc -out local.pubring.gpg -d
+- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in ci/credentials.sbt.enc -out local.credentials.sbt -d
+
+after_success:
+  - sbt +publishSigned
