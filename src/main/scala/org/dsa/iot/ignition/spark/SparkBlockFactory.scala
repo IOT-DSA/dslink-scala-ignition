@@ -62,19 +62,26 @@ object SparkBlockFactory extends TypeConverters with Logging {
 
   implicit def anyToDataFrame(any: Any): DataFrame = any match {
     case x: DataFrame                => x
-    case x: Map[_, _] if x.isEmpty   => sparkRuntime.ctx.emptyDataFrame
     case x: Iterable[_] if x.isEmpty => sparkRuntime.ctx.emptyDataFrame
     case x: Iterable[_] =>
-      val list = x map {
-        case v: Value => valueToAny(v)
-        case v        => v
+
+      def unwrapped(x: Any): Any = x match {
+        case v: Value       => valueToAny(v)
+        case v: Iterable[_] => v map unwrapped
+        case v              => v
       }
-      val elem = list find (_ != null)
-      elem map { e =>
-        val dataType = TypeUtils.typeForValue(e)
-        val schema = StructType(StructField("c0", dataType) :: Nil)
-        val rows = list.map(Row(_)).toList.asJava
-        sparkRuntime.ctx.createDataFrame(rows, schema)
+
+      val rows = x map unwrapped collect {
+        case v: Iterable[_] => Row.fromSeq(v.toSeq)
+        case v if v != null => Row(v)
+      }
+
+      rows.headOption map { row =>
+        val fields = row.toSeq.zipWithIndex map {
+          case (value, index) => StructField("c" + index, TypeUtils.typeForValue(value))
+        }
+        val schema = StructType(fields.toSeq)
+        sparkRuntime.ctx.createDataFrame(rows.toList.asJava, schema)
       } getOrElse sparkRuntime.ctx.emptyDataFrame
     case x =>
       error(s"Unknown data type for $x: " + (if (x == null) "null" else x.getClass.getName))
